@@ -1,5 +1,8 @@
+import 'package:cupertino_ui/cupertino_ui.dart' show GlobalCupertinoLocalizations;
 import 'package:flutter/widgets.dart';
+import 'package:flutter_localizations/flutter_localizations.dart' show GlobalWidgetsLocalizations;
 import 'package:intl/intl.dart';
+import 'package:material_ui/material_ui.dart' show GlobalMaterialLocalizations;
 import 'package:mafia_engine/mafia_engine.dart';
 
 import '../game/game_session.dart';
@@ -46,3 +49,15 @@ extension RoleText on AppLocalizations {
     GameStage.gameOver => stageGameOver,
   };
 }
+
+/// The app's localization delegates. Not the generated
+/// `AppLocalizations.localizationsDelegates`: as of Flutter 3.50, gen-l10n
+/// still lists flutter_localizations' Material/Cupertino delegates, which
+/// material_ui's MaterialApp doesn't recognize (Arabic would have no
+/// Material strings and the AppBar throws).
+const List<LocalizationsDelegate<Object>> appLocalizationsDelegates = [
+  AppLocalizations.delegate,
+  GlobalMaterialLocalizations.delegate,
+  GlobalCupertinoLocalizations.delegate,
+  GlobalWidgetsLocalizations.delegate,
+];

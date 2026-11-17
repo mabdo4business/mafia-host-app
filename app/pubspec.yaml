@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   audioplayers: ^6.8.1
+  cupertino_ui: ^1.1.7
   drift: ^2.35.4
   drift_flutter: ^0.3.1
   flutter:
@@ -18,6 +19,7 @@ dependencies:
   intl: ^0.20.2
   mafia_engine:
     path: ../packages/mafia_engine
+  material_ui: ^1.11.1
   path_provider: ^2.1.6
   wakelock_plus: ^1.8.2
 

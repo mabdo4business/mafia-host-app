@@ -1,9 +1,10 @@
 import 'package:drift/native.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mafia_engine/mafia_engine.dart';
 import 'package:mafia_host/app.dart';
+import 'package:mafia_host/common/l10n.dart';
 import 'package:mafia_host/common/screen_awake.dart';
 import 'package:mafia_host/common/sounds.dart';
 import 'package:mafia_host/data/database.dart';
@@ -72,7 +73,7 @@ Future<ProviderContainer> pumpGame(
 Widget testApp(Widget home, {Locale locale = const Locale('en')}) => MaterialApp(
   locale: locale,
   theme: buildTheme(Brightness.light),
-  localizationsDelegates: AppLocalizations.localizationsDelegates,
+  localizationsDelegates: appLocalizationsDelegates,
   supportedLocales: AppLocalizations.supportedLocales,
   home: home,
 );
