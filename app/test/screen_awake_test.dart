@@ -25,16 +25,16 @@ Future<void> quietNight(WidgetTester tester) async {
 }
 
 void main() {
-  testWidgets('screen stays on during the night only', (tester) async {
+  testWidgets('screen stays on for the whole game', (tester) async {
     final awake = FakeScreenAwake();
     await pumpGame(tester, table(), screenAwake: awake);
     expect(awake.isOn, isTrue, reason: 'night 1');
 
     await quietNight(tester);
-    expect(awake.isOn, isFalse, reason: 'morning');
+    expect(awake.isOn, isTrue, reason: 'morning');
 
     await tapKey(tester, 'startDay');
-    expect(awake.isOn, isFalse, reason: 'day');
+    expect(awake.isOn, isTrue, reason: 'day');
 
     await tapKey(tester, 'skipVote');
     await tapKey(tester, 'startNight');
@@ -43,10 +43,10 @@ void main() {
     // Leaving the game screen (back to home) releases it.
     await tester.pumpWidget(const SizedBox());
     expect(awake.isOn, isFalse, reason: 'left the game');
-    expect(awake.calls, [true, false, true, false], reason: 'no redundant calls');
+    expect(awake.calls, [true, false], reason: 'no redundant calls');
   });
 
-  testWidgets('screen is released when the night ends the game', (tester) async {
+  testWidgets('screen stays on at game over until the host leaves', (tester) async {
     final awake = FakeScreenAwake();
     await pumpGame(
       tester,
@@ -56,12 +56,13 @@ void main() {
       ),
       screenAwake: awake,
     );
-    expect(awake.isOn, isTrue);
-
     await tapText(tester, l10nOf(tester).nightBegin);
     await nightPick(tester, 'c1');
     await tapKey(tester, 'resolveNight');
     expect(find.text(l10nOf(tester).winMafia), findsWidgets);
+    expect(awake.isOn, isTrue, reason: 'roles are read out at game over');
+
+    await tester.pumpWidget(const SizedBox());
     expect(awake.isOn, isFalse);
   });
 }

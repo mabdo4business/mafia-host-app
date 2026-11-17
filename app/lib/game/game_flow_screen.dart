@@ -81,9 +81,10 @@ class GameFlowScreen extends ConsumerWidget {
           ),
         ],
       ),
-      // The host reads from the phone in the dark; don't let it dim mid-night.
+      // The host reads from the phone all game (night prompts, announcements,
+      // the vote, the final reveal); don't let it dim or lock.
       body: KeepScreenOn(
-        enabled: session.stage == GameStage.night,
+        enabled: true,
         child: switch (session.stage) {
           GameStage.night => NightWizard(key: key, session: session),
           GameStage.morning => MorningView(key: key, session: session),
