@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mafia_engine/mafia_engine.dart';
 import 'package:mafia_host/app.dart';
+import 'package:mafia_host/common/screen_awake.dart';
 import 'package:mafia_host/data/database.dart';
 import 'package:mafia_host/game/game_flow_screen.dart';
 import 'package:mafia_host/game/game_session.dart';
@@ -15,8 +16,21 @@ Player p(String id, Role role, {Role? as}) =>
 
 AppDatabase memoryDb() => AppDatabase(NativeDatabase.memory());
 
-ProviderContainer containerFor(AppDatabase db) =>
-    ProviderContainer(overrides: [databaseProvider.overrideWithValue(db)]);
+/// Records keep-screen-on requests instead of calling the native plugin.
+class FakeScreenAwake implements ScreenAwake {
+  final List<bool> calls = [];
+  bool get isOn => calls.lastOrNull ?? false;
+
+  @override
+  Future<void> keepOn(bool on) async => calls.add(on);
+}
+
+ProviderContainer containerFor(AppDatabase db, {ScreenAwake? screenAwake}) => ProviderContainer(
+  overrides: [
+    databaseProvider.overrideWithValue(db),
+    screenAwakeProvider.overrideWithValue(screenAwake ?? FakeScreenAwake()),
+  ],
+);
 
 /// Starts [setup] as the active game and shows the game flow screen.
 Future<ProviderContainer> pumpGame(
@@ -24,9 +38,10 @@ Future<ProviderContainer> pumpGame(
   GameSetup setup, {
   Locale locale = const Locale('en'),
   AppDatabase? db,
+  ScreenAwake? screenAwake,
 }) async {
   usePhoneSize(tester);
-  final container = containerFor(db ?? memoryDb());
+  final container = containerFor(db ?? memoryDb(), screenAwake: screenAwake);
   addTearDown(container.dispose);
   await tester.runAsync(() async {
     await container.read(activeGameProvider.future);

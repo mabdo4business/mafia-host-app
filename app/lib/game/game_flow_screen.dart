@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../common/l10n.dart';
+import '../common/screen_awake.dart';
 import '../common/widgets.dart';
 import '../features/day/day_result_view.dart';
 import '../features/day/day_view.dart';
@@ -80,13 +81,17 @@ class GameFlowScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: switch (session.stage) {
-        GameStage.night => NightWizard(key: key, session: session),
-        GameStage.morning => MorningView(key: key, session: session),
-        GameStage.day => DayView(key: key, session: session),
-        GameStage.dayResult => DayResultView(key: key, session: session),
-        GameStage.gameOver => GameOverView(key: key, session: session),
-      },
+      // The host reads from the phone in the dark; don't let it dim mid-night.
+      body: KeepScreenOn(
+        enabled: session.stage == GameStage.night,
+        child: switch (session.stage) {
+          GameStage.night => NightWizard(key: key, session: session),
+          GameStage.morning => MorningView(key: key, session: session),
+          GameStage.day => DayView(key: key, session: session),
+          GameStage.dayResult => DayResultView(key: key, session: session),
+          GameStage.gameOver => GameOverView(key: key, session: session),
+        },
+      ),
     );
   }
 }

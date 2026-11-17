@@ -18,6 +18,7 @@ dependencies:
   mafia_engine:
     path: ../packages/mafia_engine
   path_provider: ^2.1.6
+  wakelock_plus: ^1.8.2
 
 dev_dependencies:
   flutter_test:
