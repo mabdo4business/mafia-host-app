@@ -58,11 +58,14 @@ class ActiveGameController extends AsyncNotifier<GameSession?> {
 
 @immutable
 class AppPreferences {
-  const AppPreferences({this.locale, this.themeMode = ThemeMode.system});
+  const AppPreferences({this.locale, this.themeMode = ThemeMode.system, this.soundEnabled = true});
 
   /// Null follows the device language.
   final Locale? locale;
   final ThemeMode themeMode;
+
+  /// Night and morning sound cues.
+  final bool soundEnabled;
 }
 
 final preferencesProvider = AsyncNotifierProvider<PreferencesController, AppPreferences>(
@@ -72,6 +75,7 @@ final preferencesProvider = AsyncNotifierProvider<PreferencesController, AppPref
 class PreferencesController extends AsyncNotifier<AppPreferences> {
   static const _localeKey = 'locale';
   static const _themeKey = 'themeMode';
+  static const _soundKey = 'soundEnabled';
 
   GameRepository get _repo => ref.read(gameRepositoryProvider);
 
@@ -80,20 +84,36 @@ class PreferencesController extends AsyncNotifier<AppPreferences> {
     final repo = ref.watch(gameRepositoryProvider);
     final locale = await repo.preference(_localeKey);
     final theme = await repo.preference(_themeKey);
+    final sound = await repo.preference(_soundKey);
     return AppPreferences(
       locale: locale == null ? null : Locale(locale),
       themeMode: ThemeMode.values.asNameMap()[theme] ?? ThemeMode.system,
+      soundEnabled: sound != 'false',
     );
   }
 
   Future<void> setLocale(Locale? locale) async {
-    state = AsyncData(AppPreferences(locale: locale, themeMode: _current.themeMode));
+    final c = _current;
+    state = AsyncData(
+      AppPreferences(locale: locale, themeMode: c.themeMode, soundEnabled: c.soundEnabled),
+    );
     await _repo.setPreference(_localeKey, locale?.languageCode);
   }
 
   Future<void> setThemeMode(ThemeMode mode) async {
-    state = AsyncData(AppPreferences(locale: _current.locale, themeMode: mode));
+    final c = _current;
+    state = AsyncData(
+      AppPreferences(locale: c.locale, themeMode: mode, soundEnabled: c.soundEnabled),
+    );
     await _repo.setPreference(_themeKey, mode.name);
+  }
+
+  Future<void> setSoundEnabled(bool enabled) async {
+    final c = _current;
+    state = AsyncData(
+      AppPreferences(locale: c.locale, themeMode: c.themeMode, soundEnabled: enabled),
+    );
+    await _repo.setPreference(_soundKey, '$enabled');
   }
 
   AppPreferences get _current => state.value ?? const AppPreferences();

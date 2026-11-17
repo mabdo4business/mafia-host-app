@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mafia_engine/mafia_engine.dart';
 import 'package:mafia_host/app.dart';
 import 'package:mafia_host/common/screen_awake.dart';
+import 'package:mafia_host/common/sounds.dart';
 import 'package:mafia_host/data/database.dart';
 import 'package:mafia_host/game/game_flow_screen.dart';
 import 'package:mafia_host/game/game_session.dart';
@@ -25,12 +26,22 @@ class FakeScreenAwake implements ScreenAwake {
   Future<void> keepOn(bool on) async => calls.add(on);
 }
 
-ProviderContainer containerFor(AppDatabase db, {ScreenAwake? screenAwake}) => ProviderContainer(
-  overrides: [
-    databaseProvider.overrideWithValue(db),
-    screenAwakeProvider.overrideWithValue(screenAwake ?? FakeScreenAwake()),
-  ],
-);
+/// Records sounds instead of playing them.
+class FakeSoundPlayer implements SoundPlayer {
+  final List<GameSound> played = [];
+
+  @override
+  Future<void> play(GameSound sound) async => played.add(sound);
+}
+
+ProviderContainer containerFor(AppDatabase db, {ScreenAwake? screenAwake, SoundPlayer? sounds}) =>
+    ProviderContainer(
+      overrides: [
+        databaseProvider.overrideWithValue(db),
+        screenAwakeProvider.overrideWithValue(screenAwake ?? FakeScreenAwake()),
+        soundPlayerProvider.overrideWithValue(sounds ?? FakeSoundPlayer()),
+      ],
+    );
 
 /// Starts [setup] as the active game and shows the game flow screen.
 Future<ProviderContainer> pumpGame(
@@ -39,9 +50,10 @@ Future<ProviderContainer> pumpGame(
   Locale locale = const Locale('en'),
   AppDatabase? db,
   ScreenAwake? screenAwake,
+  SoundPlayer? sounds,
 }) async {
   usePhoneSize(tester);
-  final container = containerFor(db ?? memoryDb(), screenAwake: screenAwake);
+  final container = containerFor(db ?? memoryDb(), screenAwake: screenAwake, sounds: sounds);
   addTearDown(container.dispose);
   await tester.runAsync(() async {
     await container.read(activeGameProvider.future);

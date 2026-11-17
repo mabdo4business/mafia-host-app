@@ -51,6 +51,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get themeDark => 'داكن';
 
   @override
+  String get settingsSoundSection => 'الصوت';
+
+  @override
+  String get settingsSound => 'المؤثرات الصوتية';
+
+  @override
+  String get settingsSoundSubtitle => 'نغمة عند حلول الليل وعند طلوع الصباح';
+
+  @override
   String get roleCivilian => 'مواطن';
 
   @override

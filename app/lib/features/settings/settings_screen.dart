@@ -44,6 +44,13 @@ class SettingsScreen extends ConsumerWidget {
             (ThemeMode.dark, l.themeDark),
           ])
             option(label, prefs.themeMode == mode, () => controller.setThemeMode(mode)),
+          SectionHeader(l.settingsSoundSection),
+          SwitchListTile(
+            title: Text(l.settingsSound),
+            subtitle: Text(l.settingsSoundSubtitle),
+            value: prefs.soundEnabled,
+            onChanged: controller.setSoundEnabled,
+          ),
         ],
       ),
     );

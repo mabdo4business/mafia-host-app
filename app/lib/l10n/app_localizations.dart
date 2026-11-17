@@ -177,6 +177,24 @@ abstract class AppLocalizations {
   /// **'Dark'**
   String get themeDark;
 
+  /// No description provided for @settingsSoundSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Sound'**
+  String get settingsSoundSection;
+
+  /// No description provided for @settingsSound.
+  ///
+  /// In en, this message translates to:
+  /// **'Sound effects'**
+  String get settingsSound;
+
+  /// No description provided for @settingsSoundSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A chime when night falls and when morning comes'**
+  String get settingsSoundSubtitle;
+
   /// No description provided for @roleCivilian.
   ///
   /// In en, this message translates to:

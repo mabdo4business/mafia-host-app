@@ -51,6 +51,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get themeDark => 'Dark';
 
   @override
+  String get settingsSoundSection => 'Sound';
+
+  @override
+  String get settingsSound => 'Sound effects';
+
+  @override
+  String get settingsSoundSubtitle => 'A chime when night falls and when morning comes';
+
+  @override
   String get roleCivilian => 'Civilian';
 
   @override

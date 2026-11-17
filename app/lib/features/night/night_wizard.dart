@@ -4,6 +4,7 @@ import 'package:mafia_engine/mafia_engine.dart';
 
 import '../../common/describe.dart';
 import '../../common/l10n.dart';
+import '../../common/sounds.dart';
 import '../../common/widgets.dart';
 import '../../game/game_input.dart';
 import '../../game/game_session.dart';
@@ -46,6 +47,9 @@ class _NightWizardState extends ConsumerState<NightWizard> {
 
   Future<void> _resolve() async {
     setState(() => _resolving = true);
+    // Before applying: the wizard is replaced (and its ref unusable) once
+    // the night resolves.
+    playGameSound(ref, GameSound.morning);
     await ref.read(activeGameProvider.notifier).apply(NightInput(_actionsBefore(_steps.length)));
   }
 
@@ -82,7 +86,13 @@ class _NightWizardState extends ConsumerState<NightWizard> {
         ),
         BottomActions(
           children: [
-            FilledButton(onPressed: () => setState(() => _index = 0), child: Text(l.nightBegin)),
+            FilledButton(
+              onPressed: () {
+                playGameSound(ref, GameSound.night);
+                setState(() => _index = 0);
+              },
+              child: Text(l.nightBegin),
+            ),
           ],
         ),
       ],
