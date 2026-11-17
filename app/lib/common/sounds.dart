@@ -17,16 +17,27 @@ abstract interface class SoundPlayer {
   Future<void> play(GameSound sound);
 }
 
+/// How cues play. Party-friendly: they mix with music already playing
+/// (never pause or duck it).
+/// - iOS: ambient category, which always mixes with other audio and is muted
+///   by the silent switch.
+/// - Android: media stream (the media volume controls them) without
+///   requesting audio focus.
+///
+/// Built explicitly: audioplayers' generic AudioContextConfig can't express
+/// this combination and asserts on iOS.
+AudioContext cueAudioContext() => AudioContext(
+  android: const AudioContextAndroid(
+    usageType: AndroidUsageType.media,
+    contentType: AndroidContentType.sonification,
+    audioFocus: AndroidAudioFocus.none,
+  ),
+  iOS: AudioContextIOS(category: AVAudioSessionCategory.ambient),
+);
+
 class _AudioSoundPlayer implements SoundPlayer {
   _AudioSoundPlayer() {
-    // Party-friendly: mix with music already playing (don't pause or duck it)
-    // and stay quiet when the phone is on silent.
-    _player.setAudioContext(
-      AudioContextConfig(
-        focus: AudioContextConfigFocus.mixWithOthers,
-        respectSilence: true,
-      ).build(),
-    );
+    _player.setAudioContext(cueAudioContext());
   }
 
   final _player = AudioPlayer();

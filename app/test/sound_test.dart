@@ -1,3 +1,5 @@
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,6 +32,25 @@ Future<void> quietNight(WidgetTester tester) async {
 }
 
 void main() {
+  group('cue audio context', () {
+    test('Android plays on the media stream without taking audio focus', () {
+      final android = cueAudioContext().android;
+      expect(android.usageType, AndroidUsageType.media, reason: 'media volume, not ringer');
+      expect(android.audioFocus, AndroidAudioFocus.none, reason: 'music keeps playing');
+    });
+
+    test('iOS mixes with music and respects the silent switch', () {
+      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
+      // Building must not trip audioplayers' iOS assertions (a debug crash).
+      final ios = cueAudioContext().iOS;
+      // Ambient always mixes with other audio and obeys the silent switch;
+      // iOS forbids setting mixWithOthers explicitly on it.
+      expect(ios.category, AVAudioSessionCategory.ambient);
+      expect(ios.options, isEmpty);
+    });
+  });
+
   test('every sound cue is bundled as a WAV file', () async {
     TestWidgetsFlutterBinding.ensureInitialized();
     for (final sound in GameSound.values) {
