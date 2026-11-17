@@ -1,0 +1,476 @@
+{
+  "@@locale": "en",
+  "appTitle": "Mafia Host",
+  "homeTagline": "Run Mafia nights with physical cards — one phone, fully offline.",
+  "homeNewGame": "New game",
+  "homeContinueGame": "Continue",
+  "newGameConfirmTitle": "Start a new game?",
+  "newGameConfirmBody": "The game in progress will be closed.",
+  "settingsTitle": "Settings",
+  "settingsLanguage": "Language",
+  "settingsSystemDefault": "Device setting",
+  "languageEnglish": "English",
+  "languageArabic": "العربية",
+  "settingsTheme": "Theme",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "roleCivilian": "Civilian",
+  "roleDoctor": "Doctor",
+  "roleDetective": "Detective",
+  "roleBomb": "Bomb",
+  "roleJoker": "Joker",
+  "roleChameleon": "Chameleon",
+  "roleMafia": "Mafia",
+  "roleGodfather": "Godfather",
+  "rolePotana": "Potana",
+  "roleLawyer": "Lawyer",
+  "teamCivilians": "Civilians",
+  "teamMafia": "Mafia",
+  "chameleonAs": "Chameleon as {role}",
+  "@chameleonAs": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "listSeparator": ", ",
+  "stageNight": "Night {round}",
+  "@stageNight": {
+    "placeholders": {
+      "round": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "stageMorning": "Morning {round}",
+  "@stageMorning": {
+    "placeholders": {
+      "round": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "stageDay": "Day {round}",
+  "@stageDay": {
+    "placeholders": {
+      "round": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "stageGameOver": "Game over",
+  "readAloud": "Read aloud",
+  "hostOnly": "Host only",
+  "cancel": "Cancel",
+  "back": "Back",
+  "next": "Next",
+  "decrease": "Decrease",
+  "increase": "Increase",
+  "setupTitle": "New game",
+  "setupPlayersSection": "Players (seating order)",
+  "playerCount": "{count, plural, =0{No players yet} =1{1 player} other{{count} players}}",
+  "@playerCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "setupPlayerNameHint": "Player name",
+  "setupAddPlayer": "Add player",
+  "setupRemovePlayer": "Remove",
+  "setupRolesSection": "Roles",
+  "setupSuggestedMix": "Suggested mix",
+  "setupOptionsSection": "Options",
+  "setupBombVictims": "Bomb victims",
+  "setupRevealRole": "Reveal role on death",
+  "setupDiscussionTimer": "Discussion timer",
+  "timerOff": "Off",
+  "minutes": "{count, plural, =1{1 min} other{{count} min}}",
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "setupHouseRules": "House rules",
+  "ruleDoctorSaveBlocksJoker": "Doctor's save also stops the Joker",
+  "ruleDoctorCanSaveBombVictims": "Doctor can save Bomb victims",
+  "ruleBlockedBombExplodes": "Blocked Bomb still explodes",
+  "ruleChameleonMafia": "Chameleon can pick Mafia roles",
+  "ruleTieVote": "Tied vote",
+  "tieRevote": "Revote",
+  "tieNoElimination": "Nobody out",
+  "tieHostDecides": "Host decides",
+  "setupDealRoles": "Deal roles",
+  "setupProblemTooFewPlayers": "Add at least {min} players.",
+  "@setupProblemTooFewPlayers": {
+    "placeholders": {
+      "min": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "setupProblemDuplicateName": "Two players have the same name.",
+  "setupProblemTooManyRoles": "There are more roles than players.",
+  "setupProblemNoMafia": "Add at least one Mafia role.",
+  "setupProblemMafiaTooStrong": "The Mafia must be fewer than the civilian team.",
+  "dealTitle": "Hand out the cards",
+  "dealInstructions": "Give each player the card shown next to their name. Keep this screen hidden from the table.",
+  "dealChameleonPlaysAs": "Chameleon plays as",
+  "dealChameleonMissing": "Each Chameleon must choose a role.",
+  "dealReshuffle": "Reshuffle",
+  "dealStartGame": "Start night 1",
+  "logTitle": "Game log",
+  "menuUndo": "Undo last step",
+  "menuEndGame": "End game",
+  "undoDone": "Last step undone.",
+  "endGameConfirmTitle": "End this game?",
+  "endGameConfirmBody": "The game will be closed and can't be continued.",
+  "nightIntro": "Everyone, close your eyes.",
+  "nightBegin": "Begin the night",
+  "nightStepCounter": "Step {current} of {total}",
+  "@nightStepCounter": {
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "format": "decimalPattern"
+      },
+      "total": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "nightMafiaDecider": "{name} has the final say",
+  "@nightMafiaDecider": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "nightActor": "Card holder: {name}",
+  "@nightActor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "nightWakePotana": "Wake the Potana. Who do they block?",
+  "nightWakeLawyer": "Wake the Lawyer. Who do they protect?",
+  "nightWakeMafia": "Wake the Mafia. Who do they kill?",
+  "nightWakeJoker": "Wake the Joker. Who do they kill?",
+  "nightWakeDoctor": "Wake the Doctor. Who do they save?",
+  "nightWakeDetective": "Wake the Detective. Who do they check?",
+  "nightNoAction": "No action",
+  "nightBlockedWarning": "Blocked by the Potana tonight — this action will have no effect. Let them choose anyway.",
+  "nightDoctorLastNight": "Saved last night",
+  "nightDetectiveShow": "Show the Detective:",
+  "nightDetectiveBlocked": "The Detective is blocked tonight — give no answer.",
+  "nightReviewTitle": "Everyone is asleep. Review the night.",
+  "reviewNoAction": "{actor}: no action",
+  "@reviewNoAction": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      }
+    }
+  },
+  "nightResolve": "Resolve the night",
+  "resultMafia": "Mafia",
+  "resultCivilian": "Civilian",
+  "actorWithRole": "{name} ({role})",
+  "@actorWithRole": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "actionPotanaBlock": "{actor} blocked {target}",
+  "@actionPotanaBlock": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "actionLawyerProtect": "{actor} protected {target}",
+  "@actionLawyerProtect": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "actionMafiaKill": "{actor} chose to kill {target}",
+  "@actionMafiaKill": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "actionJokerKill": "{actor} chose to kill {target}",
+  "@actionJokerKill": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "actionDoctorSave": "{actor} saved {target}",
+  "@actionDoctorSave": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "actionDetectiveCheck": "{actor} checked {target}",
+  "@actionDetectiveCheck": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "announceNobodyDied": "Nobody died last night.",
+  "announceKilled": "{name} was killed.",
+  "@announceKilled": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "announceVotedOut": "{name} was voted out.",
+  "@announceVotedOut": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "announceBombVictim": "{name} was killed by the Bomb.",
+  "@announceBombVictim": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "announceCard": "Card: {role}.",
+  "@announceCard": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "announceBomb": "{name} was the Bomb!",
+  "@announceBomb": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "announceNoElimination": "Nobody was voted out.",
+  "announceTie": "The vote is tied between {names}.",
+  "@announceTie": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "winMafia": "Mafia win!",
+  "winCivilians": "Civilians win!",
+  "hostBlocked": "{name} was blocked.",
+  "@hostBlocked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "hostProtected": "{name} was protected by the Lawyer.",
+  "@hostProtected": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "hostSaved": "The Doctor saved {name}.",
+  "@hostSaved": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "hostDetective": "Detective's check on {target}: {result}",
+  "@hostDetective": {
+    "placeholders": {
+      "target": {
+        "type": "String"
+      },
+      "result": {
+        "type": "String"
+      }
+    }
+  },
+  "hostBombDefused": "{name} (Bomb) was blocked and did not explode.",
+  "@hostBombDefused": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "bombPick": "{name} was the Bomb. Choose {count, plural, =1{1 player} other{{count} players}} to die with them.",
+  "@bombPick": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "bombDetonate": "Detonate ({selected}/{required})",
+  "@bombDetonate": {
+    "placeholders": {
+      "selected": {
+        "type": "String"
+      },
+      "required": {
+        "type": "String"
+      }
+    }
+  },
+  "morningStartDay": "Start the day",
+  "dayDiscussion": "Discussion",
+  "timerStart": "Start",
+  "timerPause": "Pause",
+  "timerReset": "Reset",
+  "timerDone": "Time's up!",
+  "dayVoteTitle": "Vote",
+  "dayVoteHint": "Open a player and tap everyone who voted for them.",
+  "voteCount": "{count, plural, =0{No votes} =1{1 vote} other{{count} votes}}",
+  "@voteCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "daySkipVote": "No vote today",
+  "dayCountVotes": "Count votes",
+  "dayTieHostDecides": "Tie between {names}. Who is out?",
+  "@dayTieHostDecides": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "dayTieRevote": "Tie between {names}. Vote again.",
+  "@dayTieRevote": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "dayStartNight": "Start night {round}",
+  "@dayStartNight": {
+    "placeholders": {
+      "round": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "gameOverAllRoles": "All roles",
+  "statusAlive": "Alive",
+  "statusDead": "Dead",
+  "gameOverPlayAgain": "New game",
+  "logEmpty": "Nothing has happened yet.",
+  "logNoActions": "No night actions",
+  "logVote": "{voter} voted for {target}",
+  "@logVote": {
+    "placeholders": {
+      "voter": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "logAbstain": "{voter} did not vote",
+  "@logAbstain": {
+    "placeholders": {
+      "voter": {
+        "type": "String"
+      }
+    }
+  },
+  "logNoVote": "No vote",
+  "logTieBreak": "Host chose {name}",
+  "@logTieBreak": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "logBomb": "{bomb} (Bomb) took {victims}",
+  "@logBomb": {
+    "placeholders": {
+      "bomb": {
+        "type": "String"
+      },
+      "victims": {
+        "type": "String"
+      }
+    }
+  }
+}
