@@ -979,6 +979,5 @@
   "settingsHaptics": "Haptics",
   "settingsHapticsSubtitle": "A light tap on picks, card flips and when time runs out",
   "setupDiscussionTimerMinutes": "Discussion timer (minutes)",
-  "settingsDeviceShort": "Device",
-  "stopReading": "Stop reading"
+  "settingsDeviceShort": "Device"
 }

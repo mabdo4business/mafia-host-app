@@ -2054,12 +2054,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Device'**
   String get settingsDeviceShort;
-
-  /// No description provided for @stopReading.
-  ///
-  /// In en, this message translates to:
-  /// **'Stop reading'**
-  String get stopReading;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

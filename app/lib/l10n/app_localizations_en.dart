@@ -1341,7 +1341,4 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsDeviceShort => 'Device';
-
-  @override
-  String get stopReading => 'Stop reading';
 }

@@ -17,7 +17,6 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_riverpod: ^3.5.0
-  flutter_tts: ^4.2.5
   intl: ^0.20.2
   mafia_engine:
     path: ../packages/mafia_engine

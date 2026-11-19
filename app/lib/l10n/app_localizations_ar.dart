@@ -1367,7 +1367,4 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get settingsDeviceShort => 'الجهاز';
-
-  @override
-  String get stopReading => 'أوقف القراءة';
 }

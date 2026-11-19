@@ -72,12 +72,6 @@ void main() {
     expect(tester.takeException(), isNull, reason: 'morning sound must not throw');
     expect(find.text(l.announceNobodyDied), findsOneWidget);
 
-    // Read aloud with the real text-to-speech, then stop it.
-    await tap(find.byKey(const Key('readAloud')));
-    await tester.pump(const Duration(seconds: 1));
-    await tap(find.byKey(const Key('readAloud')));
-    expect(tester.takeException(), isNull, reason: 'text-to-speech must not throw');
-
     // Day: no vote, on to night 2.
     await tap(find.byKey(const Key('startDay')));
     await tap(find.byKey(const Key('startVoting')));

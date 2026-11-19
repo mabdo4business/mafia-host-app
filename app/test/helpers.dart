@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mafia_engine/mafia_engine.dart';
 import 'package:mafia_host/common/l10n.dart';
-import 'package:mafia_host/common/narrator.dart';
 import 'package:mafia_host/common/screen_awake.dart';
 import 'package:mafia_host/common/sounds.dart';
 import 'package:mafia_host/data/database.dart';
@@ -28,29 +27,6 @@ class FakeScreenAwake implements ScreenAwake {
   Future<void> keepOn(bool on) async => calls.add(on);
 }
 
-/// Records what would be read aloud.
-class FakeNarrator implements Narrator {
-  final List<List<String>> read = [];
-  Locale? lastLocale;
-  int stops = 0;
-
-  @override
-  final ValueNotifier<bool> speaking = ValueNotifier(false);
-
-  @override
-  Future<void> speak(List<String> lines, Locale locale) async {
-    read.add(lines);
-    lastLocale = locale;
-    speaking.value = true;
-  }
-
-  @override
-  Future<void> stop() async {
-    stops++;
-    speaking.value = false;
-  }
-}
-
 /// Records sounds instead of playing them.
 class FakeSoundPlayer implements SoundPlayer {
   final List<GameSound> played = [];
@@ -59,19 +35,14 @@ class FakeSoundPlayer implements SoundPlayer {
   Future<void> play(GameSound sound) async => played.add(sound);
 }
 
-ProviderContainer containerFor(
-  AppDatabase db, {
-  ScreenAwake? screenAwake,
-  SoundPlayer? sounds,
-  Narrator? narrator,
-}) => ProviderContainer(
-  overrides: [
-    narratorProvider.overrideWithValue(narrator ?? FakeNarrator()),
-    databaseProvider.overrideWithValue(db),
-    screenAwakeProvider.overrideWithValue(screenAwake ?? FakeScreenAwake()),
-    soundPlayerProvider.overrideWithValue(sounds ?? FakeSoundPlayer()),
-  ],
-);
+ProviderContainer containerFor(AppDatabase db, {ScreenAwake? screenAwake, SoundPlayer? sounds}) =>
+    ProviderContainer(
+      overrides: [
+        databaseProvider.overrideWithValue(db),
+        screenAwakeProvider.overrideWithValue(screenAwake ?? FakeScreenAwake()),
+        soundPlayerProvider.overrideWithValue(sounds ?? FakeSoundPlayer()),
+      ],
+    );
 
 /// Starts [setup] as the active game and shows the game flow screen.
 Future<ProviderContainer> pumpGame(
@@ -81,15 +52,9 @@ Future<ProviderContainer> pumpGame(
   AppDatabase? db,
   ScreenAwake? screenAwake,
   SoundPlayer? sounds,
-  Narrator? narrator,
 }) async {
   usePhoneSize(tester);
-  final container = containerFor(
-    db ?? memoryDb(),
-    screenAwake: screenAwake,
-    sounds: sounds,
-    narrator: narrator,
-  );
+  final container = containerFor(db ?? memoryDb(), screenAwake: screenAwake, sounds: sounds);
   addTearDown(container.dispose);
   await tester.runAsync(() async {
     await container.read(activeGameProvider.future);

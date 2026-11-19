@@ -79,9 +79,6 @@ abstract final class MafiaGlyphs {
     'M6 11h12a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2z',
     'M8 11V7a4 4 0 0 1 8 0v4',
   ]);
-  static const stop = MafiaGlyph([
-    'M8 7h8a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z',
-  ]);
   static const speaker = MafiaGlyph([
     'M11 5 6 9H2v6h4l5 4z',
     'M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14',
