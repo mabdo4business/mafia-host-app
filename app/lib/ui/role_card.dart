@@ -216,7 +216,12 @@ class _RoleCardState extends State<RoleCard> with SingleTickerProviderStateMixin
               color: c.tint(accent, 0.14),
               border: Border.all(color: c.tint(accent, 0.4)),
             ),
-            child: MafiaIcon(widget.glyph, size: withFamily ? 46 : 56, color: soft, strokeWidth: 1.4),
+            child: MafiaIcon(
+              widget.glyph,
+              size: withFamily ? 46 : 56,
+              color: soft,
+              strokeWidth: 1.4,
+            ),
           ),
           const SizedBox(height: Space.md),
           FittedBox(

@@ -75,6 +75,10 @@ Widget testApp(Widget home, {Locale locale = const Locale('en')}) => MaterialApp
   theme: AppTheme.night(locale),
   localizationsDelegates: appLocalizationsDelegates,
   supportedLocales: AppLocalizations.supportedLocales,
+  // Screens honor reduced motion by jumping to end states; this also stops
+  // the game-over glow pulse from keeping pumpAndSettle busy.
+  builder: (context, child) =>
+      MediaQuery(data: MediaQuery.of(context).copyWith(disableAnimations: true), child: child!),
   home: home,
 );
 
@@ -112,24 +116,42 @@ Future<void> tapFinder(WidgetTester tester, Finder finder) async {
   await tester.pumpAndSettle();
 }
 
-/// Picks [targetId] (or "no action" when null) and goes to the next step.
+/// Picks [targetId] (or "no action" when null) and goes to the next step
+/// (past the Detective's full-screen answer, if shown).
 Future<void> nightPick(WidgetTester tester, String? targetId) async {
   await tapKey(tester, targetId == null ? 'noAction' : 'target_$targetId');
   await tapKey(tester, 'nightNext');
+  if (find.byKey(const Key('detectiveDone')).evaluate().isNotEmpty) {
+    await tapKey(tester, 'detectiveDone');
+  }
 }
 
-/// Casts votes: target → voters.
+/// Opens the Voting tab if the day starts on Discussion.
+Future<void> openVoting(WidgetTester tester) async {
+  if (find.byKey(const Key('startVoting')).evaluate().isNotEmpty) {
+    await tapKey(tester, 'startVoting');
+  }
+}
+
+/// Ends the day without a vote.
+Future<void> skipVote(WidgetTester tester) async {
+  await openVoting(tester);
+  await tapKey(tester, 'skipVote');
+}
+
+/// Opens the game menu and picks [item] (log, undo, end, home).
+Future<void> gameMenu(WidgetTester tester, String item) async {
+  await tapKey(tester, 'gameMenu');
+  await tapKey(tester, 'menu_$item');
+}
+
+/// Counts raised hands: target → voters (one tap per voter), then submits.
 Future<void> castVotes(WidgetTester tester, Map<String, List<String>> votes) async {
+  await openVoting(tester);
   for (final MapEntry(key: target, value: voters) in votes.entries) {
-    final header = find.descendant(
-      of: find.byKey(Key('candidate_$target')),
-      matching: find.byType(ListTile),
-    );
-    await tapFinder(tester, header);
-    for (final v in voters) {
-      await tapKey(tester, 'vote_${v}_for_$target');
+    for (var i = 0; i < voters.length; i++) {
+      await tapKey(tester, 'voteRow_$target');
     }
-    await tapFinder(tester, header); // collapse
   }
   await tapKey(tester, 'countVotes');
 }

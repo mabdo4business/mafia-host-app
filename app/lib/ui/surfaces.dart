@@ -116,9 +116,14 @@ class PhaseScaffold extends StatelessWidget {
     this.backdrop,
     this.bottom,
     this.bottomPadding,
+    this.transparent = false,
   });
 
   final Widget body;
+
+  /// Paints no background or glow: the page sits on a shared sky (the game
+  /// flow's [PhaseSky]).
+  final bool transparent;
   final Glow? glow;
 
   /// Paints `bgTop → bg` (Morning).
@@ -136,10 +141,10 @@ class PhaseScaffold extends StatelessWidget {
     final c = context.mafia;
     final safeBottom = MediaQuery.viewPaddingOf(context).bottom;
     return Scaffold(
-      backgroundColor: c.bg,
+      backgroundColor: transparent ? Colors.transparent : c.bg,
       body: DecoratedBox(
         decoration: BoxDecoration(
-          color: c.bg,
+          color: transparent ? null : c.bg,
           gradient: dawn
               ? LinearGradient(
                   begin: Alignment.topCenter,
@@ -152,7 +157,7 @@ class PhaseScaffold extends StatelessWidget {
         child: Stack(
           clipBehavior: Clip.hardEdge,
           children: [
-            if (glow != null) _GlowLayer(glow!),
+            if (glow != null && !transparent) _GlowLayer(glow!),
             ?backdrop,
             Column(
               children: [

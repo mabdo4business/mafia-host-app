@@ -859,4 +859,327 @@ class AppLocalizationsAr extends AppLocalizations {
     );
     return '$name: $_temp0';
   }
+
+  @override
+  String announceWasBomb(String headline) {
+    return '$headline وكان القنبلة.';
+  }
+
+  @override
+  String announceBombChoosing(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'يأخذ معه $countString لاعبًا: اختر الآن.',
+      few: 'يأخذ معه $countString لاعبين: اختر الآن.',
+      two: 'يأخذ معه لاعبَين: اختر الآن.',
+      one: 'يأخذ معه لاعبًا واحدًا: اختر الآن.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bombChoose(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'اختر $countString لاعبًا',
+      few: 'اختر $countString لاعبين',
+      two: 'اختر لاعبَين',
+      one: 'اختر لاعبًا واحدًا',
+      zero: 'جاهز',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bombCounter(String selected, String required) {
+    return '$selected / $required';
+  }
+
+  @override
+  String bombWasTheBomb(String name) {
+    return '$name كان القنبلة';
+  }
+
+  @override
+  String chameleonBecome(String role) {
+    return 'كن $role';
+  }
+
+  @override
+  String get chameleonChooseRole => 'اختر دورك';
+
+  @override
+  String chameleonIntro(String name) {
+    return '$name، أنت الحرباء. اختر الدور الذي ستلعبه طوال اللعبة.';
+  }
+
+  @override
+  String get chameleonPickHint => 'اختر دورًا';
+
+  @override
+  String get comingSoon => 'قريبًا في تحديث قادم.';
+
+  @override
+  String countAlive(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '$countString أحياء';
+  }
+
+  @override
+  String countEliminated(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '$countString خارج اللعبة';
+  }
+
+  @override
+  String get dayDiscussionHint => 'يتناقش أهل البلدة. ابدأ التصويت عندما يكونون جاهزين.';
+
+  @override
+  String dayEliminate(String name) {
+    return 'إخراج $name';
+  }
+
+  @override
+  String dayOfVoters(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return ' من $countString صوّتوا';
+  }
+
+  @override
+  String get dayResultTitle => 'قالت البلدة كلمتها.';
+
+  @override
+  String get dayStartVoting => 'ابدأ التصويت';
+
+  @override
+  String get dayTapToVote => 'اضغط على لاعب لإضافة صوت';
+
+  @override
+  String get dayTimerHint => 'مؤقت النقاش';
+
+  @override
+  String get dayTitle => 'من يكذب؟';
+
+  @override
+  String get dayUndoVote => 'تراجع عن آخر صوت';
+
+  @override
+  String get dayVoting => 'التصويت';
+
+  @override
+  String get detectiveBlockedTitle => 'المحقق معطَّل';
+
+  @override
+  String detectiveChecked(String name) {
+    return 'فحص المحقق $name';
+  }
+
+  @override
+  String get detectiveDone => 'تابع الليل';
+
+  @override
+  String get detectiveNoAnswer => 'لا إجابة';
+
+  @override
+  String get detectiveSignalHint => 'أشر بهذا للمحقق دون كلام.';
+
+  @override
+  String get gameOverBackHome => 'العودة للرئيسية';
+
+  @override
+  String gameOverSummary(int nights, int alive) {
+    final intl.NumberFormat nightsNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String nightsString = nightsNumberFormat.format(nights);
+    final intl.NumberFormat aliveNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String aliveString = aliveNumberFormat.format(alive);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      nights,
+      locale: localeName,
+      other: 'بعد $nightsString ليلة',
+      few: 'بعد $nightsString ليالٍ',
+      two: 'بعد ليلتين',
+      one: 'بعد ليلة واحدة',
+    );
+    return '$_temp0 · $aliveString ما زالوا صامدين';
+  }
+
+  @override
+  String homeContinueAt(String stage) {
+    return 'متابعة · $stage';
+  }
+
+  @override
+  String get homeGreetingAfternoon => 'مساء الخير أيها المضيف';
+
+  @override
+  String get homeGreetingEvening => 'مساء الخير أيها المضيف';
+
+  @override
+  String get homeGreetingMorning => 'صباح الخير أيها المضيف';
+
+  @override
+  String homeHeroAlive(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '$countString ما زالوا أحياء';
+  }
+
+  @override
+  String get homeHeroEmpty => 'أضف اللاعبين ووزّع البطاقات.';
+
+  @override
+  String get homeHeroInProgress => 'جارية';
+
+  @override
+  String homeHeroLastTable(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString لاعبًا من لعبتك الأخيرة',
+      few: '$countString لاعبين من لعبتك الأخيرة',
+      two: 'لاعبان من لعبتك الأخيرة',
+      one: 'لاعب واحد من لعبتك الأخيرة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeHeroReady(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '$countString حول الطاولة';
+  }
+
+  @override
+  String get homeHeroTag => 'الليلة';
+
+  @override
+  String get homeHeroTitle => 'طاولة الليلة';
+
+  @override
+  String get homeRecentEmpty => 'ستظهر الألعاب المنتهية هنا.';
+
+  @override
+  String get homeStartGame => 'ابدأ لعبة';
+
+  @override
+  String get homeTitle => 'المدينة نائمة.';
+
+  @override
+  String get homeYourTable => 'طاولتك';
+
+  @override
+  String get menuHome => 'الرئيسية';
+
+  @override
+  String get menuMore => 'المزيد';
+
+  @override
+  String get morningReadInOrder => 'اقرأها بالترتيب';
+
+  @override
+  String get morningTitle => 'البلدة تستيقظ.';
+
+  @override
+  String get navEvents => 'الفعاليات';
+
+  @override
+  String get navHome => 'الرئيسية';
+
+  @override
+  String get navPlayers => 'اللاعبون';
+
+  @override
+  String get nightContinueNoAction => 'التالي · بلا فعل';
+
+  @override
+  String get nightIntroHint => 'اقرأها بصوت عالٍ، ثم ابدأ حين تهدأ الطاولة.';
+
+  @override
+  String get nightPreviousStep => 'الخطوة السابقة';
+
+  @override
+  String get nightReviewHint => 'اضغط على خطوة لتعديلها.';
+
+  @override
+  String get recentCiviliansWon => 'فاز المدنيون';
+
+  @override
+  String recentDetail(int nights, int players) {
+    final intl.NumberFormat nightsNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String nightsString = nightsNumberFormat.format(nights);
+    final intl.NumberFormat playersNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String playersString = playersNumberFormat.format(players);
+
+    return 'الليلة $nightsString · $playersString لاعبين';
+  }
+
+  @override
+  String get recentMafiaWon => 'فازت المافيا';
+
+  @override
+  String get revealDealing => 'توزيع الأدوار';
+
+  @override
+  String get revealHandTo => 'سلّم الهاتف إلى';
+
+  @override
+  String get revealHint => 'قرّب البطاقة منك ثم اضغط عليها';
+
+  @override
+  String revealProgress(int current, int total) {
+    final intl.NumberFormat currentNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String currentString = currentNumberFormat.format(current);
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return '$currentString من $totalString';
+  }
+
+  @override
+  String get setupAddPlayersHint => 'أضف اللاعبين حول الطاولة';
+
+  @override
+  String get setupAutoBalance => 'توازن تلقائي';
+
+  @override
+  String get setupBombTakesDown => 'القنبلة تأخذ معها';
+
+  @override
+  String get setupBombTakesDownHint => 'لاعبون يُختارون عند موت القنبلة';
+
+  @override
+  String get setupHouseRulesHint => 'قواعد الطبيب والقنبلة والحرباء والتعادل';
+
+  @override
+  String get setupPlayersAtTable => 'اللاعبون حول الطاولة';
+
+  @override
+  String get setupRolesHint => 'اضغط على دور لإضافته، واضغط مطولًا لإزالته.';
+
+  @override
+  String get statNone => '–';
+
+  @override
+  String get timerPaused => 'متوقف';
 }

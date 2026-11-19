@@ -69,6 +69,7 @@ abstract final class MafiaGlyphs {
   static const close = MafiaGlyph(['M6 6l12 12M18 6 6 18'], strokeWidth: 2);
   static const check = MafiaGlyph(['m5 12 5 5 9-10'], strokeWidth: 2);
   static const undo = MafiaGlyph(['M9 14 4 9l5-5', 'M4 9h11a5 5 0 0 1 0 10h-3'], directional: true);
+  static const grip = MafiaGlyph(['M5 9h14M5 15h14'], strokeWidth: 2);
   static const more = MafiaGlyph(['M12 5h.01M12 12h.01M12 19h.01'], strokeWidth: 3);
   static const bell = MafiaGlyph([
     'M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9',

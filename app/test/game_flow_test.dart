@@ -5,6 +5,7 @@ import 'package:mafia_engine/mafia_engine.dart';
 import 'package:mafia_host/game/game_flow_screen.dart';
 import 'package:mafia_host/game/game_session.dart';
 import 'package:mafia_host/game/providers.dart';
+import 'package:mafia_host/ui/ui.dart';
 
 import 'helpers.dart';
 
@@ -28,15 +29,16 @@ void main() {
 
     await tapText(tester, l.nightBegin);
     // Steps in resolution order: Mafia, Doctor, Detective.
-    expect(find.text(l.nightWakeMafia), findsOneWidget);
+    expect(find.text(l.nightWakeTitleMafia), findsOneWidget);
     expect(find.byKey(const Key('target_gf')), findsNothing, reason: 'Mafia cannot target itself');
     await nightPick(tester, 'c1');
 
-    expect(find.text(l.nightWakeDoctor), findsOneWidget);
+    expect(find.text(l.nightWakeTitleDoctor), findsOneWidget);
     await nightPick(tester, 'c2');
 
-    expect(find.text(l.nightWakeDetective), findsOneWidget);
+    expect(find.text(l.nightWakeTitleDetective), findsOneWidget);
     await tapKey(tester, 'target_gf');
+    await tapKey(tester, 'nightNext');
     expect(
       find.descendant(
         of: find.byKey(const Key('detectiveAnswer')),
@@ -45,25 +47,24 @@ void main() {
       findsOneWidget,
       reason: 'the Godfather reads as Civilian',
     );
-    await tapKey(tester, 'nightNext');
+    await tapKey(tester, 'detectiveDone');
 
     expect(find.text(l.nightReviewTitle), findsOneWidget);
     await tapKey(tester, 'resolveNight');
 
     // Morning.
-    expect(find.text(l.stageMorning(1)), findsOneWidget);
+    expect(find.text(l.stageMorning(1).toUpperCase()), findsOneWidget);
     expect(find.text(l.announceKilled('C1')), findsOneWidget);
-    expect(find.text(l.hostDetective('GF', l.resultCivilian)), findsOneWidget);
+    expect(find.text(l.hostOnlyDetective('GF', l.resultCivilian)), findsOneWidget);
     await tapKey(tester, 'startDay');
 
     // Day vote: everyone votes out the Godfather.
-    expect(find.text(l.stageDay(1)), findsOneWidget);
+    expect(find.text(l.stageDay(1).toUpperCase()), findsOneWidget);
     await castVotes(tester, {
       'gf': ['doc', 'det', 'c2'],
     });
 
     expect(find.text(l.winCivilians), findsWidgets);
-    expect(find.text(l.announceVotedOut('GF')), findsOneWidget);
     expect(container.read(activeGameProvider).value!.stage, GameStage.gameOver);
 
     // Stored as finished: nothing to continue.
@@ -83,7 +84,7 @@ void main() {
     await tapKey(tester, 'resolveNight');
     expect(find.text(l.announceNobodyDied), findsOneWidget);
     await tapKey(tester, 'startDay');
-    await tapKey(tester, 'skipVote');
+    await skipVote(tester);
     await tapKey(tester, 'startNight');
 
     expect(container.read(activeGameProvider).value!.round, 2);
@@ -92,7 +93,10 @@ void main() {
     expect(find.text(l.nightDoctorLastNight), findsOneWidget);
     await tapKey(tester, 'target_c2');
     expect(find.byKey(const Key('nightNext')).hitTestable(), findsOneWidget);
-    expect(tester.widget<FilledButton>(find.byKey(const Key('nightNext'))).onPressed, isNull);
+    expect(
+      tester.widget<PrimaryActionButton>(find.byKey(const Key('nightNext'))).onPressed,
+      isNull,
+    );
   });
 
   testWidgets('the Bomb picks its victims before the day starts', (tester) async {
@@ -116,16 +120,15 @@ void main() {
     await nightPick(tester, 'bomb');
     await tapKey(tester, 'resolveNight');
 
-    expect(find.text(l.announceBomb('BOMB')), findsOneWidget);
+    // The Bomb picks before anything else; the day can't start yet.
     expect(find.byKey(const Key('bombPanel')), findsOneWidget);
-    expect(tester.widget<FilledButton>(find.byKey(const Key('startDay'))).onPressed, isNull);
+    expect(find.text(l.bombWasTheBomb('BOMB')), findsOneWidget);
+    expect(find.byKey(const Key('startDay')), findsNothing);
 
     await tapKey(tester, 'bombVictim_gf');
     await tapKey(tester, 'bombVictim_maf');
     await tapKey(tester, 'detonate');
 
-    expect(find.text(l.announceBombVictim('GF')), findsOneWidget);
-    expect(find.text(l.announceBombVictim('MAF')), findsOneWidget);
     // Both Mafia gone → Civilians win.
     expect(container.read(activeGameProvider).value!.state.winner, Team.civilians);
     expect(find.text(l.winCivilians), findsWidgets);
@@ -162,9 +165,7 @@ void main() {
     await tapKey(tester, 'resolveNight');
     expect(container.read(activeGameProvider).value!.state.player('c1').isAlive, isFalse);
 
-    await tester.tap(find.byType(PopupMenuButton<VoidCallback>));
-    await tester.pumpAndSettle();
-    await tapText(tester, l.menuUndo);
+    await gameMenu(tester, 'undo');
 
     final session = container.read(activeGameProvider).value!;
     expect(session.stage, GameStage.night);
@@ -196,7 +197,7 @@ void main() {
       UncontrolledProviderScope(container: fresh, child: testApp(const GameFlowScreen())),
     );
     await tester.pumpAndSettle();
-    expect(find.text(l.stageDay(1)), findsOneWidget);
+    expect(find.text(l.stageDay(1).toUpperCase()), findsOneWidget);
   });
 
   testWidgets('Arabic lays out right-to-left with Arabic text', (tester) async {
@@ -205,11 +206,15 @@ void main() {
     expect(l.localeName, 'ar');
     expect(Directionality.of(tester.element(find.byType(Scaffold).first)), TextDirection.rtl);
     await tapText(tester, l.nightBegin);
-    expect(find.text('أيقظ المافيا. من يقتلون؟'), findsOneWidget);
+    expect(find.text('أيقظ المافيا'), findsOneWidget);
 
     // The bottom bar's first action (Back) sits on the right in RTL.
-    final back = tester.getCenter(find.text(l.back));
-    final next = tester.getCenter(find.text(l.next));
+    final back = tester.getCenter(
+      find.byWidgetPredicate(
+        (w) => w is IconCircleButton && w.semanticLabel == l.nightPreviousStep,
+      ),
+    );
+    final next = tester.getCenter(find.byKey(const Key('nightNext')));
     expect(back.dx, greaterThan(next.dx));
   });
 }

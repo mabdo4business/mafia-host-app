@@ -77,7 +77,7 @@ void main() {
 
     // Day passes silently; the next night plays the cue again.
     await tapKey(tester, 'startDay');
-    await tapKey(tester, 'skipVote');
+    await skipVote(tester);
     await tapKey(tester, 'startNight');
     expect(sounds.played, [GameSound.night, GameSound.morning]);
     await tapText(tester, l10nOf(tester).nightBegin);

@@ -20,9 +20,13 @@ class RoleChip extends StatelessWidget {
     required this.team,
     required this.count,
     this.selected = false,
+    this.showCount = true,
     this.onTap,
     this.onLongPress,
   });
+
+  /// False for pickers (Chameleon choice): no badge, never dimmed.
+  final bool showCount;
 
   final MafiaGlyph glyph;
   final String name;
@@ -38,7 +42,7 @@ class RoleChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.mafia;
     final mafia = team == Team.mafia;
-    final off = count == 0 && !selected;
+    final off = showCount && count == 0 && !selected;
     final accent = mafia ? c.mafia : c.civilian;
     final soft = mafia ? c.mafiaSoft : c.civilianSoft;
     final dim = c.textMuted.withValues(alpha: 0.65);
@@ -60,7 +64,7 @@ class RoleChip extends StatelessWidget {
     return Semantics(
       button: true,
       selected: selected,
-      label: '$name, ${context.number(count)}',
+      label: showCount ? '$name, ${context.number(count)}' : name,
       excludeSemantics: true,
       onIncrease: onTap,
       onDecrease: onLongPress,
@@ -118,26 +122,27 @@ class RoleChip extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: Space.sm),
-                  AnimatedContainer(
-                    duration: Motion.fast,
-                    constraints: const BoxConstraints(minWidth: 28),
-                    height: 28,
-                    padding: const EdgeInsetsDirectional.symmetric(horizontal: 6),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: badgeBg,
-                      borderRadius: BorderRadius.circular(Radii.chip),
-                    ),
-                    child: Text(
-                      context.number(count),
-                      style: context.type.labelMedium!.copyWith(
-                        color: badgeFg,
-                        fontWeight: FontWeight.w700,
-                        height: 1,
+                  if (showCount) const SizedBox(width: Space.sm),
+                  if (showCount)
+                    AnimatedContainer(
+                      duration: Motion.fast,
+                      constraints: const BoxConstraints(minWidth: 28),
+                      height: 28,
+                      padding: const EdgeInsetsDirectional.symmetric(horizontal: 6),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: badgeBg,
+                        borderRadius: BorderRadius.circular(Radii.chip),
+                      ),
+                      child: Text(
+                        context.number(count),
+                        style: context.type.labelMedium!.copyWith(
+                          color: badgeFg,
+                          fontWeight: FontWeight.w700,
+                          height: 1,
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ),

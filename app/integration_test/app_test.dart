@@ -38,14 +38,26 @@ void main() {
     }
 
     // Setup: five players, suggested roles.
-    await tap(find.text(l.homeNewGame));
+    await tap(find.byKey(const Key('homeNewGame')));
+    await tap(find.byKey(const Key('editPlayers')));
     for (final name in ['Ahmed', 'Sara', 'Omar', 'Laila', 'Youssef']) {
       await tester.enterText(find.byKey(const Key('playerNameField')), name);
       await tester.testTextInput.receiveAction(TextInputAction.done);
       await tester.pumpAndSettle();
     }
-    await tap(find.text(l.setupDealRoles));
-    await tap(find.text(l.dealStartGame));
+    await tester.tapAt(const Offset(200, 40)); // close the players sheet
+    await tester.pumpAndSettle();
+    await tap(find.byKey(const Key('dealRoles')));
+    // Pass the phone: each player turns their card, then hands it on.
+    for (var i = 0; i < 5; i++) {
+      await tap(find.byKey(const Key('roleCard')));
+      if (find.byKey(const Key('chameleonChoose')).evaluate().isNotEmpty) {
+        await tap(find.byKey(const Key('chameleonChoose')));
+        await tap(find.byKey(const Key('chameleonPick_doctor')));
+        await tap(find.byKey(const Key('chameleonConfirm')));
+      }
+      await tap(find.byKey(const Key('revealNext')));
+    }
     expect(find.text(l.stageNight(1)), findsOneWidget);
     expect(await WakelockPlus.enabled, isTrue, reason: 'screen kept on in the game');
 
@@ -62,15 +74,17 @@ void main() {
 
     // Day: no vote, on to night 2.
     await tap(find.byKey(const Key('startDay')));
+    await tap(find.byKey(const Key('startVoting')));
     await tap(find.byKey(const Key('skipVote')));
     await tap(find.byKey(const Key('startNight')));
     expect(find.text(l.stageNight(2)), findsOneWidget);
     expect(await WakelockPlus.enabled, isTrue);
 
     // Back home: wake lock released, game saved and offered to continue.
-    await tap(find.byType(BackButton));
+    await tap(find.byKey(const Key('gameMenu')));
+    await tap(find.byKey(const Key('menu_home')));
     await tester.pumpAndSettle(const Duration(milliseconds: 500));
     expect(await WakelockPlus.enabled, isFalse, reason: 'released after leaving the game');
-    expect(find.textContaining(l.homeContinueGame), findsOneWidget);
+    expect(find.byKey(const Key('homeContinue')), findsOneWidget);
   });
 }

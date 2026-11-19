@@ -5,6 +5,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../ui/ui.dart';
 import 'component_catalog.dart';
+import 'screen_catalog.dart';
 
 /// Every lib/ui component with live previews. Toggle language (and so
 /// direction) and night/day theme from the app bar.
@@ -12,6 +13,9 @@ class GalleryScreen extends StatefulWidget {
   const GalleryScreen({super.key});
 
   static const route = '/gallery';
+
+  /// Prefix for seeded screens: `/gallery/screen/<id>`.
+  static const screenRoute = '/gallery/screen/';
 
   @override
   State<GalleryScreen> createState() => _GalleryScreenState();
@@ -54,9 +58,39 @@ class _GalleryScreenState extends State<GalleryScreen> {
               ],
             ),
             body: ListView.builder(
-              itemCount: componentCatalog.length,
-              itemBuilder: (context, i) {
-                final s = componentCatalog[i];
+              itemCount: componentCatalog.length + 1,
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return Padding(
+                    padding: const EdgeInsetsDirectional.all(Space.lg),
+                    child: Wrap(
+                      spacing: Space.sm,
+                      runSpacing: Space.sm,
+                      children: [
+                        for (final sc in screenCatalog)
+                          ActionChip(
+                            label: Text(sc.id),
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute<void>(
+                                builder: (_) => Localizations.override(
+                                  context: context,
+                                  locale: locale,
+                                  child: Builder(
+                                    builder: (context) => Theme(
+                                      data: AppTheme.night(locale),
+                                      child: Builder(builder: sc.build),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  );
+                }
+                final s = componentCatalog[index - 1];
                 final phase = _phase ?? s.phase;
                 return Theme(
                   data: phase == Phase.night ? AppTheme.night(locale) : AppTheme.day(locale),

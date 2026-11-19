@@ -850,4 +850,319 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$name: $_temp0';
   }
+
+  @override
+  String announceWasBomb(String headline) {
+    return '$headline They were the Bomb.';
+  }
+
+  @override
+  String announceBombChoosing(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'They take $countString players down with them: choose now.',
+      one: 'They take 1 player down with them: choose now.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bombChoose(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Choose $countString players',
+      one: 'Choose 1 player',
+      zero: 'Ready',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bombCounter(String selected, String required) {
+    return '$selected / $required';
+  }
+
+  @override
+  String bombWasTheBomb(String name) {
+    return '$name was the Bomb';
+  }
+
+  @override
+  String chameleonBecome(String role) {
+    return 'Become $role';
+  }
+
+  @override
+  String get chameleonChooseRole => 'Choose your role';
+
+  @override
+  String chameleonIntro(String name) {
+    return '$name, you are the Chameleon. Pick the role you will play all game.';
+  }
+
+  @override
+  String get chameleonPickHint => 'Pick a role';
+
+  @override
+  String get comingSoon => 'Coming in a later update.';
+
+  @override
+  String countAlive(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '$countString alive';
+  }
+
+  @override
+  String countEliminated(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '$countString eliminated';
+  }
+
+  @override
+  String get dayDiscussionHint => 'The town talks it over. Start voting when they are ready.';
+
+  @override
+  String dayEliminate(String name) {
+    return 'Eliminate $name';
+  }
+
+  @override
+  String dayOfVoters(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return ' of $countString voted';
+  }
+
+  @override
+  String get dayResultTitle => 'The town has spoken.';
+
+  @override
+  String get dayStartVoting => 'Start voting';
+
+  @override
+  String get dayTapToVote => 'Tap a player to add a vote';
+
+  @override
+  String get dayTimerHint => 'Discussion timer';
+
+  @override
+  String get dayTitle => 'Who is lying?';
+
+  @override
+  String get dayUndoVote => 'Undo last vote';
+
+  @override
+  String get dayVoting => 'Voting';
+
+  @override
+  String get detectiveBlockedTitle => 'The Detective is blocked';
+
+  @override
+  String detectiveChecked(String name) {
+    return 'The Detective checked $name';
+  }
+
+  @override
+  String get detectiveDone => 'Continue the night';
+
+  @override
+  String get detectiveNoAnswer => 'No answer';
+
+  @override
+  String get detectiveSignalHint => 'Signal this to the Detective without a word.';
+
+  @override
+  String get gameOverBackHome => 'Back to home';
+
+  @override
+  String gameOverSummary(int nights, int alive) {
+    final intl.NumberFormat nightsNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String nightsString = nightsNumberFormat.format(nights);
+    final intl.NumberFormat aliveNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String aliveString = aliveNumberFormat.format(alive);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      nights,
+      locale: localeName,
+      other: 'After $nightsString nights',
+      one: 'After 1 night',
+    );
+    return '$_temp0 · $aliveString still standing';
+  }
+
+  @override
+  String homeContinueAt(String stage) {
+    return 'Continue · $stage';
+  }
+
+  @override
+  String get homeGreetingAfternoon => 'Good afternoon, Host';
+
+  @override
+  String get homeGreetingEvening => 'Good evening, Host';
+
+  @override
+  String get homeGreetingMorning => 'Good morning, Host';
+
+  @override
+  String homeHeroAlive(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '$countString still alive';
+  }
+
+  @override
+  String get homeHeroEmpty => 'Add the players and deal the cards.';
+
+  @override
+  String get homeHeroInProgress => 'In progress';
+
+  @override
+  String homeHeroLastTable(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString players from your last game',
+      one: '1 player from your last game',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeHeroReady(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '$countString at the table';
+  }
+
+  @override
+  String get homeHeroTag => 'Tonight';
+
+  @override
+  String get homeHeroTitle => 'Tonight\'s table';
+
+  @override
+  String get homeRecentEmpty => 'Finished games will show up here.';
+
+  @override
+  String get homeStartGame => 'Start a game';
+
+  @override
+  String get homeTitle => 'The city sleeps.';
+
+  @override
+  String get homeYourTable => 'Your table';
+
+  @override
+  String get menuHome => 'Home';
+
+  @override
+  String get menuMore => 'More';
+
+  @override
+  String get morningReadInOrder => 'Read these out in order';
+
+  @override
+  String get morningTitle => 'The town wakes up.';
+
+  @override
+  String get navEvents => 'Events';
+
+  @override
+  String get navHome => 'Home';
+
+  @override
+  String get navPlayers => 'Players';
+
+  @override
+  String get nightContinueNoAction => 'Next · no action';
+
+  @override
+  String get nightIntroHint => 'Read it out, then begin when the table is quiet.';
+
+  @override
+  String get nightPreviousStep => 'Previous step';
+
+  @override
+  String get nightReviewHint => 'Tap a step to change it.';
+
+  @override
+  String get recentCiviliansWon => 'Civilians won';
+
+  @override
+  String recentDetail(int nights, int players) {
+    final intl.NumberFormat nightsNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String nightsString = nightsNumberFormat.format(nights);
+    final intl.NumberFormat playersNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String playersString = playersNumberFormat.format(players);
+
+    return 'Night $nightsString · $playersString players';
+  }
+
+  @override
+  String get recentMafiaWon => 'Mafia won';
+
+  @override
+  String get revealDealing => 'Dealing roles';
+
+  @override
+  String get revealHandTo => 'Hand the phone to';
+
+  @override
+  String get revealHint => 'Hold the card close, then tap it';
+
+  @override
+  String revealProgress(int current, int total) {
+    final intl.NumberFormat currentNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String currentString = currentNumberFormat.format(current);
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return '$currentString of $totalString';
+  }
+
+  @override
+  String get setupAddPlayersHint => 'Add the players around the table';
+
+  @override
+  String get setupAutoBalance => 'Auto-balance';
+
+  @override
+  String get setupBombTakesDown => 'Bomb takes down';
+
+  @override
+  String get setupBombTakesDownHint => 'Players chosen when the Bomb dies';
+
+  @override
+  String get setupHouseRulesHint => 'Doctor, Bomb, Chameleon and tie rules';
+
+  @override
+  String get setupPlayersAtTable => 'Players at the table';
+
+  @override
+  String get setupRolesHint => 'Tap a role to add one, hold to remove one.';
+
+  @override
+  String get statNone => '–';
+
+  @override
+  String get timerPaused => 'paused';
 }

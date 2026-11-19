@@ -1388,6 +1388,432 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{name}: {count, plural, =1{1 vote} other{{count} votes}}'**
   String logVotesFor(String name, int count);
+
+  /// No description provided for @announceWasBomb.
+  ///
+  /// In en, this message translates to:
+  /// **'{headline} They were the Bomb.'**
+  String announceWasBomb(String headline);
+
+  /// No description provided for @announceBombChoosing.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{They take 1 player down with them: choose now.} other{They take {count} players down with them: choose now.}}'**
+  String announceBombChoosing(int count);
+
+  /// No description provided for @bombChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Ready} =1{Choose 1 player} other{Choose {count} players}}'**
+  String bombChoose(int count);
+
+  /// No description provided for @bombCounter.
+  ///
+  /// In en, this message translates to:
+  /// **'{selected} / {required}'**
+  String bombCounter(String selected, String required);
+
+  /// No description provided for @bombWasTheBomb.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} was the Bomb'**
+  String bombWasTheBomb(String name);
+
+  /// No description provided for @chameleonBecome.
+  ///
+  /// In en, this message translates to:
+  /// **'Become {role}'**
+  String chameleonBecome(String role);
+
+  /// No description provided for @chameleonChooseRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your role'**
+  String get chameleonChooseRole;
+
+  /// No description provided for @chameleonIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, you are the Chameleon. Pick the role you will play all game.'**
+  String chameleonIntro(String name);
+
+  /// No description provided for @chameleonPickHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a role'**
+  String get chameleonPickHint;
+
+  /// No description provided for @comingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming in a later update.'**
+  String get comingSoon;
+
+  /// No description provided for @countAlive.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} alive'**
+  String countAlive(int count);
+
+  /// No description provided for @countEliminated.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} eliminated'**
+  String countEliminated(int count);
+
+  /// No description provided for @dayDiscussionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The town talks it over. Start voting when they are ready.'**
+  String get dayDiscussionHint;
+
+  /// No description provided for @dayEliminate.
+  ///
+  /// In en, this message translates to:
+  /// **'Eliminate {name}'**
+  String dayEliminate(String name);
+
+  /// No description provided for @dayOfVoters.
+  ///
+  /// In en, this message translates to:
+  /// **' of {count} voted'**
+  String dayOfVoters(int count);
+
+  /// No description provided for @dayResultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The town has spoken.'**
+  String get dayResultTitle;
+
+  /// No description provided for @dayStartVoting.
+  ///
+  /// In en, this message translates to:
+  /// **'Start voting'**
+  String get dayStartVoting;
+
+  /// No description provided for @dayTapToVote.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a player to add a vote'**
+  String get dayTapToVote;
+
+  /// No description provided for @dayTimerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Discussion timer'**
+  String get dayTimerHint;
+
+  /// No description provided for @dayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Who is lying?'**
+  String get dayTitle;
+
+  /// No description provided for @dayUndoVote.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo last vote'**
+  String get dayUndoVote;
+
+  /// No description provided for @dayVoting.
+  ///
+  /// In en, this message translates to:
+  /// **'Voting'**
+  String get dayVoting;
+
+  /// No description provided for @detectiveBlockedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The Detective is blocked'**
+  String get detectiveBlockedTitle;
+
+  /// No description provided for @detectiveChecked.
+  ///
+  /// In en, this message translates to:
+  /// **'The Detective checked {name}'**
+  String detectiveChecked(String name);
+
+  /// No description provided for @detectiveDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue the night'**
+  String get detectiveDone;
+
+  /// No description provided for @detectiveNoAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'No answer'**
+  String get detectiveNoAnswer;
+
+  /// No description provided for @detectiveSignalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Signal this to the Detective without a word.'**
+  String get detectiveSignalHint;
+
+  /// No description provided for @gameOverBackHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to home'**
+  String get gameOverBackHome;
+
+  /// No description provided for @gameOverSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{nights, plural, =1{After 1 night} other{After {nights} nights}} · {alive} still standing'**
+  String gameOverSummary(int nights, int alive);
+
+  /// No description provided for @homeContinueAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue · {stage}'**
+  String homeContinueAt(String stage);
+
+  /// No description provided for @homeGreetingAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon, Host'**
+  String get homeGreetingAfternoon;
+
+  /// No description provided for @homeGreetingEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening, Host'**
+  String get homeGreetingEvening;
+
+  /// No description provided for @homeGreetingMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning, Host'**
+  String get homeGreetingMorning;
+
+  /// No description provided for @homeHeroAlive.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} still alive'**
+  String homeHeroAlive(int count);
+
+  /// No description provided for @homeHeroEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the players and deal the cards.'**
+  String get homeHeroEmpty;
+
+  /// No description provided for @homeHeroInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get homeHeroInProgress;
+
+  /// No description provided for @homeHeroLastTable.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 player from your last game} other{{count} players from your last game}}'**
+  String homeHeroLastTable(int count);
+
+  /// No description provided for @homeHeroReady.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} at the table'**
+  String homeHeroReady(int count);
+
+  /// No description provided for @homeHeroTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Tonight'**
+  String get homeHeroTag;
+
+  /// No description provided for @homeHeroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tonight\'s table'**
+  String get homeHeroTitle;
+
+  /// No description provided for @homeRecentEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Finished games will show up here.'**
+  String get homeRecentEmpty;
+
+  /// No description provided for @homeStartGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Start a game'**
+  String get homeStartGame;
+
+  /// No description provided for @homeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The city sleeps.'**
+  String get homeTitle;
+
+  /// No description provided for @homeYourTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Your table'**
+  String get homeYourTable;
+
+  /// No description provided for @menuHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get menuHome;
+
+  /// No description provided for @menuMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get menuMore;
+
+  /// No description provided for @morningReadInOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Read these out in order'**
+  String get morningReadInOrder;
+
+  /// No description provided for @morningTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The town wakes up.'**
+  String get morningTitle;
+
+  /// No description provided for @navEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Events'**
+  String get navEvents;
+
+  /// No description provided for @navHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get navHome;
+
+  /// No description provided for @navPlayers.
+  ///
+  /// In en, this message translates to:
+  /// **'Players'**
+  String get navPlayers;
+
+  /// No description provided for @nightContinueNoAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Next · no action'**
+  String get nightContinueNoAction;
+
+  /// No description provided for @nightIntroHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Read it out, then begin when the table is quiet.'**
+  String get nightIntroHint;
+
+  /// No description provided for @nightPreviousStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous step'**
+  String get nightPreviousStep;
+
+  /// No description provided for @nightReviewHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a step to change it.'**
+  String get nightReviewHint;
+
+  /// No description provided for @recentCiviliansWon.
+  ///
+  /// In en, this message translates to:
+  /// **'Civilians won'**
+  String get recentCiviliansWon;
+
+  /// No description provided for @recentDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Night {nights} · {players} players'**
+  String recentDetail(int nights, int players);
+
+  /// No description provided for @recentMafiaWon.
+  ///
+  /// In en, this message translates to:
+  /// **'Mafia won'**
+  String get recentMafiaWon;
+
+  /// No description provided for @revealDealing.
+  ///
+  /// In en, this message translates to:
+  /// **'Dealing roles'**
+  String get revealDealing;
+
+  /// No description provided for @revealHandTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Hand the phone to'**
+  String get revealHandTo;
+
+  /// No description provided for @revealHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold the card close, then tap it'**
+  String get revealHint;
+
+  /// No description provided for @revealProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} of {total}'**
+  String revealProgress(int current, int total);
+
+  /// No description provided for @setupAddPlayersHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the players around the table'**
+  String get setupAddPlayersHint;
+
+  /// No description provided for @setupAutoBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-balance'**
+  String get setupAutoBalance;
+
+  /// No description provided for @setupBombTakesDown.
+  ///
+  /// In en, this message translates to:
+  /// **'Bomb takes down'**
+  String get setupBombTakesDown;
+
+  /// No description provided for @setupBombTakesDownHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Players chosen when the Bomb dies'**
+  String get setupBombTakesDownHint;
+
+  /// No description provided for @setupHouseRulesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Doctor, Bomb, Chameleon and tie rules'**
+  String get setupHouseRulesHint;
+
+  /// No description provided for @setupPlayersAtTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Players at the table'**
+  String get setupPlayersAtTable;
+
+  /// No description provided for @setupRolesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a role to add one, hold to remove one.'**
+  String get setupRolesHint;
+
+  /// No description provided for @statNone.
+  ///
+  /// In en, this message translates to:
+  /// **'–'**
+  String get statNone;
+
+  /// No description provided for @timerPaused.
+  ///
+  /// In en, this message translates to:
+  /// **'paused'**
+  String get timerPaused;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

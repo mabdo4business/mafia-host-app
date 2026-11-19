@@ -36,7 +36,7 @@ void main() {
     await tapKey(tester, 'startDay');
     expect(awake.isOn, isTrue, reason: 'day');
 
-    await tapKey(tester, 'skipVote');
+    await skipVote(tester);
     await tapKey(tester, 'startNight');
     expect(awake.isOn, isTrue, reason: 'night 2');
 

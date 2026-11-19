@@ -16,6 +16,23 @@ final databaseProvider = Provider<AppDatabase>((ref) {
 
 final gameRepositoryProvider = Provider((ref) => GameRepository(ref.watch(databaseProvider)));
 
+/// Home "Your table" totals; refreshed whenever the active game changes.
+final tableStatsProvider = FutureProvider<TableStats>((ref) {
+  ref.watch(activeGameProvider);
+  return ref.watch(gameRepositoryProvider).tableStats();
+});
+
+/// Names from the last game (Home hero card).
+final lastPlayerNamesProvider = FutureProvider<List<String>>((ref) {
+  ref.watch(activeGameProvider);
+  return ref.watch(gameRepositoryProvider).lastPlayerNames();
+});
+
+final recentGamesProvider = FutureProvider<List<GameSummary>>((ref) {
+  ref.watch(activeGameProvider);
+  return ref.watch(gameRepositoryProvider).recentGames();
+});
+
 /// The game in progress (null when none). Every change is saved immediately,
 /// so the host can close the app mid-game and continue later.
 final activeGameProvider = AsyncNotifierProvider<ActiveGameController, GameSession?>(

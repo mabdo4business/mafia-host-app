@@ -1,89 +1,37 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mafia_engine/mafia_engine.dart';
+import 'package:material_ui/material_ui.dart';
 
-import '../common/l10n.dart';
 import '../common/screen_awake.dart';
-import '../common/widgets.dart';
 import '../features/day/day_result_view.dart';
 import '../features/day/day_view.dart';
-import '../features/game_log/game_log_screen.dart';
 import '../features/game_over/game_over_view.dart';
 import '../features/morning/morning_view.dart';
 import '../features/night/night_wizard.dart';
+import '../ui/ui.dart';
 import 'game_session.dart';
 import 'providers.dart';
 
 /// Hosts the running game and shows the screen for its current stage.
+///
+/// Owns the sky: the night and day palettes switch with an [AnimatedTheme]
+/// (`Motion.phaseChange`) while [PhaseSky] sets the moon and raises the sun,
+/// so every stage view draws on a shared, animated background.
 class GameFlowScreen extends ConsumerWidget {
   const GameFlowScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l = context.l10n;
     final session = ref.watch(activeGameProvider).value;
     if (session == null) return const Scaffold();
-    final controller = ref.read(activeGameProvider.notifier);
-
-    Future<void> undo() async {
-      await controller.undo();
-      if (context.mounted) {
-        ScaffoldMessenger.of(context)
-          ..hideCurrentSnackBar()
-          ..showSnackBar(SnackBar(content: Text(l.undoDone)));
-      }
-    }
-
-    Future<void> endGame() async {
-      if (!await confirm(
-        context,
-        title: l.endGameConfirmTitle,
-        body: l.endGameConfirmBody,
-        confirmLabel: l.menuEndGame,
-      )) {
-        return;
-      }
-      await controller.abandon();
-      if (context.mounted) Navigator.popUntil(context, (route) => route.isFirst);
-    }
-
     // Keyed by log length so per-stage UI state resets after every input
     // (including undo).
     final key = ValueKey(session.log.length);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l.stageTitle(session)),
-        actions: [
-          IconButton(
-            tooltip: l.logTitle,
-            icon: const Icon(Icons.receipt_long_outlined),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute<void>(builder: (_) => const GameLogScreen()),
-            ),
-          ),
-          PopupMenuButton<VoidCallback>(
-            onSelected: (action) => action(),
-            itemBuilder: (_) => [
-              PopupMenuItem(
-                value: undo,
-                enabled: session.canUndo,
-                child: ListTile(leading: const Icon(Icons.undo), title: Text(l.menuUndo)),
-              ),
-              if (session.stage != GameStage.gameOver)
-                PopupMenuItem(
-                  value: endGame,
-                  child: ListTile(
-                    leading: const Icon(Icons.stop_circle_outlined),
-                    title: Text(l.menuEndGame),
-                  ),
-                ),
-            ],
-          ),
-        ],
-      ),
-      // The host reads from the phone all game (night prompts, announcements,
-      // the vote, the final reveal); don't let it dim or lock.
-      body: KeepScreenOn(
+    return GameStageFrame(
+      session: session,
+      // The host reads from the phone all game (night prompts,
+      // announcements, the vote, the final reveal); don't let it dim or lock.
+      child: KeepScreenOn(
         enabled: true,
         child: switch (session.stage) {
           GameStage.night => NightWizard(key: key, session: session),
@@ -91,6 +39,64 @@ class GameFlowScreen extends ConsumerWidget {
           GameStage.day => DayView(key: key, session: session),
           GameStage.dayResult => DayResultView(key: key, session: session),
           GameStage.gameOver => GameOverView(key: key, session: session),
+        },
+      ),
+    );
+  }
+}
+
+/// The phase theme, background and sky for [session]'s stage, around
+/// [child] (a stage view drawn with a transparent PhaseScaffold).
+class GameStageFrame extends StatelessWidget {
+  const GameStageFrame({super.key, required this.session, required this.child});
+
+  final GameSession session;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final locale = Localizations.localeOf(context);
+    final sky = switch (session.stage) {
+      GameStage.night => SkyPhase.night,
+      GameStage.morning => SkyPhase.dawn,
+      GameStage.day || GameStage.dayResult => SkyPhase.day,
+      GameStage.gameOver => session.state.winner == Team.mafia ? SkyPhase.night : SkyPhase.day,
+    };
+    final theme = sky == SkyPhase.night ? AppTheme.night(locale) : AppTheme.day(locale);
+    final still = MediaQuery.disableAnimationsOf(context);
+
+    return AnimatedTheme(
+      data: theme,
+      duration: still ? Duration.zero : Motion.phaseChange,
+      curve: Motion.ease,
+      child: Builder(
+        builder: (context) {
+          final c = context.mafia;
+          return Material(
+            color: c.bg,
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: AnimatedContainer(
+                    duration: still ? Duration.zero : Motion.phaseChange,
+                    curve: Motion.ease,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: sky == SkyPhase.day
+                            ? [c.bg, c.bg, c.bg]
+                            : [c.bgTop, Color.lerp(c.bgTop, c.bg, 0.55)!, c.bg],
+                        stops: const [0, 0.38, 1],
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned.fill(child: PhaseSky(phase: sky)),
+                Positioned.fill(child: child),
+              ],
+            ),
+          );
         },
       ),
     );

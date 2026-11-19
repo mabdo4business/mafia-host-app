@@ -5,6 +5,24 @@ import '../game/game_session.dart';
 import '../l10n/app_localizations.dart';
 import 'l10n.dart';
 
+enum AnnouncementType { death, bomb, save, info }
+
+/// One numbered item of a morning / vote-result announcement.
+final class Announcement {
+  const Announcement(this.type, this.headline, {this.detail, this.chips = const []});
+
+  final AnnouncementType type;
+
+  /// What the host reads aloud.
+  final String headline;
+
+  /// A note for the host under it (not read aloud).
+  final String? detail;
+
+  /// Names shown as chips (the Bomb's victims).
+  final List<String> chips;
+}
+
 /// Turns engine actions and events into localized sentences.
 class Describer {
   Describer(this.l, this.state);
@@ -79,6 +97,83 @@ class Describer {
     }
     return lines;
   }
+
+  /// The announcement as numbered items: deaths (a dead Bomb carries its
+  /// victims), a Doctor save (without saying who), or that nobody died.
+  List<Announcement> announcementItems(List<LogEntry> entries) {
+    final events = [for (final e in entries) ...e.events];
+    final bombs = {
+      for (final e in events)
+        if (e is BombTriggered) e.bombId,
+    };
+    final items = <Announcement>[];
+    final night = entries.isNotEmpty && entries.first.input is NightInput;
+    for (final e in events) {
+      switch (e) {
+        case PlayerDied(:final causes) when causes.contains(DeathCause.bomb):
+          if (bombs.isEmpty) items.add(Announcement(AnnouncementType.death, event(e)!));
+        // Listed as chips under the Bomb's own item.
+        case PlayerDied(:final playerId, :final causes, :final revealedRole):
+          final card = revealedRole == null
+              ? l.announceRoleSecret
+              : l.announceCard(l.playerRole(state.player(playerId)));
+          final headline = causes.contains(DeathCause.vote)
+              ? l.announceVotedOut(name(playerId))
+              : l.announceKilled(name(playerId));
+          if (bombs.contains(playerId)) {
+            final victims = [
+              for (final v in events)
+                if (v is PlayerDied && v.causes.contains(DeathCause.bomb)) name(v.playerId),
+            ];
+            final pending = state.pendingBombs.contains(playerId);
+            items.add(
+              Announcement(
+                AnnouncementType.bomb,
+                l.announceWasBomb(headline),
+                detail: pending
+                    ? l.announceBombChoosing(state.bombVictimsRequired)
+                    : victims.isEmpty
+                    ? null
+                    : l.announceBombTakes(victims.length),
+                chips: victims,
+              ),
+            );
+          } else {
+            items.add(Announcement(AnnouncementType.death, headline, detail: card));
+          }
+        case PlayerSaved():
+          items.add(
+            Announcement(
+              AnnouncementType.save,
+              l.announceSomeoneSaved,
+              detail: l.announceDontSayWho,
+            ),
+          );
+        case VoteTied(:final candidateIds):
+          items.add(
+            Announcement(AnnouncementType.info, l.announceTie(l.names(candidateIds.map(name)))),
+          );
+        case NoElimination():
+          items.add(Announcement(AnnouncementType.info, l.announceNoElimination));
+        default:
+      }
+    }
+    if (night && !events.any((e) => e is PlayerDied)) {
+      items.insert(0, Announcement(AnnouncementType.info, l.announceNobodyDied));
+    }
+    return items;
+  }
+
+  /// Host-only notes worth flagging after a night: the Detective's result,
+  /// blocks and a Bomb that did not explode.
+  List<String> secretNotes(List<LogEntry> entries) => [
+    for (final entry in entries)
+      for (final e in entry.events)
+        if (e is DetectiveResultRevealed)
+          l.hostOnlyDetective(name(e.targetId), detectiveResult(e.result))
+        else if (e is PlayerBlocked || e is BombDefused)
+          ?event(e),
+  ];
 
   /// What only the host should see: who did what, blocks, saves, the
   /// Detective's result.

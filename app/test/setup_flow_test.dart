@@ -4,7 +4,8 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mafia_engine/mafia_engine.dart';
-import 'package:mafia_host/features/setup/deal_screen.dart';
+import 'package:mafia_host/features/setup/players_sheet.dart';
+import 'package:mafia_host/features/setup/reveal_screen.dart';
 import 'package:mafia_host/features/setup/setup_screen.dart';
 import 'package:mafia_host/game/game_session.dart';
 import 'package:mafia_host/game/providers.dart';
@@ -22,6 +23,7 @@ void main() {
     await tester.pumpAndSettle();
     final l = l10nOf(tester);
 
+    await tapKey(tester, 'editPlayers');
     Future<void> add(String name) async {
       await tester.enterText(find.byKey(const Key('playerNameField')), name);
       await tester.testTextInput.receiveAction(TextInputAction.done);
@@ -43,17 +45,21 @@ void main() {
     expect(draft.countOf(Role.godfather), 1);
     expect(find.text(l.setupProblemTooFewPlayers(4)), findsNothing);
 
-    // Too much Mafia is caught.
-    await tapKey(tester, 'increment_mafia');
-    await tapKey(tester, 'increment_mafia');
+    // Close the players sheet.
+    Navigator.of(tester.element(find.byType(PlayersSheet))).pop();
+    await tester.pumpAndSettle();
+
+    // Too much Mafia is caught (tap a role chip = one more).
+    await tapKey(tester, 'roleChip_mafia');
+    await tapKey(tester, 'roleChip_mafia');
     expect(find.text(l.setupProblemMafiaTooStrong), findsOneWidget);
     expect(container.read(setupDraftProvider).customMix, isTrue);
 
-    await tapText(tester, l.setupSuggestedMix);
+    await tapText(tester, l.setupAutoBalance);
     expect(container.read(setupDraftProvider).problem, isNull);
   });
 
-  testWidgets('deal: Chameleon must pick a role before the game starts', (tester) async {
+  testWidgets('reveal: each player sees their card; a Chameleon picks a role', (tester) async {
     usePhoneSize(tester);
     final container = containerFor(memoryDb());
     addTearDown(container.dispose);
@@ -62,7 +68,7 @@ void main() {
       UncontrolledProviderScope(
         container: container,
         child: testApp(
-          DealScreen(
+          RevealScreen(
             names: const ['A', 'B', 'C', 'D', 'E'],
             mix: const {Role.godfather: 1, Role.chameleon: 1},
             settings: const GameSettings(),
@@ -75,28 +81,27 @@ void main() {
     await tester.pumpAndSettle();
     final l = l10nOf(tester);
 
-    await reveal(tester, find.text(l.dealChameleonMissing));
-    expect(find.text(l.dealChameleonMissing), findsOneWidget);
-    final start = find.widgetWithText(FilledButton, l.dealStartGame);
-    expect(tester.widget<FilledButton>(start).onPressed, isNull);
-
-    final pick = find.byWidgetPredicate(
-      (w) =>
-          w.key is ValueKey<String> &&
-          (w.key! as ValueKey<String>).value.startsWith('chameleonPick_'),
-    );
-    await tester.ensureVisible(pick);
-    await tester.tap(pick);
-    await tester.pumpAndSettle();
-    await tester.tap(find.text(l.roleDoctor).last);
-    await tester.pumpAndSettle();
-
-    expect(find.text(l.dealChameleonMissing), findsNothing);
-    await tester.runAsync(() async {
-      await tester.tap(start);
-      await Future<void>.delayed(const Duration(milliseconds: 100));
-    });
-    await tester.pumpAndSettle();
+    for (final name in ['A', 'B', 'C', 'D', 'E']) {
+      expect(find.text(name), findsOneWidget);
+      // Nothing to pass on until the card is turned.
+      expect(find.byKey(const Key('revealNext')), findsNothing);
+      await tapKey(tester, 'roleCard');
+      if (find.byKey(const Key('chameleonChoose')).evaluate().isNotEmpty) {
+        await tapKey(tester, 'chameleonChoose');
+        await tapKey(tester, 'chameleonPick_doctor');
+        await tapKey(tester, 'chameleonConfirm');
+        expect(find.text(l.chameleonAs(l.roleDoctor)), findsOneWidget);
+      }
+      if (name == 'E') {
+        await tester.runAsync(() async {
+          await tester.tap(find.byKey(const Key('revealNext')));
+          await Future<void>.delayed(const Duration(milliseconds: 100));
+        });
+        await tester.pumpAndSettle();
+      } else {
+        await tapKey(tester, 'revealNext');
+      }
+    }
 
     final session = container.read(activeGameProvider).value!;
     expect(session.stage, GameStage.night);

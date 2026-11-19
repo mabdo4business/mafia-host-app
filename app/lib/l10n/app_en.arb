@@ -645,5 +645,235 @@
         "format": "decimalPattern"
       }
     }
-  }
+  },
+  "announceWasBomb": "{headline} They were the Bomb.",
+  "@announceWasBomb": {
+    "placeholders": {
+      "headline": {
+        "type": "String"
+      }
+    }
+  },
+  "announceBombChoosing": "{count, plural, =1{They take 1 player down with them: choose now.} other{They take {count} players down with them: choose now.}}",
+  "@announceBombChoosing": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "bombChoose": "{count, plural, =0{Ready} =1{Choose 1 player} other{Choose {count} players}}",
+  "@bombChoose": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "bombCounter": "{selected} / {required}",
+  "@bombCounter": {
+    "placeholders": {
+      "selected": {
+        "type": "String"
+      },
+      "required": {
+        "type": "String"
+      }
+    }
+  },
+  "bombWasTheBomb": "{name} was the Bomb",
+  "@bombWasTheBomb": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "chameleonBecome": "Become {role}",
+  "@chameleonBecome": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "chameleonChooseRole": "Choose your role",
+  "chameleonIntro": "{name}, you are the Chameleon. Pick the role you will play all game.",
+  "@chameleonIntro": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "chameleonPickHint": "Pick a role",
+  "comingSoon": "Coming in a later update.",
+  "countAlive": "{count} alive",
+  "@countAlive": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "countEliminated": "{count} eliminated",
+  "@countEliminated": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "dayDiscussionHint": "The town talks it over. Start voting when they are ready.",
+  "dayEliminate": "Eliminate {name}",
+  "@dayEliminate": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dayOfVoters": " of {count} voted",
+  "@dayOfVoters": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "dayResultTitle": "The town has spoken.",
+  "dayStartVoting": "Start voting",
+  "dayTapToVote": "Tap a player to add a vote",
+  "dayTimerHint": "Discussion timer",
+  "dayTitle": "Who is lying?",
+  "dayUndoVote": "Undo last vote",
+  "dayVoting": "Voting",
+  "detectiveBlockedTitle": "The Detective is blocked",
+  "detectiveChecked": "The Detective checked {name}",
+  "@detectiveChecked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "detectiveDone": "Continue the night",
+  "detectiveNoAnswer": "No answer",
+  "detectiveSignalHint": "Signal this to the Detective without a word.",
+  "gameOverBackHome": "Back to home",
+  "gameOverSummary": "{nights, plural, =1{After 1 night} other{After {nights} nights}} · {alive} still standing",
+  "@gameOverSummary": {
+    "placeholders": {
+      "nights": {
+        "type": "int",
+        "format": "decimalPattern"
+      },
+      "alive": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "homeContinueAt": "Continue · {stage}",
+  "@homeContinueAt": {
+    "placeholders": {
+      "stage": {
+        "type": "String"
+      }
+    }
+  },
+  "homeGreetingAfternoon": "Good afternoon, Host",
+  "homeGreetingEvening": "Good evening, Host",
+  "homeGreetingMorning": "Good morning, Host",
+  "homeHeroAlive": "{count} still alive",
+  "@homeHeroAlive": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "homeHeroEmpty": "Add the players and deal the cards.",
+  "homeHeroInProgress": "In progress",
+  "homeHeroLastTable": "{count, plural, =1{1 player from your last game} other{{count} players from your last game}}",
+  "@homeHeroLastTable": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "homeHeroReady": "{count} at the table",
+  "@homeHeroReady": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "homeHeroTag": "Tonight",
+  "homeHeroTitle": "Tonight's table",
+  "homeRecentEmpty": "Finished games will show up here.",
+  "homeStartGame": "Start a game",
+  "homeTitle": "The city sleeps.",
+  "homeYourTable": "Your table",
+  "menuHome": "Home",
+  "menuMore": "More",
+  "morningReadInOrder": "Read these out in order",
+  "morningTitle": "The town wakes up.",
+  "navEvents": "Events",
+  "navHome": "Home",
+  "navPlayers": "Players",
+  "nightContinueNoAction": "Next · no action",
+  "nightIntroHint": "Read it out, then begin when the table is quiet.",
+  "nightPreviousStep": "Previous step",
+  "nightReviewHint": "Tap a step to change it.",
+  "recentCiviliansWon": "Civilians won",
+  "recentDetail": "Night {nights} · {players} players",
+  "@recentDetail": {
+    "placeholders": {
+      "nights": {
+        "type": "int",
+        "format": "decimalPattern"
+      },
+      "players": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "recentMafiaWon": "Mafia won",
+  "revealDealing": "Dealing roles",
+  "revealHandTo": "Hand the phone to",
+  "revealHint": "Hold the card close, then tap it",
+  "revealProgress": "{current} of {total}",
+  "@revealProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "format": "decimalPattern"
+      },
+      "total": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "setupAddPlayersHint": "Add the players around the table",
+  "setupAutoBalance": "Auto-balance",
+  "setupBombTakesDown": "Bomb takes down",
+  "setupBombTakesDownHint": "Players chosen when the Bomb dies",
+  "setupHouseRulesHint": "Doctor, Bomb, Chameleon and tie rules",
+  "setupPlayersAtTable": "Players at the table",
+  "setupRolesHint": "Tap a role to add one, hold to remove one.",
+  "statNone": "–",
+  "timerPaused": "paused"
 }

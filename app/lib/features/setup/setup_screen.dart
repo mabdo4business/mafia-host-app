@@ -1,15 +1,29 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mafia_engine/mafia_engine.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../common/l10n.dart';
-import '../../common/widgets.dart';
 import '../../game/providers.dart';
 import '../../game/role_mix.dart';
 import '../../l10n/app_localizations.dart';
-import 'deal_screen.dart';
+import '../../ui/ui.dart';
+import 'players_sheet.dart';
+import 'reveal_screen.dart';
 
 const _timerOptions = [0, 60, 120, 180, 300];
+
+/// Mockup order: Mafia team first, then the Civilian roles.
+const _gridRoles = [
+  Role.godfather,
+  Role.potana,
+  Role.lawyer,
+  Role.mafia,
+  Role.doctor,
+  Role.detective,
+  Role.bomb,
+  Role.joker,
+  Role.chameleon,
+];
 
 class SetupScreen extends ConsumerStatefulWidget {
   const SetupScreen({super.key});
@@ -19,9 +33,6 @@ class SetupScreen extends ConsumerStatefulWidget {
 }
 
 class _SetupScreenState extends ConsumerState<SetupScreen> {
-  final _nameController = TextEditingController();
-  final _nameFocus = FocusNode();
-
   @override
   void initState() {
     super.initState();
@@ -29,219 +40,180 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
   }
 
   @override
-  void dispose() {
-    _nameController.dispose();
-    _nameFocus.dispose();
-    super.dispose();
-  }
-
-  void _addPlayer() {
-    if (ref.read(setupDraftProvider.notifier).addPlayer(_nameController.text)) {
-      _nameController.clear();
-    }
-    _nameFocus.requestFocus();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final l = context.l10n;
+    final c = context.mafia;
     final draft = ref.watch(setupDraftProvider);
     final controller = ref.read(setupDraftProvider.notifier);
     final settings = draft.settings;
     final problem = draft.problem;
     final hasBomb = draft.countOf(Role.bomb) > 0 || draft.countOf(Role.chameleon) > 0;
+    final mafia = [
+      for (final r in Role.values)
+        if (r.team == Team.mafia) draft.countOf(r),
+    ].fold(0, (a, b) => a + b);
+    final civilians = draft.names.length - mafia;
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l.setupTitle)),
+    Widget chip(Role role) => RoleChip(
+      key: Key('roleChip_${role.name}'),
+      glyph: roleGlyph(role),
+      name: l.role(role),
+      team: role.team,
+      count: draft.countOf(role),
+      onTap: draft.countOf(role) < controller.maxCount(role)
+          ? () => controller.setRoleCount(role, draft.countOf(role) + 1)
+          : null,
+      onLongPress: draft.countOf(role) > 0
+          ? () => controller.setRoleCount(role, draft.countOf(role) - 1)
+          : null,
+    );
+    final chips = [
+      for (final r in _gridRoles) chip(r),
+      RoleChip(
+        key: const Key('roleChip_civilian'),
+        glyph: roleGlyph(Role.civilian),
+        name: l.roleCivilian,
+        team: Team.civilians,
+        count: draft.civilianCount.clamp(0, 999),
+      ),
+    ];
+
+    return PhaseScaffold(
       body: ListView(
-        padding: const EdgeInsetsDirectional.only(bottom: 24),
+        padding: const EdgeInsetsDirectional.fromSTEB(Space.page, Space.sm, Space.page, Space.xl),
         children: [
-          SectionHeader(l.setupPlayersSection, trailing: Text(l.playerCount(draft.names.length))),
-          Padding(
-            padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    key: const Key('playerNameField'),
-                    controller: _nameController,
-                    focusNode: _nameFocus,
-                    textCapitalization: TextCapitalization.words,
-                    textInputAction: TextInputAction.done,
-                    decoration: InputDecoration(
-                      hintText: l.setupPlayerNameHint,
-                      border: const OutlineInputBorder(),
-                    ),
-                    onSubmitted: (_) => _addPlayer(),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                IconButton.filled(
-                  tooltip: l.setupAddPlayer,
-                  icon: const Icon(Icons.person_add_alt_1),
-                  onPressed: _addPlayer,
-                ),
-              ],
-            ),
-          ),
-          ReorderableListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            buildDefaultDragHandles: false,
-            itemCount: draft.names.length,
-            onReorderItem: controller.reorder,
-            itemBuilder: (context, i) => ListTile(
-              key: ValueKey(draft.names[i]),
-              leading: CircleAvatar(child: Text(context.number(i + 1))),
-              title: Text(draft.names[i]),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    tooltip: l.setupRemovePlayer,
-                    icon: const Icon(Icons.close),
-                    onPressed: () => controller.removePlayer(i),
-                  ),
-                  ReorderableDragStartListener(index: i, child: const Icon(Icons.drag_handle)),
-                ],
-              ),
-            ),
-          ),
-          SectionHeader(
-            l.setupRolesSection,
-            trailing: TextButton(
-              onPressed: controller.useSuggestedMix,
-              child: Text(l.setupSuggestedMix),
-            ),
-          ),
-          for (final role in configurableRoles)
-            _RoleCountRow(
-              role: role,
-              count: draft.countOf(role),
-              onChanged: (n) => controller.setRoleCount(role, n),
-              max: controller.maxCount(role),
-            ),
-          _RoleCountRow(role: Role.civilian, count: draft.civilianCount.clamp(0, 999)),
-          SectionHeader(l.setupOptionsSection),
-          if (hasBomb)
-            ListTile(
-              title: Text(l.setupBombVictims),
-              trailing: SegmentedButton<int>(
-                segments: [
-                  for (final n in [2, 3]) ButtonSegment(value: n, label: Text(context.number(n))),
-                ],
-                selected: {settings.bombVictimCount},
-                onSelectionChanged: (s) =>
-                    controller.updateSettings(settings.copyWith(bombVictimCount: s.single)),
-              ),
-            ),
-          SwitchListTile(
-            title: Text(l.setupRevealRole),
-            value: settings.revealRoleOnDeath,
-            onChanged: (v) => controller.updateSettings(settings.copyWith(revealRoleOnDeath: v)),
-          ),
-          ListTile(
-            title: Text(l.setupDiscussionTimer),
-            trailing: DropdownButton<int>(
-              value: draft.discussionSeconds,
-              underline: const SizedBox.shrink(),
-              items: [
-                for (final s in _timerOptions)
-                  DropdownMenuItem(value: s, child: Text(s == 0 ? l.timerOff : l.minutes(s ~/ 60))),
-              ],
-              onChanged: (v) => controller.setDiscussionSeconds(v ?? 0),
-            ),
-          ),
-          ExpansionTile(
-            title: Text(l.setupHouseRules),
+          Row(
             children: [
-              SwitchListTile(
-                title: Text(l.ruleDoctorSaveBlocksJoker),
-                value: settings.doctorSaveBlocksJokerKill,
-                onChanged: (v) =>
-                    controller.updateSettings(settings.copyWith(doctorSaveBlocksJokerKill: v)),
+              IconCircleButton(
+                glyph: MafiaGlyphs.back,
+                semanticLabel: l.back,
+                onPressed: () => Navigator.maybePop(context),
               ),
-              SwitchListTile(
-                title: Text(l.ruleDoctorCanSaveBombVictims),
-                value: settings.doctorCanSaveBombVictims,
-                onChanged: (v) =>
-                    controller.updateSettings(settings.copyWith(doctorCanSaveBombVictims: v)),
-              ),
-              SwitchListTile(
-                title: Text(l.ruleBlockedBombExplodes),
-                value: settings.blockedBombStillExplodes,
-                onChanged: (v) =>
-                    controller.updateSettings(settings.copyWith(blockedBombStillExplodes: v)),
-              ),
-              SwitchListTile(
-                title: Text(l.ruleChameleonMafia),
-                value: settings.chameleonCanPickMafiaRoles,
-                onChanged: (v) =>
-                    controller.updateSettings(settings.copyWith(chameleonCanPickMafiaRoles: v)),
-              ),
-              ListTile(
-                title: Text(l.ruleTieVote),
-                trailing: DropdownButton<TieVoteRule>(
-                  value: settings.tieVoteRule,
-                  underline: const SizedBox.shrink(),
-                  items: [
-                    for (final rule in TieVoteRule.values)
-                      DropdownMenuItem(value: rule, child: Text(_tieRuleLabel(l, rule))),
-                  ],
-                  onChanged: (v) => controller.updateSettings(settings.copyWith(tieVoteRule: v)),
-                ),
-              ),
+              const SizedBox(width: Space.md),
+              Expanded(child: Text(l.setupTitle, style: context.type.headlineSmall)),
             ],
+          ),
+          const SizedBox(height: Space.xl),
+          _PlayersCard(
+            names: draft.names,
+            mafia: mafia,
+            civilians: civilians,
+            balanced: problem == null,
+            onEdit: () => showPlayersSheet(context),
+          ),
+          const SizedBox(height: Space.xl),
+          SectionTitle(
+            l.setupRolesSection,
+            action: l.setupAutoBalance,
+            onAction: controller.useSuggestedMix,
+          ),
+          const SizedBox(height: Space.sm),
+          for (var i = 0; i < chips.length; i += 2) ...[
+            Row(
+              children: [
+                Expanded(child: chips[i]),
+                const SizedBox(width: 10),
+                Expanded(child: i + 1 < chips.length ? chips[i + 1] : const SizedBox()),
+              ],
+            ),
+            const SizedBox(height: 10),
+          ],
+          Text(l.setupRolesHint, style: context.type.bodySmall!.copyWith(fontSize: 12)),
+          if (hasBomb) ...[
+            const SizedBox(height: Space.lg),
+            _OptionCard(
+              title: l.setupBombTakesDown,
+              subtitle: l.setupBombTakesDownHint,
+              trailing: SegmentedPill<int>(
+                key: const Key('bombCount'),
+                dense: true,
+                segments: [
+                  for (final n in [2, 3]) (n, context.number(n)),
+                ],
+                selected: settings.bombVictimCount,
+                onChanged: (n) => controller.updateSettings(settings.copyWith(bombVictimCount: n)),
+              ),
+            ),
+          ],
+          const SizedBox(height: Space.xl),
+          SectionTitle(l.setupOptionsSection),
+          const SizedBox(height: Space.sm),
+          _OptionCard(
+            title: l.setupRevealRole,
+            trailing: Switch(
+              value: settings.revealRoleOnDeath,
+              onChanged: (v) => controller.updateSettings(settings.copyWith(revealRoleOnDeath: v)),
+            ),
+          ),
+          const SizedBox(height: 10),
+          _OptionCard(
+            title: l.setupDiscussionTimer,
+            below: SegmentedPill<int>(
+              segments: [
+                for (final s in _timerOptions) (s, s == 0 ? l.timerOff : l.minutes(s ~/ 60)),
+              ],
+              selected: draft.discussionSeconds,
+              onChanged: controller.setDiscussionSeconds,
+            ),
+          ),
+          const SizedBox(height: 10),
+          _OptionCard(
+            title: l.setupHouseRules,
+            subtitle: l.setupHouseRulesHint,
+            trailing: MafiaIcon(MafiaGlyphs.forward, color: c.textMuted),
+            onTap: () => _showHouseRules(context),
           ),
         ],
       ),
-      bottomNavigationBar: BottomActions(
+      bottom: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (problem != null)
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(bottom: 8),
-                  child: Text(
-                    _problemText(l, problem),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Theme.of(context).colorScheme.error),
-                  ),
-                ),
-              FilledButton.icon(
-                icon: const Icon(Icons.style_outlined),
-                label: Text(l.setupDealRoles),
-                onPressed: problem != null
-                    ? null
-                    : () => Navigator.push(
-                        context,
-                        MaterialPageRoute<void>(
-                          builder: (_) => DealScreen(
-                            names: draft.names,
-                            mix: draft.mix,
-                            settings: settings,
-                            discussionSeconds: draft.discussionSeconds,
-                          ),
-                        ),
-                      ),
+          if (problem != null)
+            Padding(
+              padding: const EdgeInsetsDirectional.only(bottom: 10),
+              child: Text(
+                setupProblemText(l, problem),
+                textAlign: TextAlign.center,
+                style: context.type.bodySmall!.copyWith(color: c.mafiaSoft),
               ),
-            ],
+            ),
+          PrimaryActionButton(
+            key: const Key('dealRoles'),
+            label: l.setupShuffleDeal,
+            tone: ActionTone.danger,
+            trailing: MafiaGlyphs.shuffle,
+            onPressed: problem != null
+                ? null
+                : () => Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (_) => RevealScreen(
+                        names: draft.names,
+                        mix: draft.mix,
+                        settings: settings,
+                        discussionSeconds: draft.discussionSeconds,
+                      ),
+                    ),
+                  ),
           ),
         ],
       ),
     );
   }
+
+  void _showHouseRules(BuildContext context) => showModalBottomSheet<void>(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Color.alphaBlend(context.mafia.veil(0.05), context.mafia.bg),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(Radii.button)),
+    ),
+    builder: (_) => const _HouseRulesSheet(),
+  );
 }
 
-String _tieRuleLabel(AppLocalizations l, TieVoteRule rule) => switch (rule) {
-  TieVoteRule.revote => l.tieRevote,
-  TieVoteRule.noElimination => l.tieNoElimination,
-  TieVoteRule.hostDecides => l.tieHostDecides,
-};
-
-String _problemText(AppLocalizations l, SetupProblem p) => switch (p) {
+String setupProblemText(AppLocalizations l, SetupProblem p) => switch (p) {
   SetupProblem.tooFewPlayers => l.setupProblemTooFewPlayers(minPlayers),
   SetupProblem.duplicateName => l.setupProblemDuplicateName,
   SetupProblem.tooManyRoles => l.setupProblemTooManyRoles,
@@ -249,54 +221,189 @@ String _problemText(AppLocalizations l, SetupProblem p) => switch (p) {
   SetupProblem.mafiaTooStrong => l.setupProblemMafiaTooStrong,
 };
 
-class _RoleCountRow extends StatelessWidget {
-  const _RoleCountRow({required this.role, required this.count, this.onChanged, this.max = 0});
+/// "Players at the table · 11" with the team balance; opens the players sheet.
+class _PlayersCard extends StatelessWidget {
+  const _PlayersCard({
+    required this.names,
+    required this.mafia,
+    required this.civilians,
+    required this.balanced,
+    required this.onEdit,
+  });
 
-  final Role role;
-  final int count;
-  final int max;
-
-  /// Null for the computed Civilian row.
-  final ValueChanged<int>? onChanged;
+  final List<String> names;
+  final int mafia, civilians;
+  final bool balanced;
+  final VoidCallback onEdit;
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    final color = teamColor(context, role.team);
-    return ListTile(
-      key: Key('roleRow_${role.name}'),
-      dense: true,
-      leading: Icon(Icons.circle, size: 12, color: color),
-      title: Text(l.role(role)),
-      subtitle: Text(l.team(role.team)),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
+    final c = context.mafia;
+    return GlassCard(
+      key: const Key('playersCard'),
+      onTap: onEdit,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (onChanged != null)
-            IconButton(
-              key: Key('decrement_${role.name}'),
-              tooltip: l.decrease,
-              icon: const Icon(Icons.remove_circle_outline),
-              onPressed: count > 0 ? () => onChanged!(count - 1) : null,
-            ),
-          SizedBox(
-            width: 32,
-            child: Text(
-              context.number(count),
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(l.setupPlayersAtTable, style: context.type.bodySmall),
+                    Text(context.number(names.length), style: context.type.displayLarge),
+                  ],
+                ),
+              ),
+              if (names.isNotEmpty) ...[
+                AvatarStack(
+                  names: names.take(3).toList(),
+                  extra: names.length > 3 ? names.length - 3 : 0,
+                  ring: Color.alphaBlend(c.surface, c.bg),
+                ),
+                const SizedBox(width: Space.md),
+              ],
+              Semantics(
+                button: true,
+                label: l.setupAddPlayer,
+                excludeSemantics: true,
+                child: Material(
+                  color: c.text,
+                  borderRadius: BorderRadius.circular(Radii.iconBoxLg),
+                  child: InkWell(
+                    key: const Key('editPlayers'),
+                    borderRadius: BorderRadius.circular(Radii.iconBoxLg),
+                    onTap: onEdit,
+                    child: SizedBox.square(
+                      dimension: 48,
+                      child: Center(child: MafiaIcon(MafiaGlyphs.plus, color: c.onText)),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-          if (onChanged != null)
-            IconButton(
-              key: Key('increment_${role.name}'),
-              tooltip: l.increase,
-              icon: const Icon(Icons.add_circle_outline),
-              onPressed: count < max ? () => onChanged!(count + 1) : null,
-            )
-          else
-            const SizedBox(width: 48),
+          const SizedBox(height: Space.lg),
+          TeamBalanceBar(
+            mafia: mafia,
+            civilians: civilians.clamp(0, 999),
+            note: names.isEmpty
+                ? l.setupAddPlayersHint
+                : balanced
+                ? l.setupBalancedFor(names.length)
+                : null,
+          ),
         ],
+      ),
+    );
+  }
+}
+
+/// A glass row with a title, optional hint and a control at the end (or
+/// below, for wide controls).
+class _OptionCard extends StatelessWidget {
+  const _OptionCard({required this.title, this.subtitle, this.trailing, this.below, this.onTap});
+
+  final String title;
+  final String? subtitle;
+  final Widget? trailing;
+  final Widget? below;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) => GlassCard(
+    radius: Radii.tile,
+    onTap: onTap,
+    padding: const EdgeInsetsDirectional.symmetric(horizontal: Space.lg, vertical: 14),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: context.type.bodyMedium!.copyWith(fontWeight: FontWeight.w600),
+                  ),
+                  if (subtitle != null)
+                    Text(subtitle!, style: context.type.bodySmall!.copyWith(fontSize: 12)),
+                ],
+              ),
+            ),
+            if (trailing != null) ...[const SizedBox(width: Space.md), trailing!],
+          ],
+        ),
+        if (below != null) ...[const SizedBox(height: Space.md), below!],
+      ],
+    ),
+  );
+}
+
+class _HouseRulesSheet extends ConsumerWidget {
+  const _HouseRulesSheet();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
+    final settings = ref.watch(setupDraftProvider).settings;
+    final controller = ref.read(setupDraftProvider.notifier);
+    void update(GameSettings s) => controller.updateSettings(s);
+
+    Widget rule(String title, bool value, ValueChanged<bool> onChanged) => SwitchListTile(
+      contentPadding: EdgeInsetsDirectional.zero,
+      title: Text(title, style: context.type.bodyMedium),
+      value: value,
+      onChanged: onChanged,
+    );
+
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsetsDirectional.fromSTEB(Space.page, Space.xl, Space.page, Space.lg),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(l.setupHouseRules, style: context.type.headlineSmall),
+            const SizedBox(height: Space.md),
+            rule(
+              l.ruleDoctorSaveBlocksJoker,
+              settings.doctorSaveBlocksJokerKill,
+              (v) => update(settings.copyWith(doctorSaveBlocksJokerKill: v)),
+            ),
+            rule(
+              l.ruleDoctorCanSaveBombVictims,
+              settings.doctorCanSaveBombVictims,
+              (v) => update(settings.copyWith(doctorCanSaveBombVictims: v)),
+            ),
+            rule(
+              l.ruleBlockedBombExplodes,
+              settings.blockedBombStillExplodes,
+              (v) => update(settings.copyWith(blockedBombStillExplodes: v)),
+            ),
+            rule(
+              l.ruleChameleonMafia,
+              settings.chameleonCanPickMafiaRoles,
+              (v) => update(settings.copyWith(chameleonCanPickMafiaRoles: v)),
+            ),
+            const SizedBox(height: Space.md),
+            Text(l.ruleTieVote, style: context.type.bodyMedium),
+            const SizedBox(height: Space.sm),
+            SegmentedPill<TieVoteRule>(
+              segments: [
+                (TieVoteRule.hostDecides, l.tieHostDecides),
+                (TieVoteRule.revote, l.tieRevote),
+                (TieVoteRule.noElimination, l.tieNoElimination),
+              ],
+              selected: settings.tieVoteRule,
+              onChanged: (r) => update(settings.copyWith(tieVoteRule: r)),
+            ),
+          ],
+        ),
       ),
     );
   }

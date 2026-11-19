@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'common/l10n.dart';
 import 'features/gallery/gallery_screen.dart';
+import 'features/gallery/screen_catalog.dart';
+import 'features/gallery/screen_tour.dart';
 import 'features/home/home_screen.dart';
 import 'game/providers.dart';
 import 'l10n/app_localizations.dart';
@@ -27,7 +29,18 @@ class MafiaHostApp extends ConsumerWidget {
       builder: (context, child) =>
           Theme(data: AppTheme.night(Localizations.localeOf(context)), child: child!),
       home: const HomeScreen(),
-      routes: {if (kDebugMode) GalleryScreen.route: (_) => const GalleryScreen()},
+      routes: {
+        if (kDebugMode) GalleryScreen.route: (_) => const GalleryScreen(),
+        if (kDebugMode) ScreenTour.route: (_) => const ScreenTour(),
+      },
+      // Debug: `flutter run --route /gallery/screen/night` opens a seeded screen.
+      onGenerateRoute: (settings) {
+        final name = settings.name ?? '';
+        if (!kDebugMode || !name.startsWith(GalleryScreen.screenRoute)) return null;
+        final id = name.substring(GalleryScreen.screenRoute.length);
+        final scenario = screenCatalog.where((s) => s.id == id).firstOrNull;
+        return scenario == null ? null : MaterialPageRoute(builder: scenario.build);
+      },
     );
   }
 }

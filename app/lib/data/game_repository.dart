@@ -84,7 +84,43 @@ class GameRepository {
               ..orderBy([(g) => OrderingTerm.desc(g.id)])
               ..limit(1))
             .getSingleOrNull();
-    if (game == null) return null;
+    return game == null ? null : _load(game);
+  }
+
+  /// Win counts over every finished game.
+  Future<TableStats> tableStats() async {
+    final rows = await (_db.select(
+      _db.games,
+    )..where((g) => g.status.equalsValue(GameStatus.finished))).get();
+    return TableStats(
+      games: rows.length,
+      mafiaWins: rows.where((g) => g.winner == Team.mafia.name).length,
+      civilianWins: rows.where((g) => g.winner == Team.civilians.name).length,
+    );
+  }
+
+  /// The most recent finished games, newest first.
+  Future<List<GameSummary>> recentGames({int limit = 3}) async {
+    final games =
+        await (_db.select(_db.games)
+              ..where((g) => g.status.equalsValue(GameStatus.finished))
+              ..orderBy([(g) => OrderingTerm.desc(g.id)])
+              ..limit(limit))
+            .get();
+    return [
+      for (final g in games)
+        if (await _load(g) case final session)
+          GameSummary(
+            id: g.id,
+            playedAt: g.createdAt,
+            winner: session.state.winner,
+            nights: session.state.nightNumber,
+            players: session.state.players.length,
+          ),
+    ];
+  }
+
+  Future<GameSession> _load(Game game) async {
     final players =
         await (_db.select(_db.gamePlayers)
               ..where((p) => p.gameId.equals(game.id))
@@ -153,4 +189,34 @@ class GameRepository {
           .insertOnConflictUpdate(PreferencesCompanion.insert(key: key, value: value));
     }
   }
+}
+
+/// Totals for the Home "Your table" tiles.
+final class TableStats {
+  const TableStats({this.games = 0, this.mafiaWins = 0, this.civilianWins = 0});
+
+  final int games;
+  final int mafiaWins;
+  final int civilianWins;
+
+  /// Percent of finished games won by [team], or null with no games.
+  int? winRate(Team team) =>
+      games == 0 ? null : ((team == Team.mafia ? mafiaWins : civilianWins) * 100 / games).round();
+}
+
+/// One finished game in the Home "recent games" list.
+final class GameSummary {
+  const GameSummary({
+    required this.id,
+    required this.playedAt,
+    required this.winner,
+    required this.nights,
+    required this.players,
+  });
+
+  final int id;
+  final DateTime playedAt;
+  final Team? winner;
+  final int nights;
+  final int players;
 }
