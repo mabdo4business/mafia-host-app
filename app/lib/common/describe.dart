@@ -170,6 +170,15 @@ class Describer {
     return items;
   }
 
+  /// What the host reads to the table, in order: each item's headline, and
+  /// for a Bomb who it took. Host notes and hints are never included.
+  List<String> spokenLines(List<Announcement> items) => [
+    for (final a in items) ...[
+      a.headline,
+      if (a.chips.isNotEmpty) '${a.detail ?? ''} ${l.names(a.chips)}'.trim(),
+    ],
+  ];
+
   /// Host-only notes worth flagging after a night: the Detective's result,
   /// blocks and a Bomb that did not explode.
   List<String> secretNotes(List<LogEntry> entries) => [

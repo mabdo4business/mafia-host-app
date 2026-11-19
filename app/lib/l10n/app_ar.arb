@@ -326,5 +326,6 @@
   "settingsHaptics": "الاهتزاز",
   "settingsHapticsSubtitle": "اهتزاز خفيف عند الاختيار وقلب البطاقة وانتهاء الوقت",
   "setupDiscussionTimerMinutes": "مؤقت النقاش (بالدقائق)",
-  "settingsDeviceShort": "الجهاز"
+  "settingsDeviceShort": "الجهاز",
+  "stopReading": "أوقف القراءة"
 }

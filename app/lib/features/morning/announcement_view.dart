@@ -3,6 +3,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../common/describe.dart';
 import '../../common/l10n.dart';
+import '../../common/narrator.dart';
 import '../../game/game_input.dart';
 import '../../game/game_menu.dart';
 import '../../game/game_session.dart';
@@ -101,11 +102,19 @@ class AnnouncementView extends ConsumerWidget {
           ),
         ],
       ),
-      bottom: PrimaryActionButton(
-        key: ctaKey,
-        label: ctaLabel,
-        trailing: ctaGlyph,
-        onPressed: () => ref.read(activeGameProvider.notifier).apply(const AdvanceInput()),
+      bottom: Row(
+        children: [
+          ReadAloudButton(lines: describe.spokenLines(items)),
+          const SizedBox(width: 10),
+          Expanded(
+            child: PrimaryActionButton(
+              key: ctaKey,
+              label: ctaLabel,
+              trailing: ctaGlyph,
+              onPressed: () => ref.read(activeGameProvider.notifier).apply(const AdvanceInput()),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -123,6 +132,46 @@ class AnnouncementView extends ConsumerWidget {
         TextSpan(text: digits, style: bold),
         TextSpan(text: phrase.substring(at + digits.length)),
       ],
+    );
+  }
+}
+
+/// Speaker button: reads [lines] aloud; tap again to stop. Stops when the
+/// screen goes away.
+class ReadAloudButton extends ConsumerStatefulWidget {
+  const ReadAloudButton({super.key, required this.lines});
+
+  final List<String> lines;
+
+  @override
+  ConsumerState<ReadAloudButton> createState() => _ReadAloudButtonState();
+}
+
+class _ReadAloudButtonState extends ConsumerState<ReadAloudButton> {
+  late final Narrator _narrator = ref.read(narratorProvider);
+
+  @override
+  void dispose() {
+    _narrator.stop();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    return ValueListenableBuilder<bool>(
+      valueListenable: _narrator.speaking,
+      builder: (context, speaking, _) => IconCircleButton.large(
+        key: const Key('readAloud'),
+        glyph: speaking ? MafiaGlyphs.stop : MafiaGlyphs.speaker,
+        semanticLabel: speaking ? l.stopReading : l.readAloud,
+        filled: true,
+        onPressed: widget.lines.isEmpty
+            ? null
+            : () => speaking
+                  ? _narrator.stop()
+                  : _narrator.speak(widget.lines, Localizations.localeOf(context)),
+      ),
     );
   }
 }
