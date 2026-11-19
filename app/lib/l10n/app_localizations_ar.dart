@@ -843,4 +843,20 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get modePlayersPhones => 'هواتف اللاعبين';
+
+  @override
+  String logVotesFor(String name, int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString صوتًا',
+      few: '$countString أصوات',
+      two: 'صوتان',
+      one: 'صوت واحد',
+    );
+    return '$name: $_temp0';
+  }
 }

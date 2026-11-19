@@ -1382,6 +1382,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Players\' phones'**
   String get modePlayersPhones;
+
+  /// No description provided for @logVotesFor.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}: {count, plural, =1{1 vote} other{{count} votes}}'**
+  String logVotesFor(String name, int count);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

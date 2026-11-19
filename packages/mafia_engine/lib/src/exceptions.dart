@@ -14,6 +14,10 @@ enum InvalidActionReason {
   wrongVictimCount,
   bombNotPending,
   tieBreakerNotTied,
+
+  /// A tallied vote counts more votes than there are living players (or a
+  /// negative count).
+  tooManyVotes,
 }
 
 final class InvalidActionException implements Exception {

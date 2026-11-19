@@ -81,9 +81,16 @@ final class GameSession {
         _expectStage({GameStage.morning, GameStage.dayResult}, input);
         r = detonateBomb(state, bombId, victimIds);
         next = stage;
-      case VoteInput(:final votes, :final tieBreakerId):
+      case DayVoteInput(:final tieBreakerId):
         _expectStage({GameStage.day}, input);
-        r = resolveDayVote(state, votes, tieBreakerId: tieBreakerId);
+        r = switch (input) {
+          VoteInput(:final votes) => resolveDayVote(state, votes, tieBreakerId: tieBreakerId),
+          TallyVoteInput(:final tally) => resolveDayVoteTally(
+            state,
+            tally,
+            tieBreakerId: tieBreakerId,
+          ),
+        };
         final undecided = r.events.any((e) => e is RevoteRequired || e is HostDecisionRequired);
         next = undecided ? GameStage.day : GameStage.dayResult;
       case AdvanceInput():
@@ -114,7 +121,7 @@ final class GameSession {
     for (var i = log.length - 1; i >= 0; i--) {
       final input = log[i].input;
       final decidedVote =
-          input is VoteInput &&
+          input is DayVoteInput &&
           !log[i].events.any((e) => e is RevoteRequired || e is HostDecisionRequired);
       if (input is NightInput || decidedVote) {
         return [
@@ -130,7 +137,7 @@ final class GameSession {
   LogEntry? get pendingTie {
     if (stage != GameStage.day || log.isEmpty) return null;
     final last = log.last;
-    return last.input is VoteInput ? last : null;
+    return last.input is DayVoteInput ? last : null;
   }
 
   void _expectStage(Set<GameStage> allowed, GameInput input) {

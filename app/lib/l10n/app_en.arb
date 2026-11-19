@@ -633,5 +633,17 @@
     }
   },
   "modeHostOnly": "Host only · Cards",
-  "modePlayersPhones": "Players' phones"
+  "modePlayersPhones": "Players' phones",
+  "logVotesFor": "{name}: {count, plural, =1{1 vote} other{{count} votes}}",
+  "@logVotesFor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  }
 }

@@ -19,11 +19,33 @@ final class BombInput extends GameInput {
   final List<String> victimIds;
 }
 
-/// The day vote: voter id → target id.
-final class VoteInput extends GameInput {
-  const VoteInput(this.votes, {this.tieBreakerId});
-  final Map<String, String?> votes;
+/// A day vote, recorded per voter or as a count per candidate.
+sealed class DayVoteInput extends GameInput {
+  const DayVoteInput({this.tieBreakerId});
+
+  /// The host's pick when the vote tied (tie rule `hostDecides`).
   final String? tieBreakerId;
+
+  /// The same vote with the host's tie-breaker.
+  DayVoteInput withTieBreaker(String id);
+}
+
+/// The day vote: voter id → target id.
+final class VoteInput extends DayVoteInput {
+  const VoteInput(this.votes, {super.tieBreakerId});
+  final Map<String, String?> votes;
+
+  @override
+  VoteInput withTieBreaker(String id) => VoteInput(votes, tieBreakerId: id);
+}
+
+/// The day vote as counted raised hands: target id → number of votes.
+final class TallyVoteInput extends DayVoteInput {
+  const TallyVoteInput(this.tally, {super.tieBreakerId});
+  final Map<String, int> tally;
+
+  @override
+  TallyVoteInput withTieBreaker(String id) => TallyVoteInput(tally, tieBreakerId: id);
 }
 
 /// The host moved on (morning → day, or day result → next night).

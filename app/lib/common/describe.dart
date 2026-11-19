@@ -104,6 +104,12 @@ class Describer {
         if (votes.isEmpty) l.logNoVote,
         if (tieBreakerId != null) l.logTieBreak(name(tieBreakerId)),
       ],
+      TallyVoteInput(:final tally, :final tieBreakerId) => [
+        for (final MapEntry(key: target, value: count) in tally.entries)
+          if (count > 0) l.logVotesFor(name(target), count),
+        if (!tally.values.any((n) => n > 0)) l.logNoVote,
+        if (tieBreakerId != null) l.logTieBreak(name(tieBreakerId)),
+      ],
       AdvanceInput() => const <String>[],
     },
     for (final e in entry.events) ?event(e),

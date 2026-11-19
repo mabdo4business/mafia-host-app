@@ -836,4 +836,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get modePlayersPhones => 'Players\' phones';
+
+  @override
+  String logVotesFor(String name, int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString votes',
+      one: '1 vote',
+    );
+    return '$name: $_temp0';
+  }
 }

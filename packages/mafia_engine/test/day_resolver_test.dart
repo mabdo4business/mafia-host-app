@@ -75,6 +75,58 @@ void main() {
     });
   });
 
+  group('Tallied day vote (host counts raised hands)', () {
+    test('the player with the most votes is eliminated and night 2 begins', () {
+      final r = resolveDayVoteTally(dayState(), {'maf': 3, 'c4': 1});
+      expect(r.events, [
+        const PlayerDied('maf', {DeathCause.vote})
+      ]);
+      expect(r.state.phase, GamePhase.night);
+      expect(r.state.nightNumber, 2);
+    });
+
+    test('zero counts are ignored; an empty tally eliminates nobody', () {
+      expect(resolveDayVoteTally(dayState(), {'maf': 0}).events, [const NoElimination()]);
+      expect(resolveDayVoteTally(dayState(), const {}).events, [const NoElimination()]);
+    });
+
+    test('matches the per-voter vote on ties', () {
+      final r = resolveDayVoteTally(dayState(), {'maf': 2, 'c4': 2});
+      expect(r.events, [
+        const VoteTied(['maf', 'c4']),
+        const HostDecisionRequired(),
+      ]);
+      final decided = resolveDayVoteTally(dayState(), {'maf': 2, 'c4': 2}, tieBreakerId: 'c4');
+      expect(isAlive(decided.state, 'c4'), isFalse);
+    });
+
+    test('cannot vote for a dead player', () {
+      final s = resolveNight(newGame(), [const MafiaKill('gf', 'c1')]).state;
+      expect(
+        () => resolveDayVoteTally(s, {'c1': 1}),
+        throwsInvalid(InvalidActionReason.targetDead),
+      );
+    });
+
+    test('no more votes than living players, and no negative counts', () {
+      expect(
+        () => resolveDayVoteTally(dayState(), {'maf': 10, 'c4': 3}),
+        throwsInvalid(InvalidActionReason.tooManyVotes),
+      );
+      expect(
+        () => resolveDayVoteTally(dayState(), {'maf': -1}),
+        throwsInvalid(InvalidActionReason.tooManyVotes),
+      );
+    });
+
+    test('cannot vote at night', () {
+      expect(
+        () => resolveDayVoteTally(newGame(), {'maf': 1}),
+        throwsInvalid(InvalidActionReason.wrongPhase),
+      );
+    });
+  });
+
   group('Tie votes', () {
     const tiedVotes = {'c1': 'maf', 'c2': 'c3'};
 

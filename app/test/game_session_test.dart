@@ -113,6 +113,26 @@ void main() {
     });
   });
 
+  group('tallied vote', () {
+    test('eliminates the leader and shows the day result', () {
+      var s = GameSession.start(1, setup()).apply(const NightInput([])).apply(const AdvanceInput());
+      s = s.apply(const TallyVoteInput({'c3': 2, 'c2': 1}));
+      expect(s.stage, GameStage.dayResult);
+      expect(s.state.player('c3').isAlive, isFalse);
+      expect(s.latestRound.single.input, isA<TallyVoteInput>());
+    });
+
+    test('a tie waits for the host, then the tie-breaker decides', () {
+      var s = GameSession.start(1, setup()).apply(const NightInput([])).apply(const AdvanceInput());
+      s = s.apply(const TallyVoteInput({'c3': 1, 'c2': 1}));
+      expect(s.stage, GameStage.day);
+      expect(s.pendingTie?.input, isA<TallyVoteInput>());
+      s = s.apply(const TallyVoteInput({'c3': 1, 'c2': 1}, tieBreakerId: 'c2'));
+      expect(s.stage, GameStage.dayResult);
+      expect(s.state.player('c2').isAlive, isFalse);
+    });
+  });
+
   group('codec', () {
     test('inputs round-trip through JSON', () {
       const inputs = <GameInput>[
@@ -126,6 +146,7 @@ void main() {
         ]),
         BombInput('bomb', ['a', 'b']),
         VoteInput({'a': 'b', 'c': null}, tieBreakerId: 'b'),
+        TallyVoteInput({'b': 3, 'c': 1}, tieBreakerId: 'b'),
         AdvanceInput(),
       ];
       final decoded = [

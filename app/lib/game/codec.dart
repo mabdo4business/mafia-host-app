@@ -47,6 +47,11 @@ Map<String, Object?> inputToJson(GameInput input) => switch (input) {
     'votes': votes,
     'tieBreakerId': tieBreakerId,
   },
+  TallyVoteInput(:final tally, :final tieBreakerId) => {
+    'type': 'tally',
+    'tally': tally,
+    'tieBreakerId': tieBreakerId,
+  },
   AdvanceInput() => {'type': 'advance'},
 };
 
@@ -57,6 +62,10 @@ GameInput inputFromJson(Map<String, Object?> j) => switch (j['type']) {
   'bomb' => BombInput(j['bombId'] as String, (j['victims'] as List).cast<String>()),
   'vote' => VoteInput(
     (j['votes'] as Map).cast<String, String?>(),
+    tieBreakerId: j['tieBreakerId'] as String?,
+  ),
+  'tally' => TallyVoteInput(
+    (j['tally'] as Map).cast<String, int>(),
     tieBreakerId: j['tieBreakerId'] as String?,
   ),
   'advance' => const AdvanceInput(),

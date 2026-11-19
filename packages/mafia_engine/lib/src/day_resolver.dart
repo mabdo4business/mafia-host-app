@@ -28,10 +28,40 @@ Resolution resolveDayVote(
       throw InvalidActionException(InvalidActionReason.actorDead, playerId: voterId);
     }
     if (targetId == null) continue;
+    tally[targetId] = (tally[targetId] ?? 0) + 1;
+  }
+  return _resolveTally(state, tally, tieBreakerId);
+}
+
+/// Resolves the day vote from a count per candidate (target id → votes),
+/// for hosts who count raised hands without recording who voted. Ties and
+/// eliminations work exactly as in [resolveDayVote].
+Resolution resolveDayVoteTally(
+  GameState state,
+  Map<String, int> tally, {
+  String? tieBreakerId,
+}) {
+  if (state.phase != GamePhase.day) {
+    throw const InvalidActionException(InvalidActionReason.wrongPhase);
+  }
+  if (state.pendingBombs.isNotEmpty) {
+    throw const InvalidActionException(InvalidActionReason.bombDetonationPending);
+  }
+  final total = tally.values.fold(0, (a, b) => a + b);
+  if (tally.values.any((n) => n < 0) || total > state.alivePlayers.length) {
+    throw const InvalidActionException(InvalidActionReason.tooManyVotes);
+  }
+  return _resolveTally(state, {
+    for (final MapEntry(:key, :value) in tally.entries)
+      if (value > 0) key: value,
+  }, tieBreakerId);
+}
+
+Resolution _resolveTally(GameState state, Map<String, int> tally, String? tieBreakerId) {
+  for (final targetId in tally.keys) {
     if (!state.player(targetId).isAlive) {
       throw InvalidActionException(InvalidActionReason.targetDead, playerId: targetId);
     }
-    tally[targetId] = (tally[targetId] ?? 0) + 1;
   }
 
   final events = <GameEvent>[];
