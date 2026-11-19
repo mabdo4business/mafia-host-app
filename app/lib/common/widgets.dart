@@ -3,24 +3,6 @@ import 'package:material_ui/material_ui.dart';
 import '../ui/ui.dart';
 import 'l10n.dart';
 
-class SectionHeader extends StatelessWidget {
-  const SectionHeader(this.text, {super.key, this.trailing});
-
-  final String text;
-  final Widget? trailing;
-
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsetsDirectional.fromSTEB(16, 24, 8, 8),
-    child: Row(
-      children: [
-        Expanded(child: Text(text, style: context.type.titleMedium)),
-        ?trailing,
-      ],
-    ),
-  );
-}
-
 /// A yes/no question in the app's glass style. Resolves to true on confirm.
 Future<bool> confirm(
   BuildContext context, {

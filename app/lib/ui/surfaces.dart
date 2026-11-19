@@ -161,7 +161,14 @@ class PhaseScaffold extends StatelessWidget {
             ?backdrop,
             Column(
               children: [
-                Expanded(child: SafeArea(bottom: false, child: body)),
+                Expanded(
+                  // Ink (list tiles, splashes) paints on this, above the
+                  // background, instead of the Scaffold's Material below it.
+                  child: Material(
+                    type: MaterialType.transparency,
+                    child: SafeArea(bottom: false, child: body),
+                  ),
+                ),
                 if (bottom != null)
                   Padding(
                     padding:

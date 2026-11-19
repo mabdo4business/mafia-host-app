@@ -1182,4 +1182,189 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get timerPaused => 'متوقف';
+
+  @override
+  String get eventsTitle => 'ليالي اللعب';
+
+  @override
+  String get eventsPast => 'ليالٍ سابقة';
+
+  @override
+  String get eventsEmpty => 'ستظهر ليالي اللعب هنا بعد انتهاء أول لعبة.';
+
+  @override
+  String get eventsPlanningSoon =>
+      'التخطيط المسبق للّيالي وتأكيد الحضور يأتيان مع حسابات اللاعبين.';
+
+  @override
+  String eventsNightDetail(int games, int players) {
+    final intl.NumberFormat gamesNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String gamesString = gamesNumberFormat.format(games);
+    final intl.NumberFormat playersNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String playersString = playersNumberFormat.format(players);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      games,
+      locale: localeName,
+      other: '$gamesString لعبة',
+      few: '$gamesString ألعاب',
+      two: 'لعبتان',
+      one: 'لعبة واحدة',
+    );
+    return '$_temp0 · $playersString لاعبين';
+  }
+
+  @override
+  String get eventsGameNight => 'ليلة لعب';
+
+  @override
+  String eventsTimeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String eventsAttendees(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString حول الطاولة',
+      few: '$countString حول الطاولة',
+      two: 'اثنان حول الطاولة',
+      one: 'واحد حول الطاولة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get eventsGamesPlayed => 'الألعاب';
+
+  @override
+  String get homeSeeStats => 'الإحصاءات';
+
+  @override
+  String get joinTitle => 'انضم إلى غرفة';
+
+  @override
+  String get joinIntro => 'أدخل الرمز الظاهر على هاتف المضيف لتلعب من هاتفك.';
+
+  @override
+  String get joinCodeHint => 'من 4 إلى 6 أحرف أو أرقام';
+
+  @override
+  String get joinScanQr => 'امسح رمز QR';
+
+  @override
+  String get joinCta => 'انضم';
+
+  @override
+  String get joinNotYet => 'اللعب من هواتف اللاعبين قادم في تحديث لاحق.';
+
+  @override
+  String get leaderboardTitle => 'المتصدرون';
+
+  @override
+  String get leaderboardSubtitle => 'الترتيب حسب الانتصارات في كل الألعاب المنتهية';
+
+  @override
+  String get leaderboardEmpty => 'أنهِ لعبة لتبدأ قائمة المتصدرين.';
+
+  @override
+  String leaderboardRowDetail(int games, int rate) {
+    final intl.NumberFormat gamesNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String gamesString = gamesNumberFormat.format(games);
+    final intl.NumberFormat rateNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String rateString = rateNumberFormat.format(rate);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      games,
+      locale: localeName,
+      other: '$gamesString لعبة',
+      few: '$gamesString ألعاب',
+      two: 'لعبتان',
+      one: 'لعبة واحدة',
+    );
+    return '$_temp0 · فوز $rateString٪';
+  }
+
+  @override
+  String leaderboardWins(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString انتصارًا',
+      few: '$countString انتصارات',
+      two: 'فوزان',
+      one: 'فوز واحد',
+      zero: 'بلا فوز',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get logFilterAll => 'الكل';
+
+  @override
+  String get logFilterKills => 'القتل';
+
+  @override
+  String get logFilterSaves => 'الإنقاذ';
+
+  @override
+  String get logFilterVotes => 'التصويت';
+
+  @override
+  String get logNothingHere => 'لا شيء من هذا النوع بعد.';
+
+  @override
+  String nightGodfatherConfirms(String name) {
+    return 'العرّاب يؤكد: قتل $name';
+  }
+
+  @override
+  String get nightMafiaProposalHint =>
+      'اضغط مطولًا على لاعب لتسجيل اقتراح من المافيا، واضغط مرة لاختيار الضحية.';
+
+  @override
+  String get profileFavoriteRole => 'الدور المفضل';
+
+  @override
+  String profileLastPlayed(String date) {
+    return 'آخر لعب $date';
+  }
+
+  @override
+  String get profileNoGames => 'لا ألعاب منتهية بعد.';
+
+  @override
+  String get profileRoleHistory => 'سجل الأدوار';
+
+  @override
+  String get profileWinRate => 'نسبة الفوز';
+
+  @override
+  String get settingsDefaultsHint => 'تبدأ كل لعبة جديدة بهذه القيم، ويمكنك تغييرها لكل لعبة.';
+
+  @override
+  String get settingsDefaultsSection => 'إعدادات اللعبة الافتراضية';
+
+  @override
+  String get settingsFeedbackSection => 'الصوت واللمس';
+
+  @override
+  String get settingsHaptics => 'الاهتزاز';
+
+  @override
+  String get settingsHapticsSubtitle => 'اهتزاز خفيف عند الاختيار وقلب البطاقة وانتهاء الوقت';
+
+  @override
+  String get setupDiscussionTimerMinutes => 'مؤقت النقاش (بالدقائق)';
+
+  @override
+  String get settingsDeviceShort => 'الجهاز';
 }

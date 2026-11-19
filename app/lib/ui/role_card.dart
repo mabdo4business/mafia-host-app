@@ -1,10 +1,10 @@
 import 'dart:math' as math;
 
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter/services.dart';
 import 'package:mafia_engine/mafia_engine.dart';
 
 import '../theme/app_theme.dart';
+import 'haptics.dart';
 import 'mafia_icon.dart';
 
 /// The emblem for each role.
@@ -88,7 +88,7 @@ class _RoleCardState extends State<RoleCard> with SingleTickerProviderStateMixin
     } else {
       _flip.animateBack(0, curve: Motion.flip);
     }
-    if (widget.revealed) HapticFeedback.mediumImpact();
+    if (widget.revealed) Haptics.medium();
   }
 
   @override

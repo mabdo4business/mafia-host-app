@@ -58,6 +58,8 @@ class GameStageFrame extends StatelessWidget {
     final locale = Localizations.localeOf(context);
     final sky = switch (session.stage) {
       GameStage.night => SkyPhase.night,
+      // The sun rises once a dead Bomb has picked its victims.
+      GameStage.morning when session.state.pendingBombs.isNotEmpty => SkyPhase.day,
       GameStage.morning => SkyPhase.dawn,
       GameStage.day || GameStage.dayResult => SkyPhase.day,
       GameStage.gameOver => session.state.winner == Team.mafia ? SkyPhase.night : SkyPhase.day,

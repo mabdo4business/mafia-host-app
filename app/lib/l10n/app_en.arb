@@ -875,5 +875,109 @@
   "setupPlayersAtTable": "Players at the table",
   "setupRolesHint": "Tap a role to add one, hold to remove one.",
   "statNone": "–",
-  "timerPaused": "paused"
+  "timerPaused": "paused",
+  "eventsTitle": "Game nights",
+  "eventsPast": "Past nights",
+  "eventsEmpty": "Your game nights will show up here once a game is finished.",
+  "eventsPlanningSoon": "Planning nights ahead and RSVPs arrive with player accounts.",
+  "eventsNightDetail": "{games, plural, =1{1 game} other{{games} games}} · {players} players",
+  "@eventsNightDetail": {
+    "placeholders": {
+      "games": {
+        "type": "int",
+        "format": "decimalPattern"
+      },
+      "players": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "eventsGameNight": "Game night",
+  "eventsTimeRange": "{start} – {end}",
+  "@eventsTimeRange": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "eventsAttendees": "{count, plural, =1{1 at the table} other{{count} at the table}}",
+  "@eventsAttendees": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "eventsGamesPlayed": "Games played",
+  "homeSeeStats": "See stats",
+  "joinTitle": "Join a room",
+  "joinIntro": "Enter the code on the host's phone to play from your own phone.",
+  "joinCodeHint": "4 to 6 letters or numbers",
+  "joinScanQr": "Scan QR code",
+  "joinCta": "Join",
+  "joinNotYet": "Playing from players' phones is coming in a later update.",
+  "leaderboardTitle": "Leaderboard",
+  "leaderboardSubtitle": "Ranked by wins across every finished game",
+  "leaderboardEmpty": "Finish a game to start the leaderboard.",
+  "leaderboardRowDetail": "{games, plural, =1{1 game} other{{games} games}} · {rate}% wins",
+  "@leaderboardRowDetail": {
+    "placeholders": {
+      "games": {
+        "type": "int",
+        "format": "decimalPattern"
+      },
+      "rate": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "leaderboardWins": "{count, plural, =1{1 win} other{{count} wins}}",
+  "@leaderboardWins": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "logFilterAll": "All",
+  "logFilterKills": "Kills",
+  "logFilterSaves": "Saves",
+  "logFilterVotes": "Votes",
+  "logNothingHere": "Nothing of this kind yet.",
+  "nightGodfatherConfirms": "Godfather confirms: kill {name}",
+  "@nightGodfatherConfirms": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "nightMafiaProposalHint": "Hold a player to mark a Mafia proposal; tap to choose the kill.",
+  "profileFavoriteRole": "Favorite role",
+  "profileLastPlayed": "Last played {date}",
+  "@profileLastPlayed": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "profileNoGames": "No finished games yet.",
+  "profileRoleHistory": "Role history",
+  "profileWinRate": "Win rate",
+  "settingsDefaultsHint": "Every new game starts with these; change them per game in setup.",
+  "settingsDefaultsSection": "Game defaults",
+  "settingsFeedbackSection": "Sound & touch",
+  "settingsHaptics": "Haptics",
+  "settingsHapticsSubtitle": "A light tap on picks, card flips and when time runs out",
+  "setupDiscussionTimerMinutes": "Discussion timer (minutes)",
+  "settingsDeviceShort": "Device"
 }

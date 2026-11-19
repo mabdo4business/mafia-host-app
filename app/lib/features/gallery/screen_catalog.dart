@@ -16,7 +16,18 @@ import '../../game/game_session.dart';
 import '../../game/providers.dart';
 import '../../game/role_mix.dart';
 import '../day/day_view.dart';
-import '../home/home_screen.dart';
+import '../events/event_detail_screen.dart';
+import '../events/events_screen.dart';
+import '../game_log/game_log_screen.dart';
+import '../game_over/game_over_view.dart';
+import '../home/join_room_screen.dart';
+import '../morning/bomb_picker.dart';
+import '../night/detective_result_screen.dart';
+import '../players/leaderboard_screen.dart';
+import '../players/player_profile_screen.dart';
+import '../settings/settings_screen.dart';
+import '../setup/chameleon_choice_screen.dart';
+import '../shell/main_shell.dart';
 import '../morning/morning_view.dart';
 import '../night/night_wizard.dart';
 import '../setup/reveal_screen.dart';
@@ -127,12 +138,77 @@ Widget _scope(GameSession? session, Widget child, {List<Override> more = const [
 
 Widget _stage(GameSession s, Widget view) => _scope(s, GameStageFrame(session: s, child: view));
 
+/// Night 3 before the Bomb detonates (picker showing).
+GameSession _bombPending(BuildContext context) =>
+    _night3(context).apply(const NightInput([MafiaKill('p10', 'p4'), JokerKill('p8', 'p6')]));
+
+/// Day 3: the town votes out Omar; the Godfather then takes out two more.
+GameSession _mafiaWins(BuildContext context) => _day3(context)
+    .apply(const TallyVoteInput({'p0': 4}))
+    .apply(const AdvanceInput())
+    .apply(const NightInput([MafiaKill('p10', 'p5')]));
+
+GameSession _civiliansWin(BuildContext context) => _day3(context)
+    .apply(const TallyVoteInput({'p1': 4}))
+    .apply(const AdvanceInput())
+    .apply(const NightInput([MafiaKill('p10', 'p0')]))
+    .apply(const AdvanceInput())
+    .apply(const TallyVoteInput({'p10': 3}));
+
+/// History for the Events, Leaderboard and Profile screens.
+List<PlayerRecord> _records(BuildContext context) {
+  final names = sampleNames(context);
+  const stats = [(9, 7), (8, 5), (7, 4), (9, 4), (6, 3), (5, 2), (4, 1)];
+  return [
+    for (final (i, (games, wins)) in stats.indexed)
+      PlayerRecord(name: names[i], lastPlayed: DateTime(2026, 11, 14))
+        ..games = games
+        ..wins = wins
+        ..roles.addAll({
+          Role.civilian: games - 3,
+          if (i.isEven) Role.godfather: 2 else Role.detective: 2,
+          Role.doctor: 1,
+        }),
+  ];
+}
+
+List<GameNight> _nights(BuildContext context) {
+  final names = sampleNames(context).take(10).toList();
+  GameNight night(DateTime d, List<Team> winners) => GameNight(date: d)
+    ..players.addAll(names)
+    ..games.addAll([
+      for (final (i, w) in winners.indexed)
+        GameSummary(
+          id: i,
+          playedAt: d.add(Duration(hours: 21, minutes: 40 * i)),
+          winner: w,
+          nights: 3 + i,
+          players: names.length,
+        ),
+    ]);
+  return [
+    night(DateTime(2026, 11, 14), [Team.mafia, Team.civilians, Team.civilians]),
+    night(DateTime(2026, 11, 7), [Team.civilians, Team.mafia]),
+    night(DateTime(2026, 10, 31), [Team.mafia]),
+  ];
+}
+
+Widget _history(BuildContext context, Widget child) => _scope(
+  null,
+  child,
+  more: [
+    playerRecordsProvider.overrideWith((ref) async => _records(context)),
+    gameNightsProvider.overrideWith((ref) async => _nights(context)),
+    lastPlayerNamesProvider.overrideWith((ref) async => sampleNames(context).take(11).toList()),
+  ],
+);
+
 final List<ScreenScenario> screenCatalog = [
   ScreenScenario('home', (context) {
     final names = sampleNames(context).take(11).toList();
     return _scope(
       null,
-      const HomeScreen(),
+      const MainShell(),
       more: [
         tableStatsProvider.overrideWith(
           (ref) async => const TableStats(games: 48, mafiaWins: 22, civilianWins: 26),
@@ -156,6 +232,8 @@ final List<ScreenScenario> screenCatalog = [
           ],
         ),
         lastPlayerNamesProvider.overrideWith((ref) async => names),
+        playerRecordsProvider.overrideWith((ref) async => _records(context)),
+        gameNightsProvider.overrideWith((ref) async => _nights(context)),
       ],
     );
   }),
@@ -237,4 +315,56 @@ final List<ScreenScenario> screenCatalog = [
     final s = _day3(context);
     return _stage(s, DayView(session: s, initialTally: const {'p1': 3, 'p2': 2, 'p5': 1}));
   }),
+  ScreenScenario('night_mafia', (context) {
+    final s = _night3(context);
+    return _stage(s, NightWizard(session: s, initialIndex: 1));
+  }),
+  ScreenScenario('chameleon', (context) {
+    final names = sampleNames(context);
+    return _scope(
+      null,
+      ChameleonChoiceScreen(
+        name: names[4],
+        choices: chameleonChoices(const GameSettings()),
+        initial: Role.doctor,
+      ),
+    );
+  }),
+  ScreenScenario('detective', (context) {
+    return _scope(
+      null,
+      DetectiveResultScreen(targetName: sampleNames(context)[1], result: DetectiveResult.mafia),
+    );
+  }),
+  ScreenScenario('detective_blocked', (context) {
+    return _scope(null, DetectiveResultScreen(targetName: sampleNames(context)[1], result: null));
+  }),
+  ScreenScenario('bomb_picker', (context) {
+    final s = _bombPending(context);
+    return _stage(s, BombPicker(session: s, bombId: 'p6'));
+  }),
+  ScreenScenario('game_over_mafia', (context) {
+    final s = _mafiaWins(context);
+    return _stage(s, GameOverView(session: s));
+  }),
+  ScreenScenario('game_over_civilians', (context) {
+    final s = _civiliansWin(context);
+    return _stage(s, GameOverView(session: s));
+  }),
+  ScreenScenario('game_log', (context) {
+    final s = _day3(context);
+    return _scope(s, const GameLogScreen());
+  }),
+  ScreenScenario('events', (context) => _history(context, const EventsScreen())),
+  ScreenScenario(
+    'event_detail',
+    (context) => _history(context, EventDetailScreen(night: _nights(context).first)),
+  ),
+  ScreenScenario('leaderboard', (context) => _history(context, const LeaderboardScreen())),
+  ScreenScenario(
+    'profile',
+    (context) => _history(context, PlayerProfileScreen(name: sampleNames(context).first)),
+  ),
+  ScreenScenario('settings', (context) => _scope(null, const SettingsScreen())),
+  ScreenScenario('join_room', (context) => _scope(null, const JoinRoomScreen())),
 ];

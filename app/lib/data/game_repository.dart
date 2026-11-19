@@ -120,6 +120,65 @@ class GameRepository {
     ];
   }
 
+  /// Every finished game, newest first, replayed.
+  Future<List<(Game, GameSession)>> _finished() async {
+    final games =
+        await (_db.select(_db.games)
+              ..where((g) => g.status.equalsValue(GameStatus.finished))
+              ..orderBy([(g) => OrderingTerm.desc(g.id)]))
+            .get();
+    return [for (final g in games) (g, await _load(g))];
+  }
+
+  /// Each player's results over all finished games (matched by name), most
+  /// wins first, then by win rate and games played.
+  Future<List<PlayerRecord>> playerRecords() async {
+    final byName = <String, PlayerRecord>{};
+    for (final (game, session) in await _finished()) {
+      final winner = session.state.winner;
+      for (final p in session.state.players) {
+        final r = byName[p.name] ??= PlayerRecord(name: p.name, lastPlayed: game.createdAt);
+        r.games++;
+        if (p.team == winner) r.wins++;
+        r.roles[p.effectiveRole] = (r.roles[p.effectiveRole] ?? 0) + 1;
+        if (p.team == Team.mafia) r.mafiaGames++;
+      }
+    }
+    return byName.values.toList()..sort(
+      (a, b) => b.wins != a.wins
+          ? b.wins.compareTo(a.wins)
+          : b.winRate != a.winRate
+          ? b.winRate.compareTo(a.winRate)
+          : b.games.compareTo(a.games),
+    );
+  }
+
+  /// Finished games grouped by the date they were played, newest first.
+  Future<List<GameNight>> gameNights() async {
+    final nights = <DateTime, GameNight>{};
+    for (final (game, session) in await _finished()) {
+      final t = game.createdAt;
+      final day = DateTime(t.year, t.month, t.day);
+      final night = nights[day] ??= GameNight(date: day);
+      night.games.add(
+        GameSummary(
+          id: game.id,
+          playedAt: game.createdAt,
+          winner: session.state.winner,
+          nights: session.state.nightNumber,
+          players: session.state.players.length,
+        ),
+      );
+      for (final p in session.state.players) {
+        if (!night.players.contains(p.name)) night.players.add(p.name);
+      }
+    }
+    for (final n in nights.values) {
+      n.players.sort();
+    }
+    return nights.values.toList();
+  }
+
   Future<GameSession> _load(Game game) async {
     final players =
         await (_db.select(_db.gamePlayers)
@@ -219,4 +278,34 @@ final class GameSummary {
   final Team? winner;
   final int nights;
   final int players;
+}
+
+/// One player's history (by name) across finished games.
+final class PlayerRecord {
+  PlayerRecord({required this.name, required this.lastPlayed});
+
+  final String name;
+  final DateTime lastPlayed;
+  int games = 0;
+  int wins = 0;
+  int mafiaGames = 0;
+
+  /// Role played → times.
+  final Map<Role, int> roles = {};
+
+  int get winRate => games == 0 ? 0 : (wins * 100 / games).round();
+
+  Role? get favoriteRole =>
+      roles.isEmpty ? null : roles.entries.reduce((a, b) => b.value > a.value ? b : a).key;
+}
+
+/// The games played on one date: an evening at the table.
+final class GameNight {
+  GameNight({required this.date});
+
+  final DateTime date;
+  final List<GameSummary> games = [];
+
+  /// Everyone who played that night, sorted.
+  final List<String> players = [];
 }

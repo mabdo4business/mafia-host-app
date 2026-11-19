@@ -37,6 +37,10 @@ class _NightWizardState extends ConsumerState<NightWizard> {
 
   /// Step index → chosen target, or null for "no action".
   final Map<int, String?> _choices = {};
+
+  /// Mafia step: player id → how many Mafia members proposed them (shown as
+  /// dots; the decider's pick is what counts).
+  final Map<String, int> _proposals = {};
   bool _resolving = false;
 
   GameState get _state => widget.session.state;
@@ -158,6 +162,9 @@ class _NightWizardState extends ConsumerState<NightWizard> {
     final blocked = step.kind != NightStepKind.mafia && _blocked.contains(step.actorId);
     final accent = step.kind == NightStepKind.mafia ? c.mafia : c.civilian;
     final targets = step.targetIds.toSet();
+    final mafiaStep = step.kind == NightStepKind.mafia;
+    final mafiaAlive = _state.alivePlayers.where((p) => p.team == Team.mafia).length;
+    final godfatherDecides = mafiaStep && actor.effectiveRole == Role.godfather;
 
     // Seating order. The living players this role can't pick are left out
     // rather than greyed: greying them would show the table who is Mafia.
@@ -179,12 +186,20 @@ class _NightWizardState extends ConsumerState<NightWizard> {
             selected: chosen == p.id,
             enabled: !step.disabledTargetIds.contains(p.id),
             note: step.disabledTargetIds.contains(p.id) ? l.nightDoctorLastNight : null,
+            dots: mafiaStep ? _proposals[p.id] ?? 0 : 0,
             onTap: () => setState(() => _choices[_index] = p.id),
+            onLongPress: mafiaStep
+                ? () => setState(
+                    () => _proposals[p.id] = ((_proposals[p.id] ?? 0) + 1) % (mafiaAlive + 1),
+                  )
+                : null,
           ),
     ];
 
     final String cta;
-    if (chosen != null) {
+    if (chosen != null && godfatherDecides) {
+      cta = l.nightGodfatherConfirms(_state.player(chosen).name);
+    } else if (chosen != null) {
       cta = _verb(l, step.kind, _state.player(chosen).name);
     } else if (answered) {
       cta = l.nightContinueNoAction;
@@ -229,6 +244,10 @@ class _NightWizardState extends ConsumerState<NightWizard> {
           ),
           const SizedBox(height: 18),
           PlayerTargetGrid(children: tiles),
+          if (mafiaStep && mafiaAlive > 1) ...[
+            const SizedBox(height: Space.md),
+            Text(l.nightMafiaProposalHint, style: context.type.bodySmall!.copyWith(fontSize: 12)),
+          ],
           const SizedBox(height: Space.md),
           Align(
             alignment: AlignmentDirectional.centerStart,

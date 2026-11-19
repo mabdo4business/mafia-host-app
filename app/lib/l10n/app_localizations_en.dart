@@ -1165,4 +1165,180 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get timerPaused => 'paused';
+
+  @override
+  String get eventsTitle => 'Game nights';
+
+  @override
+  String get eventsPast => 'Past nights';
+
+  @override
+  String get eventsEmpty => 'Your game nights will show up here once a game is finished.';
+
+  @override
+  String get eventsPlanningSoon => 'Planning nights ahead and RSVPs arrive with player accounts.';
+
+  @override
+  String eventsNightDetail(int games, int players) {
+    final intl.NumberFormat gamesNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String gamesString = gamesNumberFormat.format(games);
+    final intl.NumberFormat playersNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String playersString = playersNumberFormat.format(players);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      games,
+      locale: localeName,
+      other: '$gamesString games',
+      one: '1 game',
+    );
+    return '$_temp0 · $playersString players';
+  }
+
+  @override
+  String get eventsGameNight => 'Game night';
+
+  @override
+  String eventsTimeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String eventsAttendees(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString at the table',
+      one: '1 at the table',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get eventsGamesPlayed => 'Games played';
+
+  @override
+  String get homeSeeStats => 'See stats';
+
+  @override
+  String get joinTitle => 'Join a room';
+
+  @override
+  String get joinIntro => 'Enter the code on the host\'s phone to play from your own phone.';
+
+  @override
+  String get joinCodeHint => '4 to 6 letters or numbers';
+
+  @override
+  String get joinScanQr => 'Scan QR code';
+
+  @override
+  String get joinCta => 'Join';
+
+  @override
+  String get joinNotYet => 'Playing from players\' phones is coming in a later update.';
+
+  @override
+  String get leaderboardTitle => 'Leaderboard';
+
+  @override
+  String get leaderboardSubtitle => 'Ranked by wins across every finished game';
+
+  @override
+  String get leaderboardEmpty => 'Finish a game to start the leaderboard.';
+
+  @override
+  String leaderboardRowDetail(int games, int rate) {
+    final intl.NumberFormat gamesNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String gamesString = gamesNumberFormat.format(games);
+    final intl.NumberFormat rateNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String rateString = rateNumberFormat.format(rate);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      games,
+      locale: localeName,
+      other: '$gamesString games',
+      one: '1 game',
+    );
+    return '$_temp0 · $rateString% wins';
+  }
+
+  @override
+  String leaderboardWins(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString wins',
+      one: '1 win',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get logFilterAll => 'All';
+
+  @override
+  String get logFilterKills => 'Kills';
+
+  @override
+  String get logFilterSaves => 'Saves';
+
+  @override
+  String get logFilterVotes => 'Votes';
+
+  @override
+  String get logNothingHere => 'Nothing of this kind yet.';
+
+  @override
+  String nightGodfatherConfirms(String name) {
+    return 'Godfather confirms: kill $name';
+  }
+
+  @override
+  String get nightMafiaProposalHint =>
+      'Hold a player to mark a Mafia proposal; tap to choose the kill.';
+
+  @override
+  String get profileFavoriteRole => 'Favorite role';
+
+  @override
+  String profileLastPlayed(String date) {
+    return 'Last played $date';
+  }
+
+  @override
+  String get profileNoGames => 'No finished games yet.';
+
+  @override
+  String get profileRoleHistory => 'Role history';
+
+  @override
+  String get profileWinRate => 'Win rate';
+
+  @override
+  String get settingsDefaultsHint =>
+      'Every new game starts with these; change them per game in setup.';
+
+  @override
+  String get settingsDefaultsSection => 'Game defaults';
+
+  @override
+  String get settingsFeedbackSection => 'Sound & touch';
+
+  @override
+  String get settingsHaptics => 'Haptics';
+
+  @override
+  String get settingsHapticsSubtitle => 'A light tap on picks, card flips and when time runs out';
+
+  @override
+  String get setupDiscussionTimerMinutes => 'Discussion timer (minutes)';
+
+  @override
+  String get settingsDeviceShort => 'Device';
 }

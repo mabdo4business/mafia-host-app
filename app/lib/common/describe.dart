@@ -7,6 +7,12 @@ import 'l10n.dart';
 
 enum AnnouncementType { death, bomb, save, info }
 
+/// Game log filter groups.
+enum LogKind { kill, save, vote, other }
+
+/// One line of the game log and the group it filters under.
+typedef LogItem = ({LogKind kind, String text});
+
 /// One numbered item of a morning / vote-result announcement.
 final class Announcement {
   const Announcement(this.type, this.headline, {this.detail, this.chips = const []});
@@ -185,28 +191,61 @@ class Describer {
     ],
   ];
 
-  /// Every line the game log shows for [entry].
-  List<String> logLines(LogEntry entry) => [
+  /// [logLines] with each line's group, for the filtered timeline.
+  List<LogItem> logItems(LogEntry entry) => [
     ...switch (entry.input) {
-      NightInput(:final actions) when actions.isEmpty => [l.logNoActions],
-      NightInput(:final actions) => actions.map(action),
-      BombInput(:final bombId, :final victimIds) => [
-        l.logBomb(name(bombId), l.names(victimIds.map(name))),
+      NightInput(:final actions) when actions.isEmpty => [
+        (kind: LogKind.other, text: l.logNoActions),
       ],
-      VoteInput(:final votes, :final tieBreakerId) => [
-        for (final MapEntry(key: voter, value: target) in votes.entries)
-          target == null ? l.logAbstain(name(voter)) : l.logVote(name(voter), name(target)),
-        if (votes.isEmpty) l.logNoVote,
-        if (tieBreakerId != null) l.logTieBreak(name(tieBreakerId)),
+      NightInput(:final actions) => [
+        for (final a in actions)
+          (
+            kind: switch (a) {
+              MafiaKill() || JokerKill() => LogKind.kill,
+              DoctorSave() => LogKind.save,
+              _ => LogKind.other,
+            },
+            text: action(a),
+          ),
       ],
-      TallyVoteInput(:final tally, :final tieBreakerId) => [
-        for (final MapEntry(key: target, value: count) in tally.entries)
-          if (count > 0) l.logVotesFor(name(target), count),
-        if (!tally.values.any((n) => n > 0)) l.logNoVote,
-        if (tieBreakerId != null) l.logTieBreak(name(tieBreakerId)),
+      BombInput() || DayVoteInput() || AdvanceInput() => [
+        for (final line in _inputLines(entry))
+          (kind: entry.input is BombInput ? LogKind.kill : LogKind.vote, text: line),
       ],
-      AdvanceInput() => const <String>[],
     },
-    for (final e in entry.events) ?event(e),
+    for (final e in entry.events)
+      if (event(e) case final text?)
+        (
+          kind: switch (e) {
+            PlayerDied(:final causes) when causes.contains(DeathCause.vote) => LogKind.vote,
+            PlayerDied() || BombTriggered() => LogKind.kill,
+            PlayerSaved() => LogKind.save,
+            VoteTied() || NoElimination() => LogKind.vote,
+            _ => LogKind.other,
+          },
+          text: text,
+        ),
   ];
+
+  List<String> _inputLines(LogEntry entry) => switch (entry.input) {
+    BombInput(:final bombId, :final victimIds) => [
+      l.logBomb(name(bombId), l.names(victimIds.map(name))),
+    ],
+    VoteInput(:final votes, :final tieBreakerId) => [
+      for (final MapEntry(key: voter, value: target) in votes.entries)
+        target == null ? l.logAbstain(name(voter)) : l.logVote(name(voter), name(target)),
+      if (votes.isEmpty) l.logNoVote,
+      if (tieBreakerId != null) l.logTieBreak(name(tieBreakerId)),
+    ],
+    TallyVoteInput(:final tally, :final tieBreakerId) => [
+      for (final MapEntry(key: target, value: count) in tally.entries)
+        if (count > 0) l.logVotesFor(name(target), count),
+      if (!tally.values.any((n) => n > 0)) l.logNoVote,
+      if (tieBreakerId != null) l.logTieBreak(name(tieBreakerId)),
+    ],
+    _ => const <String>[],
+  };
+
+  /// Every line the game log shows for [entry].
+  List<String> logLines(LogEntry entry) => [for (final i in logItems(entry)) i.text];
 }

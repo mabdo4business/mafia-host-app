@@ -22,6 +22,18 @@ final tableStatsProvider = FutureProvider<TableStats>((ref) {
   return ref.watch(gameRepositoryProvider).tableStats();
 });
 
+/// Leaderboard / player profiles.
+final playerRecordsProvider = FutureProvider<List<PlayerRecord>>((ref) {
+  ref.watch(activeGameProvider);
+  return ref.watch(gameRepositoryProvider).playerRecords();
+});
+
+/// Past game nights (Events).
+final gameNightsProvider = FutureProvider<List<GameNight>>((ref) {
+  ref.watch(activeGameProvider);
+  return ref.watch(gameRepositoryProvider).gameNights();
+});
+
 /// Names from the last game (Home hero card).
 final lastPlayerNamesProvider = FutureProvider<List<String>>((ref) {
   ref.watch(activeGameProvider);
@@ -75,14 +87,44 @@ class ActiveGameController extends AsyncNotifier<GameSession?> {
 
 @immutable
 class AppPreferences {
-  const AppPreferences({this.locale, this.themeMode = ThemeMode.system, this.soundEnabled = true});
+  const AppPreferences({
+    this.locale,
+    this.soundEnabled = true,
+    this.hapticsEnabled = true,
+    this.defaultBombVictims = 2,
+    this.defaultRevealRole = false,
+    this.defaultDiscussionSeconds = 0,
+  });
 
   /// Null follows the device language.
   final Locale? locale;
-  final ThemeMode themeMode;
 
   /// Night and morning sound cues.
   final bool soundEnabled;
+
+  /// Taps, card flips and the timer buzz.
+  final bool hapticsEnabled;
+
+  /// Starting values for a new game's setup.
+  final int defaultBombVictims;
+  final bool defaultRevealRole;
+  final int defaultDiscussionSeconds;
+
+  AppPreferences copyWith({
+    Locale? Function()? locale,
+    bool? soundEnabled,
+    bool? hapticsEnabled,
+    int? defaultBombVictims,
+    bool? defaultRevealRole,
+    int? defaultDiscussionSeconds,
+  }) => AppPreferences(
+    locale: locale == null ? this.locale : locale(),
+    soundEnabled: soundEnabled ?? this.soundEnabled,
+    hapticsEnabled: hapticsEnabled ?? this.hapticsEnabled,
+    defaultBombVictims: defaultBombVictims ?? this.defaultBombVictims,
+    defaultRevealRole: defaultRevealRole ?? this.defaultRevealRole,
+    defaultDiscussionSeconds: defaultDiscussionSeconds ?? this.defaultDiscussionSeconds,
+  );
 }
 
 final preferencesProvider = AsyncNotifierProvider<PreferencesController, AppPreferences>(
@@ -91,8 +133,11 @@ final preferencesProvider = AsyncNotifierProvider<PreferencesController, AppPref
 
 class PreferencesController extends AsyncNotifier<AppPreferences> {
   static const _localeKey = 'locale';
-  static const _themeKey = 'themeMode';
   static const _soundKey = 'soundEnabled';
+  static const _hapticsKey = 'hapticsEnabled';
+  static const _bombKey = 'defaultBombVictims';
+  static const _revealKey = 'defaultRevealRole';
+  static const _timerKey = 'defaultDiscussionSeconds';
 
   GameRepository get _repo => ref.read(gameRepositoryProvider);
 
@@ -100,38 +145,41 @@ class PreferencesController extends AsyncNotifier<AppPreferences> {
   Future<AppPreferences> build() async {
     final repo = ref.watch(gameRepositoryProvider);
     final locale = await repo.preference(_localeKey);
-    final theme = await repo.preference(_themeKey);
-    final sound = await repo.preference(_soundKey);
+    const d = AppPreferences();
     return AppPreferences(
       locale: locale == null ? null : Locale(locale),
-      themeMode: ThemeMode.values.asNameMap()[theme] ?? ThemeMode.system,
-      soundEnabled: sound != 'false',
+      soundEnabled: await repo.preference(_soundKey) != 'false',
+      hapticsEnabled: await repo.preference(_hapticsKey) != 'false',
+      defaultBombVictims:
+          int.tryParse(await repo.preference(_bombKey) ?? '') ?? d.defaultBombVictims,
+      defaultRevealRole: await repo.preference(_revealKey) == 'true',
+      defaultDiscussionSeconds:
+          int.tryParse(await repo.preference(_timerKey) ?? '') ?? d.defaultDiscussionSeconds,
     );
   }
 
-  Future<void> setLocale(Locale? locale) async {
-    final c = _current;
-    state = AsyncData(
-      AppPreferences(locale: locale, themeMode: c.themeMode, soundEnabled: c.soundEnabled),
-    );
-    await _repo.setPreference(_localeKey, locale?.languageCode);
+  Future<void> _set(AppPreferences next, String key, String? value) async {
+    state = AsyncData(next);
+    await _repo.setPreference(key, value);
   }
 
-  Future<void> setThemeMode(ThemeMode mode) async {
-    final c = _current;
-    state = AsyncData(
-      AppPreferences(locale: c.locale, themeMode: mode, soundEnabled: c.soundEnabled),
-    );
-    await _repo.setPreference(_themeKey, mode.name);
-  }
+  Future<void> setLocale(Locale? locale) =>
+      _set(_current.copyWith(locale: () => locale), _localeKey, locale?.languageCode);
 
-  Future<void> setSoundEnabled(bool enabled) async {
-    final c = _current;
-    state = AsyncData(
-      AppPreferences(locale: c.locale, themeMode: c.themeMode, soundEnabled: enabled),
-    );
-    await _repo.setPreference(_soundKey, '$enabled');
-  }
+  Future<void> setSoundEnabled(bool on) =>
+      _set(_current.copyWith(soundEnabled: on), _soundKey, '$on');
+
+  Future<void> setHapticsEnabled(bool on) =>
+      _set(_current.copyWith(hapticsEnabled: on), _hapticsKey, '$on');
+
+  Future<void> setDefaultBombVictims(int n) =>
+      _set(_current.copyWith(defaultBombVictims: n), _bombKey, '$n');
+
+  Future<void> setDefaultRevealRole(bool on) =>
+      _set(_current.copyWith(defaultRevealRole: on), _revealKey, '$on');
+
+  Future<void> setDefaultDiscussionSeconds(int s) =>
+      _set(_current.copyWith(defaultDiscussionSeconds: s), _timerKey, '$s');
 
   AppPreferences get _current => state.value ?? const AppPreferences();
 }
@@ -180,7 +228,17 @@ final setupDraftProvider = NotifierProvider<SetupController, SetupDraft>(SetupCo
 
 class SetupController extends Notifier<SetupDraft> {
   @override
-  SetupDraft build() => SetupDraft(mix: suggestedRoleMix(0));
+  SetupDraft build() {
+    final prefs = ref.read(preferencesProvider).value ?? const AppPreferences();
+    return SetupDraft(
+      mix: suggestedRoleMix(0),
+      settings: GameSettings(
+        bombVictimCount: prefs.defaultBombVictims,
+        revealRoleOnDeath: prefs.defaultRevealRole,
+      ),
+      discussionSeconds: prefs.defaultDiscussionSeconds,
+    );
+  }
 
   /// Fills in last game's players if the list is still empty.
   Future<void> prefillNames() async {

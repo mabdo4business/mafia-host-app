@@ -58,6 +58,7 @@ class DetectiveResultScreen extends StatelessWidget {
               child: Center(
                 child: GlassCard(
                   key: const Key('detectiveAnswer'),
+                  // Same width in every language.
                   radius: Radii.hero,
                   tintColor: r == null ? null : color,
                   fillOpacity: 0.10,
@@ -65,20 +66,23 @@ class DetectiveResultScreen extends StatelessWidget {
                   padding: const EdgeInsetsDirectional.fromSTEB(Space.xl, 36, Space.xl, 36),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Container(
-                        width: 72,
-                        height: 72,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: c.tint(color, 0.16),
-                          border: Border.all(color: c.tint(color, 0.4)),
-                        ),
-                        child: MafiaIcon(
-                          r == null ? MafiaGlyphs.potana : MafiaGlyphs.detective,
-                          size: 34,
-                          color: soft,
+                      Center(
+                        child: Container(
+                          width: 72,
+                          height: 72,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: c.tint(color, 0.16),
+                            border: Border.all(color: c.tint(color, 0.4)),
+                          ),
+                          child: MafiaIcon(
+                            r == null ? MafiaGlyphs.potana : MafiaGlyphs.detective,
+                            size: 34,
+                            color: soft,
+                          ),
                         ),
                       ),
                       const SizedBox(height: Space.xl),
@@ -90,6 +94,7 @@ class DetectiveResultScreen extends StatelessWidget {
                       const SizedBox(height: Space.md),
                       FittedBox(
                         fit: BoxFit.scaleDown,
+                        alignment: Alignment.center,
                         child: Text(
                           r == null
                               ? l.detectiveNoAnswer

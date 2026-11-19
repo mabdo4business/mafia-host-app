@@ -1,9 +1,9 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter/services.dart';
 import 'package:mafia_engine/mafia_engine.dart';
 
 import '../common/l10n.dart';
 import '../theme/app_theme.dart';
+import 'haptics.dart';
 import 'mafia_icon.dart';
 
 /// A role in the setup grid: 64 h tile with a tinted icon box, the role name
@@ -84,13 +84,13 @@ class RoleChip extends StatelessWidget {
             onTap: onTap == null
                 ? null
                 : () {
-                    HapticFeedback.selectionClick();
+                    Haptics.selection();
                     onTap!();
                   },
             onLongPress: onLongPress == null
                 ? null
                 : () {
-                    HapticFeedback.selectionClick();
+                    Haptics.selection();
                     onLongPress!();
                   },
             child: Padding(
@@ -269,7 +269,7 @@ class SegmentedPill<T> extends StatelessWidget {
             onTap: onChanged == null || on
                 ? null
                 : () {
-                    HapticFeedback.selectionClick();
+                    Haptics.selection();
                     onChanged!(value);
                   },
             child: AnimatedContainer(

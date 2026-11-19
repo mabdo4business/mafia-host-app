@@ -147,10 +147,10 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
           ),
           const SizedBox(height: 10),
           _OptionCard(
-            title: l.setupDiscussionTimer,
+            title: l.setupDiscussionTimerMinutes,
             below: SegmentedPill<int>(
               segments: [
-                for (final s in _timerOptions) (s, s == 0 ? l.timerOff : l.minutes(s ~/ 60)),
+                for (final s in _timerOptions) (s, s == 0 ? l.timerOff : context.number(s ~/ 60)),
               ],
               selected: draft.discussionSeconds,
               onChanged: controller.setDiscussionSeconds,

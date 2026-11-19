@@ -1,8 +1,8 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter/services.dart';
 
 import '../common/l10n.dart';
 import '../theme/app_theme.dart';
+import 'haptics.dart';
 
 /// "LA" for Layla, "AS" for Abu Saleh, "ل" for ليلى (Arabic letters join, so
 /// one letter reads better than two).
@@ -129,7 +129,11 @@ class PlayerTile extends StatelessWidget {
     this.dots = 0,
     this.dotColor,
     this.onTap,
+    this.onLongPress,
   });
+
+  /// Secondary gesture (marking a Mafia proposal).
+  final VoidCallback? onLongPress;
 
   final String name;
   final bool selected;
@@ -178,8 +182,14 @@ class PlayerTile extends StatelessWidget {
               borderRadius: radius,
               onTap: tappable
                   ? () {
-                      HapticFeedback.selectionClick();
+                      Haptics.selection();
                       onTap!();
+                    }
+                  : null,
+              onLongPress: enabled && onLongPress != null
+                  ? () {
+                      Haptics.light();
+                      onLongPress!();
                     }
                   : null,
               child: Stack(
@@ -312,7 +322,7 @@ class VoteRow extends StatelessWidget {
               onTap: onTap == null
                   ? null
                   : () {
-                      HapticFeedback.lightImpact();
+                      Haptics.light();
                       onTap!();
                     },
               child: Stack(

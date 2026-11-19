@@ -5,6 +5,7 @@ library;
 export '../theme/app_theme.dart';
 export 'announcements.dart';
 export 'buttons.dart';
+export 'haptics.dart';
 export 'mafia_icon.dart';
 export 'nav.dart';
 export 'phase.dart';

@@ -1814,6 +1814,246 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'paused'**
   String get timerPaused;
+
+  /// No description provided for @eventsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Game nights'**
+  String get eventsTitle;
+
+  /// No description provided for @eventsPast.
+  ///
+  /// In en, this message translates to:
+  /// **'Past nights'**
+  String get eventsPast;
+
+  /// No description provided for @eventsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Your game nights will show up here once a game is finished.'**
+  String get eventsEmpty;
+
+  /// No description provided for @eventsPlanningSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Planning nights ahead and RSVPs arrive with player accounts.'**
+  String get eventsPlanningSoon;
+
+  /// No description provided for @eventsNightDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'{games, plural, =1{1 game} other{{games} games}} · {players} players'**
+  String eventsNightDetail(int games, int players);
+
+  /// No description provided for @eventsGameNight.
+  ///
+  /// In en, this message translates to:
+  /// **'Game night'**
+  String get eventsGameNight;
+
+  /// No description provided for @eventsTimeRange.
+  ///
+  /// In en, this message translates to:
+  /// **'{start} – {end}'**
+  String eventsTimeRange(String start, String end);
+
+  /// No description provided for @eventsAttendees.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 at the table} other{{count} at the table}}'**
+  String eventsAttendees(int count);
+
+  /// No description provided for @eventsGamesPlayed.
+  ///
+  /// In en, this message translates to:
+  /// **'Games played'**
+  String get eventsGamesPlayed;
+
+  /// No description provided for @homeSeeStats.
+  ///
+  /// In en, this message translates to:
+  /// **'See stats'**
+  String get homeSeeStats;
+
+  /// No description provided for @joinTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Join a room'**
+  String get joinTitle;
+
+  /// No description provided for @joinIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the code on the host\'s phone to play from your own phone.'**
+  String get joinIntro;
+
+  /// No description provided for @joinCodeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'4 to 6 letters or numbers'**
+  String get joinCodeHint;
+
+  /// No description provided for @joinScanQr.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan QR code'**
+  String get joinScanQr;
+
+  /// No description provided for @joinCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Join'**
+  String get joinCta;
+
+  /// No description provided for @joinNotYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Playing from players\' phones is coming in a later update.'**
+  String get joinNotYet;
+
+  /// No description provided for @leaderboardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leaderboard'**
+  String get leaderboardTitle;
+
+  /// No description provided for @leaderboardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ranked by wins across every finished game'**
+  String get leaderboardSubtitle;
+
+  /// No description provided for @leaderboardEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish a game to start the leaderboard.'**
+  String get leaderboardEmpty;
+
+  /// No description provided for @leaderboardRowDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'{games, plural, =1{1 game} other{{games} games}} · {rate}% wins'**
+  String leaderboardRowDetail(int games, int rate);
+
+  /// No description provided for @leaderboardWins.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 win} other{{count} wins}}'**
+  String leaderboardWins(int count);
+
+  /// No description provided for @logFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get logFilterAll;
+
+  /// No description provided for @logFilterKills.
+  ///
+  /// In en, this message translates to:
+  /// **'Kills'**
+  String get logFilterKills;
+
+  /// No description provided for @logFilterSaves.
+  ///
+  /// In en, this message translates to:
+  /// **'Saves'**
+  String get logFilterSaves;
+
+  /// No description provided for @logFilterVotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Votes'**
+  String get logFilterVotes;
+
+  /// No description provided for @logNothingHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing of this kind yet.'**
+  String get logNothingHere;
+
+  /// No description provided for @nightGodfatherConfirms.
+  ///
+  /// In en, this message translates to:
+  /// **'Godfather confirms: kill {name}'**
+  String nightGodfatherConfirms(String name);
+
+  /// No description provided for @nightMafiaProposalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold a player to mark a Mafia proposal; tap to choose the kill.'**
+  String get nightMafiaProposalHint;
+
+  /// No description provided for @profileFavoriteRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite role'**
+  String get profileFavoriteRole;
+
+  /// No description provided for @profileLastPlayed.
+  ///
+  /// In en, this message translates to:
+  /// **'Last played {date}'**
+  String profileLastPlayed(String date);
+
+  /// No description provided for @profileNoGames.
+  ///
+  /// In en, this message translates to:
+  /// **'No finished games yet.'**
+  String get profileNoGames;
+
+  /// No description provided for @profileRoleHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Role history'**
+  String get profileRoleHistory;
+
+  /// No description provided for @profileWinRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Win rate'**
+  String get profileWinRate;
+
+  /// No description provided for @settingsDefaultsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Every new game starts with these; change them per game in setup.'**
+  String get settingsDefaultsHint;
+
+  /// No description provided for @settingsDefaultsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Game defaults'**
+  String get settingsDefaultsSection;
+
+  /// No description provided for @settingsFeedbackSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Sound & touch'**
+  String get settingsFeedbackSection;
+
+  /// No description provided for @settingsHaptics.
+  ///
+  /// In en, this message translates to:
+  /// **'Haptics'**
+  String get settingsHaptics;
+
+  /// No description provided for @settingsHapticsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A light tap on picks, card flips and when time runs out'**
+  String get settingsHapticsSubtitle;
+
+  /// No description provided for @setupDiscussionTimerMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Discussion timer (minutes)'**
+  String get setupDiscussionTimerMinutes;
+
+  /// No description provided for @settingsDeviceShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Device'**
+  String get settingsDeviceShort;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
