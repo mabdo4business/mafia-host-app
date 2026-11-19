@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/l10n.dart';
 import '../../common/widgets.dart';
 import '../../game/providers.dart';
+import '../gallery/gallery_screen.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -37,13 +39,6 @@ class SettingsScreen extends ConsumerWidget {
             prefs.locale?.languageCode == 'ar',
             () => controller.setLocale(const Locale('ar')),
           ),
-          SectionHeader(l.settingsTheme),
-          for (final (mode, label) in [
-            (ThemeMode.system, l.settingsSystemDefault),
-            (ThemeMode.light, l.themeLight),
-            (ThemeMode.dark, l.themeDark),
-          ])
-            option(label, prefs.themeMode == mode, () => controller.setThemeMode(mode)),
           SectionHeader(l.settingsSoundSection),
           SwitchListTile(
             title: Text(l.settingsSound),
@@ -51,6 +46,12 @@ class SettingsScreen extends ConsumerWidget {
             value: prefs.soundEnabled,
             onChanged: controller.setSoundEnabled,
           ),
+          if (kDebugMode)
+            ListTile(
+              // Debug-only developer tool; not shipped, not localized.
+              title: const Text('Component gallery'),
+              onTap: () => Navigator.pushNamed(context, GalleryScreen.route),
+            ),
         ],
       ),
     );

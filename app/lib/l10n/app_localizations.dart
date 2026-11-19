@@ -1010,6 +1010,378 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{bomb} (Bomb) took {victims}'**
   String logBomb(String bomb, String victims);
+
+  /// No description provided for @quoted.
+  ///
+  /// In en, this message translates to:
+  /// **'“{text}”'**
+  String quoted(String text);
+
+  /// No description provided for @teamCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{team} {count}'**
+  String teamCount(String team, String count);
+
+  /// No description provided for @teamLabelMafia.
+  ///
+  /// In en, this message translates to:
+  /// **'Mafia team'**
+  String get teamLabelMafia;
+
+  /// No description provided for @teamLabelCivilians.
+  ///
+  /// In en, this message translates to:
+  /// **'Civilian team'**
+  String get teamLabelCivilians;
+
+  /// No description provided for @revealTapToReveal.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to reveal'**
+  String get revealTapToReveal;
+
+  /// No description provided for @revealNoOneLooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Make sure no one is looking'**
+  String get revealNoOneLooking;
+
+  /// No description provided for @revealYourFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Your family'**
+  String get revealYourFamily;
+
+  /// No description provided for @revealRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Reveal role'**
+  String get revealRole;
+
+  /// No description provided for @hideRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide role'**
+  String get hideRole;
+
+  /// No description provided for @familyMember.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} · {role}'**
+  String familyMember(String name, String role);
+
+  /// No description provided for @abilityCivilian.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no power at night. Find the Mafia and vote them out by day.'**
+  String get abilityCivilian;
+
+  /// No description provided for @abilityDoctor.
+  ///
+  /// In en, this message translates to:
+  /// **'Save one player each night, yourself included — but never the same player two nights in a row.'**
+  String get abilityDoctor;
+
+  /// No description provided for @abilityDetective.
+  ///
+  /// In en, this message translates to:
+  /// **'Check one player each night. The host tells you: Mafia or Civilian.'**
+  String get abilityDetective;
+
+  /// No description provided for @abilityBomb.
+  ///
+  /// In en, this message translates to:
+  /// **'When you die, by night or by vote, you take players down with you.'**
+  String get abilityBomb;
+
+  /// No description provided for @abilityJoker.
+  ///
+  /// In en, this message translates to:
+  /// **'You kill one player every night. You play for the Civilians, but nobody is safe.'**
+  String get abilityJoker;
+
+  /// No description provided for @abilityChameleon.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a role now and play it for the whole game.'**
+  String get abilityChameleon;
+
+  /// No description provided for @abilityMafia.
+  ///
+  /// In en, this message translates to:
+  /// **'Each night, wake with your family and choose who dies.'**
+  String get abilityMafia;
+
+  /// No description provided for @abilityGodfather.
+  ///
+  /// In en, this message translates to:
+  /// **'You make the final call on who the Mafia kills. The Detective sees you as a Civilian.'**
+  String get abilityGodfather;
+
+  /// No description provided for @abilityPotana.
+  ///
+  /// In en, this message translates to:
+  /// **'Each night, block one civilian\'s power. Their action has no effect.'**
+  String get abilityPotana;
+
+  /// No description provided for @abilityLawyer.
+  ///
+  /// In en, this message translates to:
+  /// **'Each night, protect a Mafia member: the Detective sees them as a Civilian.'**
+  String get abilityLawyer;
+
+  /// No description provided for @timeLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'left'**
+  String get timeLeft;
+
+  /// No description provided for @statusEliminated.
+  ///
+  /// In en, this message translates to:
+  /// **'Eliminated'**
+  String get statusEliminated;
+
+  /// No description provided for @nightWakeTitlePotana.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake the Potana'**
+  String get nightWakeTitlePotana;
+
+  /// No description provided for @nightWakeTitleLawyer.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake the Lawyer'**
+  String get nightWakeTitleLawyer;
+
+  /// No description provided for @nightWakeTitleMafia.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake the Mafia'**
+  String get nightWakeTitleMafia;
+
+  /// No description provided for @nightWakeTitleJoker.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake the Joker'**
+  String get nightWakeTitleJoker;
+
+  /// No description provided for @nightWakeTitleDoctor.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake the Doctor'**
+  String get nightWakeTitleDoctor;
+
+  /// No description provided for @nightWakeTitleDetective.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake the Detective'**
+  String get nightWakeTitleDetective;
+
+  /// No description provided for @nightLinePotana.
+  ///
+  /// In en, this message translates to:
+  /// **'Potana, open your eyes. Whose power do you block tonight?'**
+  String get nightLinePotana;
+
+  /// No description provided for @nightLineLawyer.
+  ///
+  /// In en, this message translates to:
+  /// **'Lawyer, open your eyes. Who do you protect tonight?'**
+  String get nightLineLawyer;
+
+  /// No description provided for @nightLineMafia.
+  ///
+  /// In en, this message translates to:
+  /// **'Mafia, open your eyes. Who dies tonight?'**
+  String get nightLineMafia;
+
+  /// No description provided for @nightLineJoker.
+  ///
+  /// In en, this message translates to:
+  /// **'Joker, open your eyes. Who do you kill tonight?'**
+  String get nightLineJoker;
+
+  /// No description provided for @nightLineDoctor.
+  ///
+  /// In en, this message translates to:
+  /// **'Doctor, open your eyes. Who do you save tonight?'**
+  String get nightLineDoctor;
+
+  /// No description provided for @nightLineDetective.
+  ///
+  /// In en, this message translates to:
+  /// **'Detective, open your eyes. Who do you check tonight?'**
+  String get nightLineDetective;
+
+  /// No description provided for @hostOnlyDetective.
+  ///
+  /// In en, this message translates to:
+  /// **'Host only: Detective checked {name} → {result}'**
+  String hostOnlyDetective(String name, String result);
+
+  /// No description provided for @actionBlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Block {name}'**
+  String actionBlock(String name);
+
+  /// No description provided for @actionProtect.
+  ///
+  /// In en, this message translates to:
+  /// **'Protect {name}'**
+  String actionProtect(String name);
+
+  /// No description provided for @actionKill.
+  ///
+  /// In en, this message translates to:
+  /// **'Kill {name}'**
+  String actionKill(String name);
+
+  /// No description provided for @actionSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save {name}'**
+  String actionSave(String name);
+
+  /// No description provided for @actionCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Check {name}'**
+  String actionCheck(String name);
+
+  /// No description provided for @nightPickToBlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a player to block'**
+  String get nightPickToBlock;
+
+  /// No description provided for @nightPickToProtect.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a player to protect'**
+  String get nightPickToProtect;
+
+  /// No description provided for @nightPickToKill.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a player to kill'**
+  String get nightPickToKill;
+
+  /// No description provided for @nightPickToSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a player to save'**
+  String get nightPickToSave;
+
+  /// No description provided for @nightPickToCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a player to check'**
+  String get nightPickToCheck;
+
+  /// No description provided for @nightBlockedShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked tonight: this action has no effect.'**
+  String get nightBlockedShort;
+
+  /// No description provided for @setupShuffleDeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Shuffle & deal roles'**
+  String get setupShuffleDeal;
+
+  /// No description provided for @revealPassNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide & pass to next player'**
+  String get revealPassNext;
+
+  /// No description provided for @bombDetonateShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Detonate'**
+  String get bombDetonateShort;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @setupBalancedFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Balanced for {count}'**
+  String setupBalancedFor(int count);
+
+  /// No description provided for @setupProblemMafiaTooStrongShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Mafia too strong'**
+  String get setupProblemMafiaTooStrongShort;
+
+  /// No description provided for @announceRoleSecret.
+  ///
+  /// In en, this message translates to:
+  /// **'Role stays secret until the game ends'**
+  String get announceRoleSecret;
+
+  /// No description provided for @announceBombTakes.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{They take 1 player down with them:} other{They take {count} players down with them:}}'**
+  String announceBombTakes(int count);
+
+  /// No description provided for @announceSomeoneSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Someone was saved by the Doctor.'**
+  String get announceSomeoneSaved;
+
+  /// No description provided for @announceDontSayWho.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t say who'**
+  String get announceDontSayWho;
+
+  /// No description provided for @statGames.
+  ///
+  /// In en, this message translates to:
+  /// **'Games'**
+  String get statGames;
+
+  /// No description provided for @statMafiaWins.
+  ///
+  /// In en, this message translates to:
+  /// **'Mafia wins'**
+  String get statMafiaWins;
+
+  /// No description provided for @statCivilianWins.
+  ///
+  /// In en, this message translates to:
+  /// **'Civilian wins'**
+  String get statCivilianWins;
+
+  /// No description provided for @percent.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}%'**
+  String percent(int value);
+
+  /// No description provided for @modeHostOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Host only · Cards'**
+  String get modeHostOnly;
+
+  /// No description provided for @modePlayersPhones.
+  ///
+  /// In en, this message translates to:
+  /// **'Players\' phones'**
+  String get modePlayersPhones;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

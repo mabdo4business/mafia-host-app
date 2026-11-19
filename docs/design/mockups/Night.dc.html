@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Mafia Host — Night wizard</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#05060A}
+a{color:#E8B54A}a:hover{color:#F3CD78}
+button{font-family:inherit;cursor:pointer}
+button:disabled{cursor:not-allowed}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #05060A; color: #F2EEE6; font-family: Inter, system-ui, sans-serif; position: relative; overflow: hidden; display: flex; flex-direction: column">
+  <div aria-hidden="true" style="position: absolute; top: -160px; left: -100px; width: 420px; height: 420px; border-radius: 50%; background: radial-gradient(circle, rgba(110,130,255,0.18) 0%, rgba(110,130,255,0) 70%)"></div>
+
+  <div style="padding: 54px 24px 0 24px; display: flex; justify-content: space-between; align-items: center; position: relative">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="#C9D1FF"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"></path></svg>
+      <div style="font-family: Unbounded, sans-serif; font-size: 20px; font-weight: 700">Night 3</div>
+    </div>
+    <button aria-label="Game log" style="height: 40px; padding: 0 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.10); background: rgba(255,255,255,0.04); color: #B7BBC6; font-size: 13px; font-weight: 500">Game log</button>
+  </div>
+
+  <div style="margin: 18px 24px 0 24px; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; position: relative">
+    <sc-for list="{{steps}}" as="s" hint-placeholder-count="6">
+      <div style="display: flex; flex-direction: column; gap: 6px; align-items: center">
+        <div style="height: 4px; align-self: stretch; border-radius: 2px; background: {{s.bar}}"></div>
+        <div style="font-size: 11px; color: {{s.color}}; font-weight: {{s.weight}}">{{s.name}}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="margin: 18px 24px 0 24px; padding: 18px; border-radius: 24px; background: rgba(255,255,255,0.04); border: 1px solid rgba(232,181,74,0.25); display: flex; gap: 14px; align-items: center; position: relative">
+    <div style="width: 52px; height: 52px; border-radius: 16px; background: rgba(232,181,74,0.16); color: #F3CD78; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+      <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"></path></svg>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-family: Unbounded, sans-serif; font-size: 17px; font-weight: 700">Wake the Doctor</div>
+      <div style="font-size: 14px; line-height: 1.45; color: #C9C5BE">“Doctor, open your eyes. Who do you save tonight?”</div>
+    </div>
+  </div>
+
+  <div style="margin: 18px 24px 0 24px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; position: relative">
+    <sc-for list="{{players}}" as="p" hint-placeholder-count="11">
+      <button onClick="{{p.pick}}" disabled="{{p.disabled}}" aria-pressed="{{p.selected}}" style="height: 80px; padding: 8px 4px; box-sizing: border-box; border-radius: 18px; border: {{p.border}}; background: {{p.bg}}; color: {{p.color}}; opacity: {{p.opacity}}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; transition: all 160ms ease-out">
+        <div style="width: 32px; height: 32px; border-radius: 16px; background: {{p.avatarBg}}; color: {{p.avatarColor}}; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700">{{p.initials}}</div>
+        <div style="font-size: 13px; font-weight: 600; text-decoration: {{p.deco}}">{{p.name}}</div>
+        <sc-if value="{{p.note}}" hint-placeholder-val="{{ false }}">
+          <div style="font-size: 10.5px; color: #9AA0AE; margin-top: -4px">{{p.note}}</div>
+        </sc-if>
+      </button>
+    </sc-for>
+  </div>
+
+  <div style="margin-top: auto; padding: 0 24px 34px 24px; display: flex; gap: 10px; position: relative">
+    <button aria-label="Previous step" style="width: 60px; height: 60px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.12); background: transparent; color: #F2EEE6; display: flex; align-items: center; justify-content: center">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"></path></svg>
+    </button>
+    <sc-if value="{{hasPick}}" hint-placeholder-val="{{ false }}">
+      <a href="Morning.dc.html" style="flex-grow: 1; height: 60px; border-radius: 20px; background: #E8B54A; color: #1A1408; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 16px; font-weight: 700; box-shadow: 0 10px 30px rgba(232,181,74,0.30)">Save {{pickName}}</a>
+    </sc-if>
+    <sc-if value="{{noPick}}" hint-placeholder-val="{{ true }}">
+      <div style="flex-grow: 1; height: 60px; border-radius: 20px; background: rgba(255,255,255,0.06); color: #8A90A0; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600">Pick a player to save</div>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { pick: null };
+  }
+  renderVals() {
+    var pick = this.state.pick;
+    var names = [
+      ['Layla', 'LA', ''], ['Omar', 'OM', ''], ['Sara', 'SA', ''],
+      ['Khalid', 'KH', 'dead'], ['Yousef', 'YO', ''], ['Noor', 'NO', 'last'],
+      ['Faisal', 'FA', ''], ['Huda', 'HU', ''], ['Ali', 'AL', ''],
+      ['Mariam', 'MA', ''], ['Hamad', 'HA', '']
+    ];
+    var players = names.map((n) => {
+      var dead = n[2] === 'dead', last = n[2] === 'last', sel = pick === n[0];
+      var disabled = dead || last;
+      return {
+        name: n[0], initials: n[1], selected: sel, disabled: disabled,
+        note: dead ? 'Eliminated' : (last ? 'Saved last night' : ''),
+        deco: dead ? 'line-through' : 'none',
+        opacity: disabled ? 0.45 : 1,
+        border: sel ? '2px solid #E8B54A' : '1px solid rgba(255,255,255,0.08)',
+        bg: sel ? 'rgba(232,181,74,0.14)' : 'rgba(255,255,255,0.04)',
+        color: '#F2EEE6',
+        avatarBg: sel ? '#E8B54A' : '#232633',
+        avatarColor: sel ? '#1A1408' : '#D6D2CB',
+        pick: () => { if (!disabled) this.setState({ pick: n[0] }); }
+      };
+    });
+    var stepNames = ['Potana', 'Lawyer', 'Mafia', 'Joker', 'Doctor', 'Detective'];
+    var steps = stepNames.map((s, i) => ({
+      name: s,
+      bar: i < 4 ? '#6E7AA8' : (i === 4 ? '#E8B54A' : 'rgba(255,255,255,0.10)'),
+      color: i === 4 ? '#F3CD78' : (i < 4 ? '#9AA0AE' : '#818798'),
+      weight: i === 4 ? 700 : 500
+    }));
+    return { players: players, steps: steps, hasPick: !!pick, noPick: !pick, pickName: pick || '' };
+  }
+}
+</script>
+</body>
+</html>

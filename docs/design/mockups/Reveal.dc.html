@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Mafia Host — Role reveal</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#07080C}
+a{color:#E8B54A}a:hover{color:#F3CD78}
+button{font-family:inherit;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #07080C; color: #F2EEE6; font-family: Inter, system-ui, sans-serif; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center">
+  <div aria-hidden="true" style="position: absolute; top: 200px; left: 50%; margin-left: -240px; width: 480px; height: 480px; border-radius: 50%; background: radial-gradient(circle, {{glow}} 0%, rgba(0,0,0,0) 65%)"></div>
+
+  <div style="align-self: stretch; padding: 56px 24px 0 24px; display: flex; flex-direction: column; gap: 14px; position: relative">
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <div style="font-size: 13px; color: #9AA0AE; letter-spacing: 0.06em; text-transform: uppercase">Dealing roles</div>
+      <div style="font-size: 13px; color: #9AA0AE">4 of 11</div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(11, minmax(0, 1fr)); gap: 4px">
+      <div style="height: 4px; border-radius: 2px; background: #F2EEE6"></div>
+      <div style="height: 4px; border-radius: 2px; background: #F2EEE6"></div>
+      <div style="height: 4px; border-radius: 2px; background: #F2EEE6"></div>
+      <div style="height: 4px; border-radius: 2px; background: #E5484D"></div>
+      <div style="height: 4px; border-radius: 2px; background: rgba(255,255,255,0.12)"></div>
+      <div style="height: 4px; border-radius: 2px; background: rgba(255,255,255,0.12)"></div>
+      <div style="height: 4px; border-radius: 2px; background: rgba(255,255,255,0.12)"></div>
+      <div style="height: 4px; border-radius: 2px; background: rgba(255,255,255,0.12)"></div>
+      <div style="height: 4px; border-radius: 2px; background: rgba(255,255,255,0.12)"></div>
+      <div style="height: 4px; border-radius: 2px; background: rgba(255,255,255,0.12)"></div>
+      <div style="height: 4px; border-radius: 2px; background: rgba(255,255,255,0.12)"></div>
+    </div>
+    <div style="margin-top: 10px; text-align: center; display: flex; flex-direction: column; gap: 6px">
+      <div style="font-size: 14px; color: #9AA0AE">Hand the phone to</div>
+      <div style="font-family: Unbounded, sans-serif; font-size: 28px; font-weight: 700">Layla</div>
+    </div>
+  </div>
+
+  <button onClick="{{flip}}" aria-label="{{cardLabel}}" style="margin-top: 28px; width: 270px; height: 390px; padding: 0; border: none; background: transparent; perspective: 1200px; position: relative">
+    <div style="position: absolute; inset: 0; transform-style: preserve-3d; transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1); transform: {{rot}}">
+
+      <div style="position: absolute; inset: 0; backface-visibility: hidden; border-radius: 28px; background: #12131A; border: 1px solid rgba(255,255,255,0.12); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; overflow: hidden">
+        <div aria-hidden="true" style="position: absolute; inset: 14px; border-radius: 20px; border: 1px solid rgba(232,181,74,0.30)"></div>
+        <svg aria-hidden="true" width="96" height="96" viewBox="0 0 96 96" fill="none" stroke="#E8B54A" stroke-width="1.5"><circle cx="48" cy="48" r="40"></circle><circle cx="48" cy="48" r="30" stroke-dasharray="3 5"></circle><path d="M30 58h36M36 58l3-18h18l3 18M40 50h16"></path></svg>
+        <div style="font-family: Unbounded, sans-serif; font-size: 15px; font-weight: 500; letter-spacing: 0.2em; color: #E8B54A">TAP TO REVEAL</div>
+        <div style="font-size: 13px; color: #9AA0AE">Make sure no one is looking</div>
+      </div>
+
+      <div style="position: absolute; inset: 0; backface-visibility: hidden; transform: rotateY(180deg); border-radius: 28px; background: linear-gradient(170deg, #2A0F14 0%, #12131A 60%); border: 1px solid rgba(229,72,77,0.45); box-shadow: 0 30px 80px rgba(229,72,77,0.25); display: flex; flex-direction: column; align-items: center; padding: 28px 24px; box-sizing: border-box; gap: 14px; text-align: center">
+        <div style="padding: 6px 12px; border-radius: 999px; background: rgba(229,72,77,0.18); color: #FF8A8E; font-size: 12px; font-weight: 700; letter-spacing: 0.1em">MAFIA TEAM</div>
+        <div style="margin-top: 10px; width: 104px; height: 104px; border-radius: 52px; background: rgba(229,72,77,0.14); border: 1px solid rgba(229,72,77,0.4); display: flex; align-items: center; justify-content: center; color: #FF8A8E">
+          <svg aria-hidden="true" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16h18M6 16l1.5-8h9L18 16M8 12h8"></path></svg>
+        </div>
+        <div style="font-family: Unbounded, sans-serif; font-size: 30px; font-weight: 700; color: #FFFFFF">Godfather</div>
+        <div style="font-size: 14px; line-height: 1.5; color: #D6D2CB">You make the final call on who the Mafia kills. The Detective sees you as a Civilian.</div>
+        <div style="margin-top: auto; align-self: stretch; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; gap: 8px">
+          <div style="font-size: 12px; color: #9AA0AE; letter-spacing: 0.06em; text-transform: uppercase">Your family</div>
+          <div style="display: flex; justify-content: center; gap: 8px">
+            <div style="padding: 6px 10px; border-radius: 10px; background: rgba(255,255,255,0.06); font-size: 13px">Omar · Potana</div>
+            <div style="padding: 6px 10px; border-radius: 10px; background: rgba(255,255,255,0.06); font-size: 13px">Sara · Lawyer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </button>
+
+  <div style="margin-top: auto; align-self: stretch; padding: 0 24px 34px 24px; display: flex; flex-direction: column; gap: 12px">
+    <sc-if value="{{flipped}}" hint-placeholder-val="{{ false }}">
+      <a href="Night.dc.html" style="height: 60px; border-radius: 20px; background: #F2EEE6; color: #0B0C10; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 16px; font-weight: 600">
+        Hide &amp; pass to next player
+      </a>
+    </sc-if>
+    <sc-if value="{{notFlipped}}" hint-placeholder-val="{{ true }}">
+      <div style="height: 60px; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #9AA0AE">Hold the card close, then tap it</div>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { flipped: false };
+  }
+  renderVals() {
+    var f = this.state.flipped;
+    return {
+      flipped: f,
+      notFlipped: !f,
+      rot: f ? 'rotateY(180deg)' : 'rotateY(0deg)',
+      glow: f ? 'rgba(229,72,77,0.30)' : 'rgba(232,181,74,0.10)',
+      cardLabel: f ? 'Hide role' : 'Reveal role',
+      flip: () => this.setState({ flipped: !this.state.flipped })
+    };
+  }
+}
+</script>
+</body>
+</html>

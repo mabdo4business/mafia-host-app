@@ -1,0 +1,13 @@
+/// Shared UI components (docs/design/DESIGN.md → Components). Screens build
+/// from these only.
+library;
+
+export '../theme/app_theme.dart';
+export 'announcements.dart';
+export 'buttons.dart';
+export 'mafia_icon.dart';
+export 'phase.dart';
+export 'players.dart';
+export 'role_card.dart';
+export 'setup_widgets.dart';
+export 'surfaces.dart';

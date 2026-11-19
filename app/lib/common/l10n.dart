@@ -14,6 +14,9 @@ extension L10nContext on BuildContext {
   /// Formats a number with the current locale's digits.
   String number(int n) =>
       NumberFormat.decimalPattern(Localizations.localeOf(this).toString()).format(n);
+
+  /// Zero-padded two digits in the current locale ("07", "٠٧").
+  String twoDigits(int n) => NumberFormat('00', Localizations.localeOf(this).toString()).format(n);
 }
 
 extension RoleText on AppLocalizations {
@@ -28,6 +31,20 @@ extension RoleText on AppLocalizations {
     Role.godfather => roleGodfather,
     Role.potana => rolePotana,
     Role.lawyer => roleLawyer,
+  };
+
+  /// What the role does, as told on its card.
+  String ability(Role r) => switch (r) {
+    Role.civilian => abilityCivilian,
+    Role.doctor => abilityDoctor,
+    Role.detective => abilityDetective,
+    Role.bomb => abilityBomb,
+    Role.joker => abilityJoker,
+    Role.chameleon => abilityChameleon,
+    Role.mafia => abilityMafia,
+    Role.godfather => abilityGodfather,
+    Role.potana => abilityPotana,
+    Role.lawyer => abilityLawyer,
   };
 
   String team(Team t) => switch (t) {

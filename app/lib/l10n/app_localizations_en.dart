@@ -604,4 +604,236 @@ class AppLocalizationsEn extends AppLocalizations {
   String logBomb(String bomb, String victims) {
     return '$bomb (Bomb) took $victims';
   }
+
+  @override
+  String quoted(String text) {
+    return '“$text”';
+  }
+
+  @override
+  String teamCount(String team, String count) {
+    return '$team $count';
+  }
+
+  @override
+  String get teamLabelMafia => 'Mafia team';
+
+  @override
+  String get teamLabelCivilians => 'Civilian team';
+
+  @override
+  String get revealTapToReveal => 'Tap to reveal';
+
+  @override
+  String get revealNoOneLooking => 'Make sure no one is looking';
+
+  @override
+  String get revealYourFamily => 'Your family';
+
+  @override
+  String get revealRole => 'Reveal role';
+
+  @override
+  String get hideRole => 'Hide role';
+
+  @override
+  String familyMember(String name, String role) {
+    return '$name · $role';
+  }
+
+  @override
+  String get abilityCivilian =>
+      'You have no power at night. Find the Mafia and vote them out by day.';
+
+  @override
+  String get abilityDoctor =>
+      'Save one player each night, yourself included — but never the same player two nights in a row.';
+
+  @override
+  String get abilityDetective =>
+      'Check one player each night. The host tells you: Mafia or Civilian.';
+
+  @override
+  String get abilityBomb => 'When you die, by night or by vote, you take players down with you.';
+
+  @override
+  String get abilityJoker =>
+      'You kill one player every night. You play for the Civilians, but nobody is safe.';
+
+  @override
+  String get abilityChameleon => 'Pick a role now and play it for the whole game.';
+
+  @override
+  String get abilityMafia => 'Each night, wake with your family and choose who dies.';
+
+  @override
+  String get abilityGodfather =>
+      'You make the final call on who the Mafia kills. The Detective sees you as a Civilian.';
+
+  @override
+  String get abilityPotana =>
+      'Each night, block one civilian\'s power. Their action has no effect.';
+
+  @override
+  String get abilityLawyer =>
+      'Each night, protect a Mafia member: the Detective sees them as a Civilian.';
+
+  @override
+  String get timeLeft => 'left';
+
+  @override
+  String get statusEliminated => 'Eliminated';
+
+  @override
+  String get nightWakeTitlePotana => 'Wake the Potana';
+
+  @override
+  String get nightWakeTitleLawyer => 'Wake the Lawyer';
+
+  @override
+  String get nightWakeTitleMafia => 'Wake the Mafia';
+
+  @override
+  String get nightWakeTitleJoker => 'Wake the Joker';
+
+  @override
+  String get nightWakeTitleDoctor => 'Wake the Doctor';
+
+  @override
+  String get nightWakeTitleDetective => 'Wake the Detective';
+
+  @override
+  String get nightLinePotana => 'Potana, open your eyes. Whose power do you block tonight?';
+
+  @override
+  String get nightLineLawyer => 'Lawyer, open your eyes. Who do you protect tonight?';
+
+  @override
+  String get nightLineMafia => 'Mafia, open your eyes. Who dies tonight?';
+
+  @override
+  String get nightLineJoker => 'Joker, open your eyes. Who do you kill tonight?';
+
+  @override
+  String get nightLineDoctor => 'Doctor, open your eyes. Who do you save tonight?';
+
+  @override
+  String get nightLineDetective => 'Detective, open your eyes. Who do you check tonight?';
+
+  @override
+  String hostOnlyDetective(String name, String result) {
+    return 'Host only: Detective checked $name → $result';
+  }
+
+  @override
+  String actionBlock(String name) {
+    return 'Block $name';
+  }
+
+  @override
+  String actionProtect(String name) {
+    return 'Protect $name';
+  }
+
+  @override
+  String actionKill(String name) {
+    return 'Kill $name';
+  }
+
+  @override
+  String actionSave(String name) {
+    return 'Save $name';
+  }
+
+  @override
+  String actionCheck(String name) {
+    return 'Check $name';
+  }
+
+  @override
+  String get nightPickToBlock => 'Pick a player to block';
+
+  @override
+  String get nightPickToProtect => 'Pick a player to protect';
+
+  @override
+  String get nightPickToKill => 'Pick a player to kill';
+
+  @override
+  String get nightPickToSave => 'Pick a player to save';
+
+  @override
+  String get nightPickToCheck => 'Pick a player to check';
+
+  @override
+  String get nightBlockedShort => 'Blocked tonight: this action has no effect.';
+
+  @override
+  String get setupShuffleDeal => 'Shuffle & deal roles';
+
+  @override
+  String get revealPassNext => 'Hide & pass to next player';
+
+  @override
+  String get bombDetonateShort => 'Detonate';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String setupBalancedFor(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return 'Balanced for $countString';
+  }
+
+  @override
+  String get setupProblemMafiaTooStrongShort => 'Mafia too strong';
+
+  @override
+  String get announceRoleSecret => 'Role stays secret until the game ends';
+
+  @override
+  String announceBombTakes(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'They take $countString players down with them:',
+      one: 'They take 1 player down with them:',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get announceSomeoneSaved => 'Someone was saved by the Doctor.';
+
+  @override
+  String get announceDontSayWho => 'Don\'t say who';
+
+  @override
+  String get statGames => 'Games';
+
+  @override
+  String get statMafiaWins => 'Mafia wins';
+
+  @override
+  String get statCivilianWins => 'Civilian wins';
+
+  @override
+  String percent(int value) {
+    final intl.NumberFormat valueNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String valueString = valueNumberFormat.format(value);
+
+    return '$valueString%';
+  }
+
+  @override
+  String get modeHostOnly => 'Host only · Cards';
+
+  @override
+  String get modePlayersPhones => 'Players\' phones';
 }

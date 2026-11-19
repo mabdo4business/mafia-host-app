@@ -3,7 +3,6 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mafia_engine/mafia_engine.dart';
-import 'package:mafia_host/app.dart';
 import 'package:mafia_host/common/l10n.dart';
 import 'package:mafia_host/common/screen_awake.dart';
 import 'package:mafia_host/common/sounds.dart';
@@ -12,6 +11,7 @@ import 'package:mafia_host/game/game_flow_screen.dart';
 import 'package:mafia_host/game/game_session.dart';
 import 'package:mafia_host/game/providers.dart';
 import 'package:mafia_host/l10n/app_localizations.dart';
+import 'package:mafia_host/theme/app_theme.dart';
 
 Player p(String id, Role role, {Role? as}) =>
     Player(id: id, name: id.toUpperCase(), role: role, chameleonRole: as);
@@ -72,7 +72,7 @@ Future<ProviderContainer> pumpGame(
 
 Widget testApp(Widget home, {Locale locale = const Locale('en')}) => MaterialApp(
   locale: locale,
-  theme: buildTheme(Brightness.light),
+  theme: AppTheme.night(locale),
   localizationsDelegates: appLocalizationsDelegates,
   supportedLocales: AppLocalizations.supportedLocales,
   home: home,

@@ -615,4 +615,232 @@ class AppLocalizationsAr extends AppLocalizations {
   String logBomb(String bomb, String victims) {
     return 'القنبلة ($bomb) أخذت معها: $victims';
   }
+
+  @override
+  String quoted(String text) {
+    return '«$text»';
+  }
+
+  @override
+  String teamCount(String team, String count) {
+    return '$team $count';
+  }
+
+  @override
+  String get teamLabelMafia => 'فريق المافيا';
+
+  @override
+  String get teamLabelCivilians => 'فريق المدنيين';
+
+  @override
+  String get revealTapToReveal => 'اضغط للكشف';
+
+  @override
+  String get revealNoOneLooking => 'تأكد أن لا أحد ينظر';
+
+  @override
+  String get revealYourFamily => 'عائلتك';
+
+  @override
+  String get revealRole => 'اكشف الدور';
+
+  @override
+  String get hideRole => 'أخفِ الدور';
+
+  @override
+  String familyMember(String name, String role) {
+    return '$name · $role';
+  }
+
+  @override
+  String get abilityCivilian => 'لا قدرة لك في الليل. اكشف المافيا وصوّت لإخراجهم في النهار.';
+
+  @override
+  String get abilityDoctor =>
+      'أنقذ لاعبًا كل ليلة، ولو نفسك، لكن ليس اللاعب نفسه ليلتين متتاليتين.';
+
+  @override
+  String get abilityDetective => 'افحص لاعبًا كل ليلة، وسيخبرك المضيف: مافيا أم مدني.';
+
+  @override
+  String get abilityBomb => 'عندما تموت، ليلًا أو بالتصويت، تأخذ معك لاعبين آخرين.';
+
+  @override
+  String get abilityJoker => 'تقتل لاعبًا كل ليلة. أنت مع المدنيين، لكن لا أحد في مأمن.';
+
+  @override
+  String get abilityChameleon => 'اختر دورًا الآن والعبه طوال اللعبة.';
+
+  @override
+  String get abilityMafia => 'كل ليلة، استيقظ مع عائلتك واختاروا من يموت.';
+
+  @override
+  String get abilityGodfather => 'لك الكلمة الأخيرة في من تقتله المافيا. يراك المحقق مدنيًا.';
+
+  @override
+  String get abilityPotana => 'كل ليلة، عطّل قدرة أحد المدنيين فلا يكون لفعله أثر.';
+
+  @override
+  String get abilityLawyer => 'كل ليلة، احمِ أحد أفراد المافيا: يراه المحقق مدنيًا.';
+
+  @override
+  String get timeLeft => 'متبقٍ';
+
+  @override
+  String get statusEliminated => 'خرج';
+
+  @override
+  String get nightWakeTitlePotana => 'أيقظ البوتانا';
+
+  @override
+  String get nightWakeTitleLawyer => 'أيقظ المحامي';
+
+  @override
+  String get nightWakeTitleMafia => 'أيقظ المافيا';
+
+  @override
+  String get nightWakeTitleJoker => 'أيقظ الجوكر';
+
+  @override
+  String get nightWakeTitleDoctor => 'أيقظ الطبيب';
+
+  @override
+  String get nightWakeTitleDetective => 'أيقظ المحقق';
+
+  @override
+  String get nightLinePotana => 'يا بوتانا، افتح عينيك. قدرة من ستعطّل الليلة؟';
+
+  @override
+  String get nightLineLawyer => 'أيها المحامي، افتح عينيك. من ستحمي الليلة؟';
+
+  @override
+  String get nightLineMafia => 'أيتها المافيا، افتحوا أعينكم. من يموت الليلة؟';
+
+  @override
+  String get nightLineJoker => 'أيها الجوكر، افتح عينيك. من ستقتل الليلة؟';
+
+  @override
+  String get nightLineDoctor => 'أيها الطبيب، افتح عينيك. من ستنقذ الليلة؟';
+
+  @override
+  String get nightLineDetective => 'أيها المحقق، افتح عينيك. من ستفحص الليلة؟';
+
+  @override
+  String hostOnlyDetective(String name, String result) {
+    return 'للمضيف فقط: فحص المحقق $name ← $result';
+  }
+
+  @override
+  String actionBlock(String name) {
+    return 'تعطيل $name';
+  }
+
+  @override
+  String actionProtect(String name) {
+    return 'حماية $name';
+  }
+
+  @override
+  String actionKill(String name) {
+    return 'قتل $name';
+  }
+
+  @override
+  String actionSave(String name) {
+    return 'إنقاذ $name';
+  }
+
+  @override
+  String actionCheck(String name) {
+    return 'فحص $name';
+  }
+
+  @override
+  String get nightPickToBlock => 'اختر لاعبًا لتعطيله';
+
+  @override
+  String get nightPickToProtect => 'اختر لاعبًا لحمايته';
+
+  @override
+  String get nightPickToKill => 'اختر لاعبًا لقتله';
+
+  @override
+  String get nightPickToSave => 'اختر لاعبًا لإنقاذه';
+
+  @override
+  String get nightPickToCheck => 'اختر لاعبًا لفحصه';
+
+  @override
+  String get nightBlockedShort => 'معطَّل الليلة: لا أثر لهذا الفعل.';
+
+  @override
+  String get setupShuffleDeal => 'اخلط ووزّع الأدوار';
+
+  @override
+  String get revealPassNext => 'أخفِ ومرّر للاعب التالي';
+
+  @override
+  String get bombDetonateShort => 'فجّر';
+
+  @override
+  String get notifications => 'الإشعارات';
+
+  @override
+  String setupBalancedFor(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return 'متوازن لـ $countString';
+  }
+
+  @override
+  String get setupProblemMafiaTooStrongShort => 'المافيا أقوى من اللازم';
+
+  @override
+  String get announceRoleSecret => 'يبقى الدور سرًّا حتى نهاية اللعبة';
+
+  @override
+  String announceBombTakes(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'يأخذ معه $countString لاعبًا:',
+      few: 'يأخذ معه $countString لاعبين:',
+      two: 'يأخذ معه لاعبَين:',
+      one: 'يأخذ معه لاعبًا واحدًا:',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get announceSomeoneSaved => 'أنقذ الطبيب أحدهم.';
+
+  @override
+  String get announceDontSayWho => 'لا تذكر من';
+
+  @override
+  String get statGames => 'ألعاب';
+
+  @override
+  String get statMafiaWins => 'فوز المافيا';
+
+  @override
+  String get statCivilianWins => 'فوز المدنيين';
+
+  @override
+  String percent(int value) {
+    final intl.NumberFormat valueNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String valueString = valueNumberFormat.format(value);
+
+    return '$valueString٪';
+  }
+
+  @override
+  String get modeHostOnly => 'المضيف فقط · بطاقات';
+
+  @override
+  String get modePlayersPhones => 'هواتف اللاعبين';
 }
