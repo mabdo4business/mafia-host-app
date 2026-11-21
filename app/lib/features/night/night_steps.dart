@@ -1,7 +1,10 @@
 import 'package:mafia_engine/mafia_engine.dart';
 
-/// Night wizard steps, in the engine's resolution order.
-enum NightStepKind { potana, lawyer, mafia, joker, doctor, detective }
+/// Night wizard steps, in the order the host wakes them: the Mafia first,
+/// then Potana and Lawyer, then the civilian roles. Wake order is only for the
+/// table; the engine still resolves the collected actions in its own order
+/// (Potana block → Lawyer → Mafia kill → …).
+enum NightStepKind { mafia, potana, lawyer, joker, doctor, detective }
 
 /// One "wake X, who do they pick?" prompt.
 final class NightStep {
@@ -49,6 +52,12 @@ List<NightStep> buildNightSteps(GameState state) {
   final decider = godfather ?? mafiaTeam.firstOrNull;
 
   return [
+    if (decider != null)
+      NightStep(
+        kind: NightStepKind.mafia,
+        actorId: decider.id,
+        targetIds: ids((t) => t.team != Team.mafia),
+      ),
     for (final p in holders(Role.potana))
       NightStep(
         kind: NightStepKind.potana,
@@ -60,12 +69,6 @@ List<NightStep> buildNightSteps(GameState state) {
         kind: NightStepKind.lawyer,
         actorId: p.id,
         targetIds: ids((t) => t.team == Team.mafia),
-      ),
-    if (decider != null)
-      NightStep(
-        kind: NightStepKind.mafia,
-        actorId: decider.id,
-        targetIds: ids((t) => t.team != Team.mafia),
       ),
     for (final p in holders(Role.joker))
       NightStep(kind: NightStepKind.joker, actorId: p.id, targetIds: ids((t) => t.id != p.id)),

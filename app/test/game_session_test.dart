@@ -227,12 +227,12 @@ void main() {
   });
 
   group('night steps', () {
-    test('follow resolution order and skip missing or dead roles', () {
+    test('wake the Mafia first, then Potana and Lawyer; skip missing or dead roles', () {
       final s = GameSession.start(1, setup()).state;
       expect(buildNightSteps(s).map((st) => st.kind), [
+        NightStepKind.mafia,
         NightStepKind.potana,
         NightStepKind.lawyer,
-        NightStepKind.mafia,
         NightStepKind.joker,
         NightStepKind.doctor,
         NightStepKind.detective,
@@ -245,8 +245,8 @@ void main() {
           .apply(const AdvanceInput());
       expect(afterNight.stage, GameStage.night);
       expect(buildNightSteps(afterNight.state).map((st) => st.kind), [
-        NightStepKind.lawyer,
         NightStepKind.mafia,
+        NightStepKind.lawyer,
         NightStepKind.doctor,
         NightStepKind.detective,
       ]);

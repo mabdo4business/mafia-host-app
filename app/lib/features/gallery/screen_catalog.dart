@@ -308,7 +308,7 @@ final List<ScreenScenario> screenCatalog = [
   ScreenScenario('cards_check', (context) => _cards(context, mafiaOnly: false)),
   ScreenScenario('night', (context) {
     final s = _night3(context);
-    // Steps: Potana, Mafia, Joker, Doctor (3), Detective.
+    // Steps: Mafia, Potana, Joker, Doctor (3), Detective.
     return _stage(s, NightWizard(session: s, initialIndex: 3));
   }),
   ScreenScenario('morning', (context) {
@@ -321,7 +321,7 @@ final List<ScreenScenario> screenCatalog = [
   }),
   ScreenScenario('night_mafia', (context) {
     final s = _night3(context);
-    return _stage(s, NightWizard(session: s, initialIndex: 1));
+    return _stage(s, NightWizard(session: s, initialIndex: 0));
   }),
   ScreenScenario('chameleon', (context) {
     final names = sampleNames(context);
