@@ -74,3 +74,38 @@ List<Role> chameleonChoices(GameSettings settings) => [
   for (final r in Role.values)
     if (r != Role.chameleon && (r.team == Team.civilians || settings.chameleonCanPickMafiaRoles)) r,
 ];
+
+/// Cards mode: the order the host wakes each card holder on night 1 to see
+/// who has it — the Mafia team first, then the civilian roles. Civilians
+/// never wake; they are whoever is left.
+List<Role> cardWakeOrder(Map<Role, int> mix) => [
+  for (final r in const [
+    Role.godfather,
+    Role.mafia,
+    Role.potana,
+    Role.lawyer,
+    Role.doctor,
+    Role.detective,
+    Role.bomb,
+    Role.joker,
+    Role.chameleon,
+  ])
+    if ((mix[r] ?? 0) > 0) r,
+];
+
+/// Cards mode: builds the players from the host's record of who holds which
+/// card ([cards]: seat index → role). Unrecorded seats hold Civilian cards.
+/// Player ids match [dealRoles]: `p0`, `p1`, … in seating order.
+List<Player> playersFromCards(
+  List<String> names,
+  Map<int, Role> cards, {
+  Map<int, Role> chameleonPicks = const {},
+}) => [
+  for (var i = 0; i < names.length; i++)
+    Player(
+      id: 'p$i',
+      name: names[i].trim(),
+      role: cards[i] ?? Role.civilian,
+      chameleonRole: cards[i] == Role.chameleon ? chameleonPicks[i] : null,
+    ),
+];

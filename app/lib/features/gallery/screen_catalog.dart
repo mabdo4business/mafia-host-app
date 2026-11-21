@@ -30,6 +30,7 @@ import '../setup/chameleon_choice_screen.dart';
 import '../shell/main_shell.dart';
 import '../morning/morning_view.dart';
 import '../night/night_wizard.dart';
+import '../setup/assign_cards_screen.dart';
 import '../setup/reveal_screen.dart';
 import '../setup/setup_screen.dart';
 import 'component_catalog.dart';
@@ -302,6 +303,9 @@ final List<ScreenScenario> screenCatalog = [
       ),
     );
   }),
+  // Cards mode: the Mafia team is recorded; the Doctor is waking.
+  ScreenScenario('cards', (context) => _cards(context, mafiaOnly: true)),
+  ScreenScenario('cards_check', (context) => _cards(context, mafiaOnly: false)),
   ScreenScenario('night', (context) {
     final s = _night3(context);
     // Steps: Potana, Mafia, Joker, Doctor (3), Detective.
@@ -368,3 +372,27 @@ final List<ScreenScenario> screenCatalog = [
   ScreenScenario('settings', (context) => _scope(null, const SettingsScreen())),
   ScreenScenario('join_room', (context) => _scope(null, const JoinRoomScreen())),
 ];
+
+Widget _cards(BuildContext context, {required bool mafiaOnly}) {
+  final table = _table(context);
+  final mix = <Role, int>{};
+  for (final p in table) {
+    if (p.role != Role.civilian) mix[p.role] = (mix[p.role] ?? 0) + 1;
+  }
+  final cards = {
+    for (final (i, p) in table.indexed)
+      if (p.role != Role.civilian && (!mafiaOnly || p.role.team == Team.mafia)) i: p.role,
+  };
+  final order = cardWakeOrder(mix);
+  return _scope(
+    null,
+    AssignCardsScreen(
+      names: [for (final p in table) p.name],
+      mix: mix,
+      settings: const GameSettings(),
+      discussionSeconds: 0,
+      initialCards: cards,
+      initialStep: mafiaOnly ? order.indexOf(Role.doctor) : order.length,
+    ),
+  );
+}

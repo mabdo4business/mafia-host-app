@@ -326,5 +326,21 @@
   "settingsHaptics": "الاهتزاز",
   "settingsHapticsSubtitle": "اهتزاز خفيف عند الاختيار وقلب البطاقة وانتهاء الوقت",
   "setupDiscussionTimerMinutes": "مؤقت النقاش (بالدقائق)",
-  "settingsDeviceShort": "الجهاز"
+  "settingsDeviceShort": "الجهاز",
+  "setupRolesHow": "كيف يعرف اللاعبون أدوارهم",
+  "setupModePhone": "تمرير الهاتف",
+  "setupModeCards": "بطاقات ورقية",
+  "setupModePhoneHint": "كل لاعب يلمس الهاتف ليرى دوره.",
+  "setupModeCardsHint": "وزّع البطاقات، ثم حدّد من يحمل كل بطاقة في الليلة الأولى.",
+  "setupCardsDealt": "وزّعتُ البطاقات",
+  "cardsOverline": "الليلة الأولى · من يحمل أي بطاقة",
+  "cardsWake": "يستيقظ {role}",
+  "cardsLine": "من يحمل هذه البطاقة، فليفتح عينيه.",
+  "cardsPicked": "اختر من يحملها · {picked} من {total}",
+  "cardsNextRole": "التالي: {role}",
+  "cardsChameleonNext": "اختر دور الحرباء",
+  "cardsReviewStep": "مراجعة",
+  "cardsReviewTitle": "راجع البطاقات",
+  "cardsReviewHint": "اضغط على أي بطاقة لتصحيحها. البقية يحملون بطاقة مواطن.",
+  "cardsReviewCheck": "راجع البطاقات"
 }

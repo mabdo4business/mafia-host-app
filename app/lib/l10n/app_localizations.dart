@@ -2054,6 +2054,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Device'**
   String get settingsDeviceShort;
+
+  /// No description provided for @setupRolesHow.
+  ///
+  /// In en, this message translates to:
+  /// **'How players get their roles'**
+  String get setupRolesHow;
+
+  /// No description provided for @setupModePhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Pass the phone'**
+  String get setupModePhone;
+
+  /// No description provided for @setupModeCards.
+  ///
+  /// In en, this message translates to:
+  /// **'Physical cards'**
+  String get setupModeCards;
+
+  /// No description provided for @setupModePhoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Each player taps the phone to see their role.'**
+  String get setupModePhoneHint;
+
+  /// No description provided for @setupModeCardsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Hand out the cards, then tap who holds each one on night 1.'**
+  String get setupModeCardsHint;
+
+  /// No description provided for @setupCardsDealt.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'ve handed out the cards'**
+  String get setupCardsDealt;
+
+  /// No description provided for @cardsOverline.
+  ///
+  /// In en, this message translates to:
+  /// **'Night 1 · Who has which card'**
+  String get cardsOverline;
+
+  /// No description provided for @cardsWake.
+  ///
+  /// In en, this message translates to:
+  /// **'{role} wakes up'**
+  String cardsWake(String role);
+
+  /// No description provided for @cardsLine.
+  ///
+  /// In en, this message translates to:
+  /// **'If you hold this card, open your eyes.'**
+  String get cardsLine;
+
+  /// No description provided for @cardsPicked.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap who holds it · {picked} of {total}'**
+  String cardsPicked(int picked, int total);
+
+  /// No description provided for @cardsNextRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: {role}'**
+  String cardsNextRole(String role);
+
+  /// No description provided for @cardsChameleonNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the Chameleon\'s role'**
+  String get cardsChameleonNext;
+
+  /// No description provided for @cardsReviewStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Check'**
+  String get cardsReviewStep;
+
+  /// No description provided for @cardsReviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the cards'**
+  String get cardsReviewTitle;
+
+  /// No description provided for @cardsReviewHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a card to fix it. Everyone else holds a Civilian card.'**
+  String get cardsReviewHint;
+
+  /// No description provided for @cardsReviewCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the cards'**
+  String get cardsReviewCheck;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

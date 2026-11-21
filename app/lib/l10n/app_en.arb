@@ -979,5 +979,47 @@
   "settingsHaptics": "Haptics",
   "settingsHapticsSubtitle": "A light tap on picks, card flips and when time runs out",
   "setupDiscussionTimerMinutes": "Discussion timer (minutes)",
-  "settingsDeviceShort": "Device"
+  "settingsDeviceShort": "Device",
+  "setupRolesHow": "How players get their roles",
+  "setupModePhone": "Pass the phone",
+  "setupModeCards": "Physical cards",
+  "setupModePhoneHint": "Each player taps the phone to see their role.",
+  "setupModeCardsHint": "Hand out the cards, then tap who holds each one on night 1.",
+  "setupCardsDealt": "I've handed out the cards",
+  "cardsOverline": "Night 1 · Who has which card",
+  "cardsWake": "{role} wakes up",
+  "@cardsWake": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "cardsLine": "If you hold this card, open your eyes.",
+  "cardsPicked": "Tap who holds it · {picked} of {total}",
+  "@cardsPicked": {
+    "placeholders": {
+      "picked": {
+        "type": "int",
+        "format": "decimalPattern"
+      },
+      "total": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "cardsNextRole": "Next: {role}",
+  "@cardsNextRole": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "cardsChameleonNext": "Choose the Chameleon's role",
+  "cardsReviewStep": "Check",
+  "cardsReviewTitle": "Check the cards",
+  "cardsReviewHint": "Tap a card to fix it. Everyone else holds a Civilian card.",
+  "cardsReviewCheck": "Check the cards"
 }

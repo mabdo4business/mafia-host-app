@@ -7,6 +7,7 @@ import '../../game/providers.dart';
 import '../../game/role_mix.dart';
 import '../../l10n/app_localizations.dart';
 import '../../ui/ui.dart';
+import 'assign_cards_screen.dart';
 import 'players_sheet.dart';
 import 'reveal_screen.dart';
 
@@ -139,6 +140,17 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
           SectionTitle(l.setupOptionsSection),
           const SizedBox(height: Space.sm),
           _OptionCard(
+            title: l.setupRolesHow,
+            subtitle: draft.cardsMode ? l.setupModeCardsHint : l.setupModePhoneHint,
+            below: SegmentedPill<bool>(
+              key: const Key('rolesMode'),
+              segments: [(true, l.setupModeCards), (false, l.setupModePhone)],
+              selected: draft.cardsMode,
+              onChanged: controller.setCardsMode,
+            ),
+          ),
+          const SizedBox(height: 10),
+          _OptionCard(
             title: l.setupRevealRole,
             trailing: Switch(
               value: settings.revealRoleOnDeath,
@@ -180,20 +192,27 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
             ),
           PrimaryActionButton(
             key: const Key('dealRoles'),
-            label: l.setupShuffleDeal,
+            label: draft.cardsMode ? l.setupCardsDealt : l.setupShuffleDeal,
             tone: ActionTone.danger,
-            trailing: MafiaGlyphs.shuffle,
+            trailing: draft.cardsMode ? MafiaGlyphs.arrow : MafiaGlyphs.shuffle,
             onPressed: problem != null
                 ? null
                 : () => Navigator.push(
                     context,
                     MaterialPageRoute<void>(
-                      builder: (_) => RevealScreen(
-                        names: draft.names,
-                        mix: draft.mix,
-                        settings: settings,
-                        discussionSeconds: draft.discussionSeconds,
-                      ),
+                      builder: (_) => draft.cardsMode
+                          ? AssignCardsScreen(
+                              names: draft.names,
+                              mix: draft.mix,
+                              settings: settings,
+                              discussionSeconds: draft.discussionSeconds,
+                            )
+                          : RevealScreen(
+                              names: draft.names,
+                              mix: draft.mix,
+                              settings: settings,
+                              discussionSeconds: draft.discussionSeconds,
+                            ),
                     ),
                   ),
           ),

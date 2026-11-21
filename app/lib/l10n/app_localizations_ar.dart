@@ -1367,4 +1367,63 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get settingsDeviceShort => 'الجهاز';
+
+  @override
+  String get setupRolesHow => 'كيف يعرف اللاعبون أدوارهم';
+
+  @override
+  String get setupModePhone => 'تمرير الهاتف';
+
+  @override
+  String get setupModeCards => 'بطاقات ورقية';
+
+  @override
+  String get setupModePhoneHint => 'كل لاعب يلمس الهاتف ليرى دوره.';
+
+  @override
+  String get setupModeCardsHint => 'وزّع البطاقات، ثم حدّد من يحمل كل بطاقة في الليلة الأولى.';
+
+  @override
+  String get setupCardsDealt => 'وزّعتُ البطاقات';
+
+  @override
+  String get cardsOverline => 'الليلة الأولى · من يحمل أي بطاقة';
+
+  @override
+  String cardsWake(String role) {
+    return 'يستيقظ $role';
+  }
+
+  @override
+  String get cardsLine => 'من يحمل هذه البطاقة، فليفتح عينيه.';
+
+  @override
+  String cardsPicked(int picked, int total) {
+    final intl.NumberFormat pickedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String pickedString = pickedNumberFormat.format(picked);
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return 'اختر من يحملها · $pickedString من $totalString';
+  }
+
+  @override
+  String cardsNextRole(String role) {
+    return 'التالي: $role';
+  }
+
+  @override
+  String get cardsChameleonNext => 'اختر دور الحرباء';
+
+  @override
+  String get cardsReviewStep => 'مراجعة';
+
+  @override
+  String get cardsReviewTitle => 'راجع البطاقات';
+
+  @override
+  String get cardsReviewHint => 'اضغط على أي بطاقة لتصحيحها. البقية يحملون بطاقة مواطن.';
+
+  @override
+  String get cardsReviewCheck => 'راجع البطاقات';
 }

@@ -1341,4 +1341,63 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsDeviceShort => 'Device';
+
+  @override
+  String get setupRolesHow => 'How players get their roles';
+
+  @override
+  String get setupModePhone => 'Pass the phone';
+
+  @override
+  String get setupModeCards => 'Physical cards';
+
+  @override
+  String get setupModePhoneHint => 'Each player taps the phone to see their role.';
+
+  @override
+  String get setupModeCardsHint => 'Hand out the cards, then tap who holds each one on night 1.';
+
+  @override
+  String get setupCardsDealt => 'I\'ve handed out the cards';
+
+  @override
+  String get cardsOverline => 'Night 1 · Who has which card';
+
+  @override
+  String cardsWake(String role) {
+    return '$role wakes up';
+  }
+
+  @override
+  String get cardsLine => 'If you hold this card, open your eyes.';
+
+  @override
+  String cardsPicked(int picked, int total) {
+    final intl.NumberFormat pickedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String pickedString = pickedNumberFormat.format(picked);
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return 'Tap who holds it · $pickedString of $totalString';
+  }
+
+  @override
+  String cardsNextRole(String role) {
+    return 'Next: $role';
+  }
+
+  @override
+  String get cardsChameleonNext => 'Choose the Chameleon\'s role';
+
+  @override
+  String get cardsReviewStep => 'Check';
+
+  @override
+  String get cardsReviewTitle => 'Check the cards';
+
+  @override
+  String get cardsReviewHint => 'Tap a card to fix it. Everyone else holds a Civilian card.';
+
+  @override
+  String get cardsReviewCheck => 'Check the cards';
 }
