@@ -103,7 +103,7 @@ class EventDetailScreen extends StatelessWidget {
                       children: [
                         Text(
                           g.winner == Team.mafia ? l.recentMafiaWon : l.recentCiviliansWon,
-                          style: context.type.bodyLarge!.copyWith(fontSize: 15),
+                          style: context.type.bodyLarge!.copyWith(fontSize: TextSizes.row),
                         ),
                         Text(l.recentDetail(g.nights, g.players), style: context.type.bodySmall),
                       ],

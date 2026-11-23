@@ -101,7 +101,7 @@ class DetectiveResultScreen extends StatelessWidget {
                               : r == DetectiveResult.mafia
                               ? l.resultMafia
                               : l.resultCivilian,
-                          style: context.type.displayLarge!.copyWith(fontSize: 48, color: soft),
+                          style: context.type.displayLarge!.copyWith(fontSize: TextSizes.verdict, color: soft),
                         ),
                       ),
                       const SizedBox(height: Space.lg),

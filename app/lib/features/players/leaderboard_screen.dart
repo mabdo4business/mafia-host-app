@@ -81,7 +81,7 @@ class LeaderboardScreen extends ConsumerWidget {
                             r.name,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: context.type.bodyLarge!.copyWith(fontSize: 15),
+                            style: context.type.bodyLarge!.copyWith(fontSize: TextSizes.row),
                           ),
                           Text(
                             l.leaderboardRowDetail(r.games, r.winRate),
@@ -153,7 +153,7 @@ class _PodiumCard extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             l.leaderboardWins(record.wins),
-            style: context.type.bodySmall!.copyWith(fontSize: 12, color: color),
+            style: context.type.bodySmall!.copyWith(fontSize: TextSizes.small, color: color),
           ),
         ],
       ),

@@ -116,7 +116,7 @@ class _NightRow extends StatelessWidget {
               children: [
                 Text(
                   DateFormat.MMM(locale).format(night.date).toUpperCase(),
-                  style: context.type.labelSmall!.copyWith(fontSize: 10, color: c.mafiaSoft),
+                  style: context.type.labelSmall!.copyWith(fontSize: TextSizes.tag, color: c.mafiaSoft),
                 ),
                 Text(
                   DateFormat.d(locale).format(night.date),
@@ -132,7 +132,7 @@ class _NightRow extends StatelessWidget {
               children: [
                 Text(
                   DateFormat.EEEE(locale).format(night.date),
-                  style: context.type.bodyLarge!.copyWith(fontSize: 15),
+                  style: context.type.bodyLarge!.copyWith(fontSize: TextSizes.row),
                 ),
                 Text(
                   l.eventsNightDetail(night.games.length, night.players.length),

@@ -153,7 +153,7 @@ class _RevealScreenState extends ConsumerState<RevealScreen> {
               p.name,
               key: const Key('revealName'),
               textAlign: TextAlign.center,
-              style: context.type.headlineLarge!.copyWith(fontSize: 28),
+              style: context.type.headlineLarge!.copyWith(fontSize: TextSizes.reveal),
             ),
             const SizedBox(height: 28),
             RoleCard(

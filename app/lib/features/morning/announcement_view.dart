@@ -52,7 +52,7 @@ class AnnouncementView extends ConsumerWidget {
     final notes = describe.secretNotes(round);
     final alive = session.state.alivePlayers.length;
     final dead = session.state.players.length - alive;
-    final numberStyle = context.type.bodyLarge!.copyWith(fontSize: 15, fontWeight: FontWeight.w700);
+    final numberStyle = context.type.bodyLarge!.copyWith(fontSize: TextSizes.row, fontWeight: FontWeight.w700);
 
     return PhaseScaffold(
       transparent: true,

@@ -207,7 +207,7 @@ class Overline extends StatelessWidget {
       text.toUpperCase(),
       style: style.copyWith(
         color: color ?? style.color,
-        fontSize: 13,
+        fontSize: TextSizes.overline,
         letterSpacing: wide ? 1.8 : 0.8,
       ),
     );

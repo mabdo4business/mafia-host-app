@@ -119,7 +119,7 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
             ),
             const SizedBox(height: 10),
           ],
-          Text(l.setupRolesHint, style: context.type.bodySmall!.copyWith(fontSize: 12)),
+          Text(l.setupRolesHint, style: context.type.bodySmall!.copyWith(fontSize: TextSizes.small)),
           if (hasBomb) ...[
             const SizedBox(height: Space.lg),
             _OptionCard(
@@ -350,7 +350,7 @@ class _OptionCard extends StatelessWidget {
                     style: context.type.bodyMedium!.copyWith(fontWeight: FontWeight.w600),
                   ),
                   if (subtitle != null)
-                    Text(subtitle!, style: context.type.bodySmall!.copyWith(fontSize: 12)),
+                    Text(subtitle!, style: context.type.bodySmall!.copyWith(fontSize: TextSizes.small)),
                 ],
               ),
             ),

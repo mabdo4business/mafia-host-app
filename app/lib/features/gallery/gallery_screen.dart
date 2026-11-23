@@ -112,7 +112,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                               textDirection: TextDirection.ltr,
                               style: const TextStyle(
                                 fontFamily: 'monospace',
-                                fontSize: 12,
+                                fontSize: TextSizes.small,
                               ).copyWith(color: context.mafia.textMuted),
                             ),
                             const SizedBox(height: Space.md),

@@ -163,14 +163,14 @@ class _RevealRow extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: context.type.bodyLarge!.copyWith(
-                      fontSize: 15,
+                      fontSize: TextSizes.row,
                       decoration: alive ? null : TextDecoration.lineThrough,
                       decorationColor: c.textMuted,
                     ),
                   ),
                   Text(
                     alive ? l.statusAlive : l.statusEliminated,
-                    style: context.type.bodySmall!.copyWith(fontSize: 12),
+                    style: context.type.bodySmall!.copyWith(fontSize: TextSizes.small),
                   ),
                 ],
               ),

@@ -151,13 +151,13 @@ class _RecentGameRow extends StatelessWidget {
               children: [
                 Text(
                   mafiaWon ? l.recentMafiaWon : l.recentCiviliansWon,
-                  style: context.type.bodyLarge!.copyWith(fontSize: 15),
+                  style: context.type.bodyLarge!.copyWith(fontSize: TextSizes.row),
                 ),
                 Text(l.recentDetail(game.nights, game.players), style: context.type.bodySmall),
               ],
             ),
           ),
-          Text(date, style: context.type.bodySmall!.copyWith(fontSize: 12)),
+          Text(date, style: context.type.bodySmall!.copyWith(fontSize: TextSizes.small)),
         ],
       ),
     );

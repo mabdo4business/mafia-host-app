@@ -31,11 +31,15 @@ abstract final class Radii {
 /// notes, nav labels). Prefer the TextTheme styles; use these only via
 /// `copyWith(fontSize: ...)` where a component needs a tighter size.
 abstract final class TextSizes {
+  static const double tag = 10; // tiny result chips
   static const double note = 10.5; // tile reason notes, step labels
   static const double caption = 11; // step counter, nav labels, badges
   static const double small = 12; // stat labels
-  static const double row = 15; // vote row names, disabled CTA label
+  static const double overline = 13; // Overline labels
+  static const double row = 15; // list row titles, vote names, disabled CTA label
   static const double count = 18; // vote counts
+  static const double reveal = 28; // "Hand the phone to …" on Reveal
+  static const double verdict = 48; // Detective result ("Mafia" / "Civilian")
 }
 
 abstract final class Sizes {

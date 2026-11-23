@@ -31,7 +31,7 @@ class SettingsScreen extends ConsumerWidget {
             ),
             subtitle: subtitle == null
                 ? null
-                : Text(subtitle, style: context.type.bodySmall!.copyWith(fontSize: 12)),
+                : Text(subtitle, style: context.type.bodySmall!.copyWith(fontSize: TextSizes.small)),
             value: value,
             onChanged: onChanged,
           ),
@@ -45,7 +45,7 @@ class SettingsScreen extends ConsumerWidget {
         children: [
           Text(title, style: context.type.bodyMedium!.copyWith(fontWeight: FontWeight.w600)),
           if (subtitle != null)
-            Text(subtitle, style: context.type.bodySmall!.copyWith(fontSize: 12)),
+            Text(subtitle, style: context.type.bodySmall!.copyWith(fontSize: TextSizes.small)),
           const SizedBox(height: Space.md),
           control,
         ],
@@ -128,7 +128,7 @@ class SettingsScreen extends ConsumerWidget {
                       ),
                       Text(
                         l.setupBombTakesDownHint,
-                        style: context.type.bodySmall!.copyWith(fontSize: 12),
+                        style: context.type.bodySmall!.copyWith(fontSize: TextSizes.small),
                       ),
                     ],
                   ),

@@ -246,7 +246,7 @@ class _NightWizardState extends ConsumerState<NightWizard> {
           PlayerTargetGrid(children: tiles),
           if (mafiaStep && mafiaAlive > 1) ...[
             const SizedBox(height: Space.md),
-            Text(l.nightMafiaProposalHint, style: context.type.bodySmall!.copyWith(fontSize: 12)),
+            Text(l.nightMafiaProposalHint, style: context.type.bodySmall!.copyWith(fontSize: TextSizes.small)),
           ],
           const SizedBox(height: Space.md),
           Align(
