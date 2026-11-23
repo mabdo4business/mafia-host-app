@@ -27,6 +27,17 @@ abstract final class Radii {
 }
 
 /// Sizes that matter for thumb use.
+/// Off-scale text sizes for dense component labels (rail labels, tile
+/// notes, nav labels). Prefer the TextTheme styles; use these only via
+/// `copyWith(fontSize: ...)` where a component needs a tighter size.
+abstract final class TextSizes {
+  static const double note = 10.5; // tile reason notes, step labels
+  static const double caption = 11; // step counter, nav labels, badges
+  static const double small = 12; // stat labels
+  static const double row = 15; // vote row names, disabled CTA label
+  static const double count = 18; // vote counts
+}
+
 abstract final class Sizes {
   static const double primaryButton = 60; // bottom CTA height
   static const double heroButton = 56; // CTA inside cards
@@ -143,6 +154,9 @@ class MafiaColors extends ThemeExtension<MafiaColors> {
 
   /// Text drawn on top of [text]-colored fills (selected pill segments).
   Color get onText => Color.lerp(bg, const Color(0xFF000000), 0.2)!;
+
+  /// Black overlay that darkens whatever is behind it (host-only notes).
+  Color scrim(double opacity) => const Color(0xFF000000).withValues(alpha: opacity);
 
   /// Faint white overlays used by tracks, chips and disabled fills.
   Color veil(double opacity) => const Color(0xFFFFFFFF).withValues(alpha: opacity);

@@ -66,7 +66,7 @@ class StepRail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.mafia;
-    final base = context.type.labelSmall!.copyWith(fontSize: 11, letterSpacing: 0);
+    final base = context.type.labelSmall!.copyWith(fontSize: TextSizes.caption, letterSpacing: 0);
     return Semantics(
       label: context.l10n.nightStepCounter(current + 1, steps.length),
       excludeSemantics: true,
@@ -247,7 +247,7 @@ class CountdownRing extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Text(label, style: context.type.bodySmall!.copyWith(fontSize: 10.5, height: 1.2)),
+                  Text(label, style: context.type.bodySmall!.copyWith(fontSize: TextSizes.note, height: 1.2)),
                 ],
               ),
             ),

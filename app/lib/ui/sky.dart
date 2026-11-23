@@ -69,10 +69,10 @@ class PhaseSky extends StatelessWidget {
             ),
           ),
           // The sun rising behind the horizon line (Morning header).
-          Positioned(
+          PositionedDirectional(
             top: 0,
-            left: 0,
-            right: 0,
+            start: 0,
+            end: 0,
             height: 220,
             child: ClipRect(
               child: Stack(

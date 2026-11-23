@@ -99,7 +99,7 @@ class AvatarStack extends StatelessWidget {
                   '+${context.number(extra)}',
                   style: context.type.labelSmall!.copyWith(
                     color: c.onAccent(c.civilian),
-                    fontSize: 11,
+                    fontSize: TextSizes.caption,
                     fontWeight: FontWeight.w700,
                     letterSpacing: 0,
                   ),
@@ -156,7 +156,7 @@ class PlayerTile extends StatelessWidget {
     final a = accent ?? c.civilian;
     final tappable = enabled && onTap != null;
     final radius = BorderRadius.circular(Radii.tile);
-    final noteStyle = context.type.bodySmall!.copyWith(fontSize: 10.5, height: 1.2);
+    final noteStyle = context.type.bodySmall!.copyWith(fontSize: TextSizes.note, height: 1.2);
     return Semantics(
       button: true,
       selected: selected,
@@ -350,13 +350,13 @@ class VoteRow extends StatelessWidget {
                             name,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: context.type.bodyLarge!.copyWith(fontSize: 15),
+                            style: context.type.bodyLarge!.copyWith(fontSize: TextSizes.row),
                           ),
                         ),
                         Text(
                           context.number(votes),
                           style: context.type.titleLarge!.copyWith(
-                            fontSize: 18,
+                            fontSize: TextSizes.count,
                             color: leader
                                 ? c.mafiaSoft
                                 : votes > 0

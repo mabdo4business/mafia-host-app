@@ -229,7 +229,7 @@ class _RoleCardState extends State<RoleCard> with SingleTickerProviderStateMixin
             child: Text(
               widget.roleName,
               maxLines: 1,
-              style: context.type.displayMedium!.copyWith(color: const Color(0xFFFFFFFF)),
+              style: context.type.displayMedium!.copyWith(color: context.mafia.veil(1)),
             ),
           ),
           const SizedBox(height: 14),

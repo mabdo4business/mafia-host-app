@@ -53,7 +53,7 @@ class PrimaryActionButton extends StatelessWidget {
     final style = context.type.labelLarge!.copyWith(
       color: fg,
       fontWeight: enabled ? FontWeight.w700 : FontWeight.w600,
-      fontSize: enabled ? null : 15,
+      fontSize: enabled ? null : TextSizes.row,
     );
     return Semantics(
       button: true,

@@ -78,7 +78,7 @@ class FloatingNavBar extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: context.type.labelSmall!.copyWith(
-                              fontSize: 11,
+                              fontSize: TextSizes.caption,
                               letterSpacing: 0,
                               height: 1.2,
                               color: i == current ? c.text : c.textMuted.withValues(alpha: 0.85),

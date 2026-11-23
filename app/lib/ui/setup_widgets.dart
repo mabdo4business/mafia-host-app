@@ -360,7 +360,7 @@ class StatTile extends StatelessWidget {
               label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: context.type.bodySmall!.copyWith(fontSize: 12),
+              style: context.type.bodySmall!.copyWith(fontSize: TextSizes.small),
             ),
           ],
         ),

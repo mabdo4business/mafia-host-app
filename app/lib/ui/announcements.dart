@@ -159,7 +159,7 @@ class HostOnlyNote extends StatelessWidget {
       child: Container(
         padding: const EdgeInsetsDirectional.symmetric(horizontal: Space.lg, vertical: 14),
         decoration: BoxDecoration(
-          color: const Color(0x4D000000),
+          color: c.scrim(0x4D / 255), // black 30%
           borderRadius: BorderRadius.circular(Radii.tile),
         ),
         child: Row(
