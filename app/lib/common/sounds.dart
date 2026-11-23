@@ -44,6 +44,9 @@ class _AudioSoundPlayer implements SoundPlayer {
 
   @override
   Future<void> play(GameSound sound) async {
+    // Re-applied on every cue: Read aloud switches the app's single iOS
+    // audio session to playback, and cues must stay ambient (silent switch).
+    await _player.setAudioContext(cueAudioContext());
     await _player.stop();
     await _player.play(AssetSource('sounds/${sound.name}.wav'));
   }

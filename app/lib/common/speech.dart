@@ -18,6 +18,14 @@ abstract interface class Speaker {
 /// The TTS language for an app locale. Full tags: iOS needs a region.
 String ttsLanguage(Locale locale) => locale.languageCode == 'ar' ? 'ar-SA' : 'en-US';
 
+/// iOS audio session for Read aloud: `playback` plays even with the silent
+/// switch on (the host tapped the button on purpose), and `duckOthers`
+/// lowers music while the voice speaks; flutter_tts deactivates the session
+/// afterwards (autoStopSharedSession), which brings the music back up.
+/// Unlike the sound cues, which stay ambient (see cueAudioContext).
+const ttsIosCategory = IosTextToSpeechAudioCategory.playback;
+const ttsIosOptions = [IosTextToSpeechAudioCategoryOptions.duckOthers];
+
 class _TtsSpeaker implements Speaker {
   _TtsSpeaker() {
     void done() => _speaking.value = false;
@@ -26,10 +34,6 @@ class _TtsSpeaker implements Speaker {
       ..setCompletionHandler(done)
       ..setCancelHandler(done)
       ..setErrorHandler((_) => done());
-    // Same policy as the sound cues (see cueAudioContext): ambient mixes
-    // with music already playing and never pauses it. iOS forbids setting
-    // mixWithOthers explicitly on ambient, so no options.
-    _tts.setIosAudioCategory(IosTextToSpeechAudioCategory.ambient, const []);
   }
 
   final _tts = FlutterTts();
@@ -41,6 +45,11 @@ class _TtsSpeaker implements Speaker {
   @override
   Future<void> speak(String text, Locale locale) async {
     await _tts.stop();
+    // Set on every read: the app has one iOS audio session, and the sound
+    // cues switch it back to ambient when they play.
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      await _tts.setIosAudioCategory(ttsIosCategory, ttsIosOptions);
+    }
     await _tts.setLanguage(ttsLanguage(locale));
     _speaking.value = true;
     await _tts.speak(text);

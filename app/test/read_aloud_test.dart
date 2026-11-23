@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:mafia_engine/mafia_engine.dart';
 import 'package:mafia_host/common/describe.dart';
 import 'package:mafia_host/common/speech.dart';
@@ -97,6 +98,11 @@ void main() {
     await tapKey(tester, 'readAloud');
     expect(speaker.spoken.single.$2, const Locale('ar'));
     expect(speaker.spoken.single.$1, l10nOf(tester).announceKilled('C1'));
+  });
+
+  test('iOS: plays through the silent switch and ducks music', () {
+    expect(ttsIosCategory, IosTextToSpeechAudioCategory.playback, reason: 'ignores silent switch');
+    expect(ttsIosOptions, [IosTextToSpeechAudioCategoryOptions.duckOthers], reason: 'music dips, keeps playing');
   });
 
   test('TTS language tags carry a region (iOS needs one)', () {
