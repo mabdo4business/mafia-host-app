@@ -132,6 +132,8 @@ Widget _scope(GameSession? session, Widget child, {List<Override> more = const [
           return db;
         }),
         activeGameProvider.overrideWith(() => _FixedGame(session)),
+        // Evening, as in the mockups ("Good evening, Host").
+        clockProvider.overrideWithValue(() => DateTime(2026, 11, 14, 21)),
         ...more,
       ],
       child: child,

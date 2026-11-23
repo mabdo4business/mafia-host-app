@@ -8,6 +8,9 @@ import 'game_input.dart';
 import 'game_session.dart';
 import 'role_mix.dart';
 
+/// The current time. Overridden in goldens so time-of-day copy is stable.
+final clockProvider = Provider<DateTime Function()>((ref) => DateTime.now);
+
 final databaseProvider = Provider<AppDatabase>((ref) {
   final db = AppDatabase();
   ref.onDispose(db.close);

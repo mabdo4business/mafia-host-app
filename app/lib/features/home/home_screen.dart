@@ -102,7 +102,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   String _greeting(BuildContext context) {
     final l = context.l10n;
-    final h = DateTime.now().hour;
+    final h = ref.read(clockProvider)().hour;
     return h < 12
         ? l.homeGreetingMorning
         : h < 18
