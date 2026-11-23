@@ -113,7 +113,7 @@
   "tieNoElimination": "Nobody out",
   "tieHostDecides": "Host decides",
   "setupDealRoles": "Deal roles",
-  "setupProblemTooFewPlayers": "Add at least {min} players.",
+  "setupProblemTooFewPlayers": "Add at least {min, plural, =1{1 player} other{{min} players}}.",
   "@setupProblemTooFewPlayers": {
     "placeholders": {
       "min": {
@@ -837,7 +837,7 @@
   "nightPreviousStep": "Previous step",
   "nightReviewHint": "Tap a step to change it.",
   "recentCiviliansWon": "Civilians won",
-  "recentDetail": "Night {nights} · {players} players",
+  "recentDetail": "Night {nights} · {players, plural, =1{1 player} other{{players} players}}",
   "@recentDetail": {
     "placeholders": {
       "nights": {
@@ -880,7 +880,7 @@
   "eventsPast": "Past nights",
   "eventsEmpty": "Your game nights will show up here once a game is finished.",
   "eventsPlanningSoon": "Planning nights ahead and RSVPs arrive with player accounts.",
-  "eventsNightDetail": "{games, plural, =1{1 game} other{{games} games}} · {players} players",
+  "eventsNightDetail": "{games, plural, =1{1 game} other{{games} games}} · {players, plural, =1{1 player} other{{players} players}}",
   "@eventsNightDetail": {
     "placeholders": {
       "games": {

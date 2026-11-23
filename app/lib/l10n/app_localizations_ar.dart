@@ -214,6 +214,7 @@ class AppLocalizationsAr extends AppLocalizations {
       count,
       locale: localeName,
       other: '$countString دقيقة',
+      many: '$countString دقيقة',
       few: '$countString دقائق',
       two: 'دقيقتان',
       one: 'دقيقة',
@@ -256,7 +257,16 @@ class AppLocalizationsAr extends AppLocalizations {
     final intl.NumberFormat minNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String minString = minNumberFormat.format(min);
 
-    return 'أضف $minString لاعبين على الأقل.';
+    String _temp0 = intl.Intl.pluralLogic(
+      min,
+      locale: localeName,
+      other: '$minString لاعب',
+      many: '$minString لاعبًا',
+      few: '$minString لاعبين',
+      two: 'لاعبَين',
+      one: 'لاعبًا واحدًا',
+    );
+    return 'أضف $_temp0 على الأقل.';
   }
 
   @override
@@ -852,7 +862,8 @@ class AppLocalizationsAr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$countString صوتًا',
+      other: '$countString صوت',
+      many: '$countString صوتًا',
       few: '$countString أصوات',
       two: 'صوتان',
       one: 'صوت واحد',
@@ -1011,11 +1022,19 @@ class AppLocalizationsAr extends AppLocalizations {
       nights,
       locale: localeName,
       other: 'بعد $nightsString ليلة',
+      many: 'بعد $nightsString ليلة',
       few: 'بعد $nightsString ليالٍ',
       two: 'بعد ليلتين',
       one: 'بعد ليلة واحدة',
     );
-    return '$_temp0 · $aliveString ما زالوا صامدين';
+    String _temp1 = intl.Intl.pluralLogic(
+      alive,
+      locale: localeName,
+      other: '$aliveString ما زالوا صامدين',
+      two: 'اثنان ما زالا صامدَين',
+      one: 'واحد ما زال صامدًا',
+    );
+    return '$_temp0 · $_temp1';
   }
 
   @override
@@ -1054,7 +1073,8 @@ class AppLocalizationsAr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$countString لاعبًا من لعبتك الأخيرة',
+      other: '$countString لاعب من لعبتك الأخيرة',
+      many: '$countString لاعبًا من لعبتك الأخيرة',
       few: '$countString لاعبين من لعبتك الأخيرة',
       two: 'لاعبان من لعبتك الأخيرة',
       one: 'لاعب واحد من لعبتك الأخيرة',
@@ -1131,7 +1151,16 @@ class AppLocalizationsAr extends AppLocalizations {
     final intl.NumberFormat playersNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String playersString = playersNumberFormat.format(players);
 
-    return 'الليلة $nightsString · $playersString لاعبين';
+    String _temp0 = intl.Intl.pluralLogic(
+      players,
+      locale: localeName,
+      other: '$playersString لاعب',
+      many: '$playersString لاعبًا',
+      few: '$playersString لاعبين',
+      two: 'لاعبان',
+      one: 'لاعب واحد',
+    );
+    return 'الليلة $nightsString · $_temp0';
   }
 
   @override
@@ -1207,11 +1236,21 @@ class AppLocalizationsAr extends AppLocalizations {
       games,
       locale: localeName,
       other: '$gamesString لعبة',
+      many: '$gamesString لعبة',
       few: '$gamesString ألعاب',
       two: 'لعبتان',
       one: 'لعبة واحدة',
     );
-    return '$_temp0 · $playersString لاعبين';
+    String _temp1 = intl.Intl.pluralLogic(
+      players,
+      locale: localeName,
+      other: '$playersString لاعب',
+      many: '$playersString لاعبًا',
+      few: '$playersString لاعبين',
+      two: 'لاعبان',
+      one: 'لاعب واحد',
+    );
+    return '$_temp0 · $_temp1';
   }
 
   @override
@@ -1282,6 +1321,7 @@ class AppLocalizationsAr extends AppLocalizations {
       games,
       locale: localeName,
       other: '$gamesString لعبة',
+      many: '$gamesString لعبة',
       few: '$gamesString ألعاب',
       two: 'لعبتان',
       one: 'لعبة واحدة',
@@ -1297,7 +1337,8 @@ class AppLocalizationsAr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$countString انتصارًا',
+      other: '$countString انتصار',
+      many: '$countString انتصارًا',
       few: '$countString انتصارات',
       two: 'فوزان',
       one: 'فوز واحد',

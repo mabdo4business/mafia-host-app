@@ -492,7 +492,7 @@ abstract class AppLocalizations {
   /// No description provided for @setupProblemTooFewPlayers.
   ///
   /// In en, this message translates to:
-  /// **'Add at least {min} players.'**
+  /// **'Add at least {min, plural, =1{1 player} other{{min} players}}.'**
   String setupProblemTooFewPlayers(int min);
 
   /// No description provided for @setupProblemDuplicateName.
@@ -1728,7 +1728,7 @@ abstract class AppLocalizations {
   /// No description provided for @recentDetail.
   ///
   /// In en, this message translates to:
-  /// **'Night {nights} · {players} players'**
+  /// **'Night {nights} · {players, plural, =1{1 player} other{{players} players}}'**
   String recentDetail(int nights, int players);
 
   /// No description provided for @recentMafiaWon.
@@ -1842,7 +1842,7 @@ abstract class AppLocalizations {
   /// No description provided for @eventsNightDetail.
   ///
   /// In en, this message translates to:
-  /// **'{games, plural, =1{1 game} other{{games} games}} · {players} players'**
+  /// **'{games, plural, =1{1 game} other{{games} games}} · {players, plural, =1{1 player} other{{players} players}}'**
   String eventsNightDetail(int games, int players);
 
   /// No description provided for @eventsGameNight.

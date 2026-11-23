@@ -251,7 +251,13 @@ class AppLocalizationsEn extends AppLocalizations {
     final intl.NumberFormat minNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String minString = minNumberFormat.format(min);
 
-    return 'Add at least $minString players.';
+    String _temp0 = intl.Intl.pluralLogic(
+      min,
+      locale: localeName,
+      other: '$minString players',
+      one: '1 player',
+    );
+    return 'Add at least $_temp0.';
   }
 
   @override
@@ -1114,7 +1120,13 @@ class AppLocalizationsEn extends AppLocalizations {
     final intl.NumberFormat playersNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String playersString = playersNumberFormat.format(players);
 
-    return 'Night $nightsString · $playersString players';
+    String _temp0 = intl.Intl.pluralLogic(
+      players,
+      locale: localeName,
+      other: '$playersString players',
+      one: '1 player',
+    );
+    return 'Night $nightsString · $_temp0';
   }
 
   @override
@@ -1191,7 +1203,13 @@ class AppLocalizationsEn extends AppLocalizations {
       other: '$gamesString games',
       one: '1 game',
     );
-    return '$_temp0 · $playersString players';
+    String _temp1 = intl.Intl.pluralLogic(
+      players,
+      locale: localeName,
+      other: '$playersString players',
+      one: '1 player',
+    );
+    return '$_temp0 · $_temp1';
   }
 
   @override
