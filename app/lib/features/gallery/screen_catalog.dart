@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:mafia_engine/mafia_engine.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../common/speech.dart';
 import '../../data/database.dart';
 import '../../data/game_repository.dart';
 import '../../game/game_flow_screen.dart';
@@ -132,6 +133,7 @@ Widget _scope(GameSession? session, Widget child, {List<Override> more = const [
           return db;
         }),
         activeGameProvider.overrideWith(() => _FixedGame(session)),
+        speakerProvider.overrideWithValue(RecordingSpeaker()),
         // Evening, as in the mockups ("Good evening, Host").
         clockProvider.overrideWithValue(() => DateTime(2026, 11, 14, 21)),
         ...more,

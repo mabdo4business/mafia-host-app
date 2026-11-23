@@ -134,6 +134,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get readAloud => 'اقرأ بصوت عالٍ';
 
   @override
+  String get stopReading => 'إيقاف القراءة';
+
+  @override
   String get hostOnly => 'للمضيف فقط';
 
   @override

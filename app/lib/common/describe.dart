@@ -172,6 +172,16 @@ class Describer {
 
   /// Host-only notes worth flagging after a night: the Detective's result,
   /// blocks and a Bomb that did not explode.
+  /// What "Read aloud" speaks for [items]: each headline in order. Host
+  /// notes stay silent, except a Bomb's "takes N with them:" line when its
+  /// victims are known, which is public and reads into their names.
+  String spokenText(List<Announcement> items) => [
+    for (final item in items)
+      item.chips.isEmpty
+          ? item.headline
+          : [item.headline, ?item.detail, '${l.names(item.chips)}.'].join(' '),
+  ].join('\n');
+
   List<String> secretNotes(List<LogEntry> entries) => [
     for (final entry in entries)
       for (final e in entry.events)

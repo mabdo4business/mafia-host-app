@@ -83,6 +83,7 @@ abstract final class MafiaGlyphs {
     'M11 5 6 9H2v6h4l5 4z',
     'M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14',
   ]);
+  static const stop = MafiaGlyph(['M8 7h8a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z']);
   static const log = MafiaGlyph(['M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01']);
   static const timer = MafiaGlyph([
     'M12 8v5l3 2',

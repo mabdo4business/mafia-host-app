@@ -309,6 +309,12 @@ abstract class AppLocalizations {
   /// **'Read aloud'**
   String get readAloud;
 
+  /// No description provided for @stopReading.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop reading'**
+  String get stopReading;
+
   /// No description provided for @hostOnly.
   ///
   /// In en, this message translates to:

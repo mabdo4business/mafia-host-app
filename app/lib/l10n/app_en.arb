@@ -67,6 +67,7 @@
   },
   "stageGameOver": "Game over",
   "readAloud": "Read aloud",
+  "stopReading": "Stop reading",
   "hostOnly": "Host only",
   "cancel": "Cancel",
   "back": "Back",

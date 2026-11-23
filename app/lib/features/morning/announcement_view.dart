@@ -3,12 +3,14 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../common/describe.dart';
 import '../../common/l10n.dart';
+import '../../common/speech.dart';
 import '../../game/game_input.dart';
 import '../../game/game_menu.dart';
 import '../../game/game_session.dart';
 import '../../game/providers.dart';
 import '../../ui/ui.dart';
 import 'bomb_picker.dart';
+import 'read_aloud_button.dart';
 
 /// The read-aloud screen after a night (Morning) or a vote (Day result):
 /// numbered announcement items appearing one by one, host-only notes, the
@@ -101,11 +103,22 @@ class AnnouncementView extends ConsumerWidget {
           ),
         ],
       ),
-      bottom: PrimaryActionButton(
-        key: ctaKey,
-        label: ctaLabel,
-        trailing: ctaGlyph,
-        onPressed: () => ref.read(activeGameProvider.notifier).apply(const AdvanceInput()),
+      bottom: Row(
+        children: [
+          ReadAloudButton(text: describe.spokenText(items)),
+          const SizedBox(width: 10),
+          Expanded(
+            child: PrimaryActionButton(
+              key: ctaKey,
+              label: ctaLabel,
+              trailing: ctaGlyph,
+              onPressed: () {
+                ref.read(speakerProvider).stop().catchError((Object _) {});
+                ref.read(activeGameProvider.notifier).apply(const AdvanceInput());
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

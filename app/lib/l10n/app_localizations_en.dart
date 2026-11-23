@@ -134,6 +134,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get readAloud => 'Read aloud';
 
   @override
+  String get stopReading => 'Stop reading';
+
+  @override
   String get hostOnly => 'Host only';
 
   @override

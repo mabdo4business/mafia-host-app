@@ -36,6 +36,7 @@
   "stageDay": "النهار {round}",
   "stageGameOver": "انتهت اللعبة",
   "readAloud": "اقرأ بصوت عالٍ",
+  "stopReading": "إيقاف القراءة",
   "hostOnly": "للمضيف فقط",
   "cancel": "إلغاء",
   "back": "رجوع",

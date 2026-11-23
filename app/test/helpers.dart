@@ -6,6 +6,7 @@ import 'package:mafia_engine/mafia_engine.dart';
 import 'package:mafia_host/common/l10n.dart';
 import 'package:mafia_host/common/screen_awake.dart';
 import 'package:mafia_host/common/sounds.dart';
+import 'package:mafia_host/common/speech.dart';
 import 'package:mafia_host/data/database.dart';
 import 'package:mafia_host/game/game_flow_screen.dart';
 import 'package:mafia_host/game/game_session.dart';
@@ -35,12 +36,18 @@ class FakeSoundPlayer implements SoundPlayer {
   Future<void> play(GameSound sound) async => played.add(sound);
 }
 
-ProviderContainer containerFor(AppDatabase db, {ScreenAwake? screenAwake, SoundPlayer? sounds}) =>
+ProviderContainer containerFor(
+  AppDatabase db, {
+  ScreenAwake? screenAwake,
+  SoundPlayer? sounds,
+  Speaker? speaker,
+}) =>
     ProviderContainer(
       overrides: [
         databaseProvider.overrideWithValue(db),
         screenAwakeProvider.overrideWithValue(screenAwake ?? FakeScreenAwake()),
         soundPlayerProvider.overrideWithValue(sounds ?? FakeSoundPlayer()),
+        speakerProvider.overrideWithValue(speaker ?? RecordingSpeaker()),
       ],
     );
 
@@ -52,9 +59,15 @@ Future<ProviderContainer> pumpGame(
   AppDatabase? db,
   ScreenAwake? screenAwake,
   SoundPlayer? sounds,
+  Speaker? speaker,
 }) async {
   usePhoneSize(tester);
-  final container = containerFor(db ?? memoryDb(), screenAwake: screenAwake, sounds: sounds);
+  final container = containerFor(
+    db ?? memoryDb(),
+    screenAwake: screenAwake,
+    sounds: sounds,
+    speaker: speaker,
+  );
   addTearDown(container.dispose);
   await tester.runAsync(() async {
     await container.read(activeGameProvider.future);
