@@ -193,6 +193,9 @@ class PlayerTile extends StatelessWidget {
                     }
                   : null,
               child: Stack(
+                // Fill the tile so the column centers (as in the mockup)
+                // instead of hugging the start edge.
+                fit: StackFit.expand,
                 children: [
                   Padding(
                     padding: const EdgeInsetsDirectional.symmetric(

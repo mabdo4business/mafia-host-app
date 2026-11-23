@@ -97,7 +97,10 @@ class _GlowLayer extends StatelessWidget {
           shape: BoxShape.circle,
           gradient: RadialGradient(
             colors: [glow.color, glow.color.withValues(alpha: 0)],
-            stops: [0, glow.fade],
+            // The mockups' CSS `radial-gradient(circle, … fade%)` measures
+            // stops against the corner distance (radius × √2), Flutter
+            // against the radius: scale so glows match the mockup size.
+            stops: [0, math.min(1, glow.fade * math.sqrt2)],
           ),
         ),
       ),
