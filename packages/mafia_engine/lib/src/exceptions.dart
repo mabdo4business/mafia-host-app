@@ -2,22 +2,42 @@
 /// localized messages; the engine never produces user-facing text.
 enum InvalidActionReason {
   wrongPhase,
-  bombDetonationPending,
+
+  /// A death choice (Godfather, day-1 Bomb) must be settled first.
+  choicePending,
+
+  /// `resolveChoice` for a player with nothing to choose.
+  noChoicePending,
   unknownPlayer,
   actorDead,
   targetDead,
   actorLacksRole,
   duplicateAction,
   invalidTarget,
+
+  /// The ability does not work tonight (Putana on night 1, Witch and Bomb
+  /// off night 2, Chameleon off night 3 or after choosing).
+  notTonight,
+
+  /// A Switchman redirect on a night nobody shot at them.
+  notTargeted,
+
+  /// The Chameleon picked a role outside the five.
+  roleNotAllowed,
   doctorRepeatTarget,
-  conflictingMafiaKill,
-  wrongVictimCount,
-  bombNotPending,
+
+  /// Victims that don't fit the pending choice.
+  invalidChoice,
+
+  /// A re-vote for someone who was not tied.
+  notACandidate,
   tieBreakerNotTied,
 
-  /// A tallied vote counts more votes than there are living players (or a
-  /// negative count).
+  /// A tally counts more votes than there are voters (or a negative count).
   tooManyVotes,
+
+  /// Silenced players may not speak (Foul) or vote.
+  playerSilenced,
 }
 
 final class InvalidActionException implements Exception {
@@ -34,10 +54,9 @@ final class InvalidActionException implements Exception {
 
 enum InvalidSetupReason {
   duplicatePlayerId,
-  invalidBombVictimCount,
-  chameleonRoleMissing,
-  chameleonRoleNotAllowed,
-  chameleonRoleOnNonChameleon,
+
+  /// The Chameleon chooses on night 3, not at setup.
+  chameleonRolePreset,
 }
 
 final class InvalidSetupException implements Exception {
