@@ -43,38 +43,9 @@ app/                   # Flutter app, depends on mafia_engine
   lib/l10n/
 ```
 
-## Roles
-| Role | Team | Ability |
-|---|---|---|
-| Civilian | Civilians | No power, votes by day |
-| Doctor | Civilians | Saves 1 player per night. May save himself. Cannot save the same player two nights in a row |
-| Detective | Civilians | Checks 1 player per night → Mafia / Civilian |
-| Bomb | Civilians | On death (night OR day vote) picks N victims who die immediately. N = 2 or 3, host sets at setup |
-| Joker | Civilians | Kills 1 player every night. No penalty for killing civilians |
-| Chameleon | Civilians | Picks one role at game start, plays it all game |
-| Mafia | Mafia | Proposes the night kill |
-| Godfather | Mafia | Final say on the Mafia kill. Detective sees him as Civilian |
-| Potana | Mafia | Blocks 1 civilian-team player's power for the night (civilian roles only) |
-| Lawyer | Mafia | Protects 1 Mafia member per night: Detective sees them as Civilian |
-
-## Night resolution (collect all actions, then resolve in this order)
-1. Potana block → blocked player's action has no effect
-2. Lawyer protection
-3. Mafia kill (Godfather decides; if dead, remaining Mafia decide)
-4. Joker kill (unless blocked)
-5. Doctor save (unless blocked)
-6. Detective check (unless blocked); Godfather + Lawyer-protected → "Civilian"
-7. Deaths applied → Bomb trigger if Bomb died
-8. Win check → morning announcement
-
-## Unconfirmed rules — implement as GameSettings flags, never hard-code
-- `doctorSaveBlocksJokerKill` (default true)
-- `doctorCanSaveBombVictims` (default false)
-- `blockedBombStillExplodes` (default true)
-- `chameleonCanPickMafiaRoles` (default false)
-- `revealRoleOnDeath` (default false)
-- `tieVoteRule`: revote | noElimination | hostDecides (default hostDecides)
-- Win: Civilians win when no Mafia left; Mafia win when Mafia >= civilian team alive
+## Game rules
+`docs/GAME_RULES.md` is the source of truth for teams, roles, the night order, chain deaths, the day phase and table rules.
+Every open question in its section 6 is a `GameSettings` flag with the listed default; never hard-code one.
 
 ## UI rules
 - Dark only. Night screens use `AppTheme.night`, Morning/Day use `AppTheme.day`, switched with `AnimatedTheme`
