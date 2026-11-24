@@ -1393,5 +1393,19 @@
   "ruleWitchCiviliansOnly": "Witch links Civilians only",
   "ruleMafiaWinsAtParity": "Mafia win when equal to the Civilians",
   "ruleSecondTie": "If the re-vote ties again",
-  "tieRandom": "Draw lots"
+  "tieRandom": "Draw lots",
+  "hostOnlyCheckBy": "Host only: {checker} checked {name} → {result}",
+  "@hostOnlyCheckBy": {
+    "placeholders": {
+      "checker": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      },
+      "result": {
+        "type": "String"
+      }
+    }
+  }
 }

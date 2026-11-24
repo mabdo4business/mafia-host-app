@@ -1821,4 +1821,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get tieRandom => 'قرعة';
+
+  @override
+  String hostOnlyCheckBy(String checker, String name, String result) {
+    return 'للمضيف فقط: فحص $checker $name ← $result';
+  }
 }

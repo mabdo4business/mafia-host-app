@@ -160,6 +160,8 @@ class Describer {
     }
 
     final items = <Announcement>[];
+    // Read after the deaths and saves.
+    final silences = <Announcement>[];
     final night = entries.isNotEmpty && entries.first.input is NightInput;
     for (final e in events) {
       switch (e) {
@@ -201,7 +203,7 @@ class Describer {
             ),
           );
         case PlayerSilenced(:final playerId):
-          items.add(
+          silences.add(
             Announcement(
               AnnouncementType.info,
               l.announceSilenced(name(playerId)),
@@ -220,7 +222,7 @@ class Describer {
     if (night && died.isEmpty) {
       items.insert(0, Announcement(AnnouncementType.info, l.announceNobodyDied));
     }
-    return items;
+    return [...items, ...silences];
   }
 
   /// What "Read aloud" speaks for [items]: each headline in order. Host
@@ -238,7 +240,9 @@ class Describer {
     for (final entry in entries)
       for (final e in entry.events)
         if (e is DetectiveResultRevealed)
-          l.hostOnlyDetective(name(e.targetId), detectiveResult(e.result))
+          state.player(e.detectiveId).role == Role.detective
+              ? l.hostOnlyDetective(name(e.targetId), detectiveResult(e.result))
+              : l.hostOnlyCheckBy(actor(e.detectiveId), name(e.targetId), detectiveResult(e.result))
         else if (e is PlayerBlocked ||
             e is SoulsLinked ||
             e is BombPlanted ||

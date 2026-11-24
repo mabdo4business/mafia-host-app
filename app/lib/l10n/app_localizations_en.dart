@@ -1776,4 +1776,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tieRandom => 'Draw lots';
+
+  @override
+  String hostOnlyCheckBy(String checker, String name, String result) {
+    return 'Host only: $checker checked $name → $result';
+  }
 }

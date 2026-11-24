@@ -2696,6 +2696,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Draw lots'**
   String get tieRandom;
+
+  /// No description provided for @hostOnlyCheckBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Host only: {checker} checked {name} → {result}'**
+  String hostOnlyCheckBy(String checker, String name, String result);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

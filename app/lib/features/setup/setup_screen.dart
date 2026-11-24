@@ -360,7 +360,6 @@ class _TimersCard extends StatelessWidget {
           const SizedBox(height: Space.xs),
           SegmentedPill<int>(
             key: Key(key),
-            dense: true,
             segments: [for (final s in options) (s, clock(s))],
             selected: options.contains(selected) ? selected : options.first,
             onChanged: (s) => onChanged(set(s)),

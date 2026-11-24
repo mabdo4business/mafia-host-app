@@ -433,5 +433,6 @@
   "ruleWitchCiviliansOnly": "الساحرة تربط المدنيين فقط",
   "ruleMafiaWinsAtParity": "تفوز المافيا عند تساويها مع المدنيين",
   "ruleSecondTie": "إذا تعادلت إعادة التصويت",
-  "tieRandom": "قرعة"
+  "tieRandom": "قرعة",
+  "hostOnlyCheckBy": "للمضيف فقط: فحص {checker} {name} ← {result}"
 }
