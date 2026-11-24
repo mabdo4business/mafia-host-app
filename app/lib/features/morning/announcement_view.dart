@@ -9,13 +9,13 @@ import '../../game/game_menu.dart';
 import '../../game/game_session.dart';
 import '../../game/providers.dart';
 import '../../ui/ui.dart';
-import 'bomb_picker.dart';
+import 'choice_picker.dart';
 import 'read_aloud_button.dart';
 
 /// The read-aloud screen after a night (Morning) or a vote (Day result):
 /// numbered announcement items appearing one by one, host-only notes, the
-/// alive / eliminated count, and the CTA to move on. A pending Bomb first
-/// takes over with the victims picker.
+/// alive / eliminated count, and the CTA to move on. A pending death
+/// choice (Godfather, day-1 Bomb) first takes over with its picker.
 class AnnouncementView extends ConsumerWidget {
   const AnnouncementView({
     super.key,
@@ -42,9 +42,9 @@ class AnnouncementView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pending = session.state.pendingBombs;
+    final pending = session.state.pendingChoices;
     if (pending.isNotEmpty) {
-      return BombPicker(key: ValueKey(pending.first), session: session, bombId: pending.first);
+      return ChoicePicker(key: ValueKey(pending.first), session: session, choice: pending.first);
     }
     final l = context.l10n;
     final c = context.mafia;
@@ -54,7 +54,10 @@ class AnnouncementView extends ConsumerWidget {
     final notes = describe.secretNotes(round);
     final alive = session.state.alivePlayers.length;
     final dead = session.state.players.length - alive;
-    final numberStyle = context.type.bodyLarge!.copyWith(fontSize: TextSizes.row, fontWeight: FontWeight.w700);
+    final numberStyle = context.type.bodyLarge!.copyWith(
+      fontSize: TextSizes.row,
+      fontWeight: FontWeight.w700,
+    );
 
     return PhaseScaffold(
       transparent: true,

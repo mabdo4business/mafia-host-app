@@ -10,18 +10,16 @@ import '../../game/game_session.dart';
 import '../../game/providers.dart';
 import '../../game/role_mix.dart';
 import '../../ui/ui.dart';
-import 'chameleon_choice_screen.dart';
 
 /// Pass-the-phone deal: each player in seating order taps the face-down card
-/// to see their role, then hides it and passes the phone on. A Chameleon
-/// picks the role they will play. After the last player, night 1 begins.
+/// to see their role, then hides it and passes the phone on. (A Chameleon
+/// chooses on night 3.) After the last player, night 1 begins.
 class RevealScreen extends ConsumerStatefulWidget {
   const RevealScreen({
     super.key,
     required this.names,
     required this.mix,
     required this.settings,
-    required this.discussionSeconds,
     this.random,
     this.dealt,
     this.initialIndex = 0,
@@ -31,7 +29,6 @@ class RevealScreen extends ConsumerStatefulWidget {
   final List<String> names;
   final Map<Role, int> mix;
   final GameSettings settings;
-  final int discussionSeconds;
 
   /// Injected in tests and previews for a predictable deal.
   final Random? random;
@@ -50,28 +47,12 @@ class RevealScreen extends ConsumerStatefulWidget {
 class _RevealScreenState extends ConsumerState<RevealScreen> {
   late final List<Player> _players =
       widget.dealt ?? dealRoles(widget.names, widget.mix, widget.random ?? Random.secure());
-  final Map<String, Role> _chameleonPicks = {};
   late int _index = widget.initialIndex;
   late bool _revealed = widget.initiallyRevealed;
   bool _starting = false;
 
   Player get _player => _players[_index];
   bool get _isLast => _index == _players.length - 1;
-
-  /// The role this player plays (a Chameleon's pick, once made).
-  Role? get _playedRole =>
-      _player.role == Role.chameleon ? _chameleonPicks[_player.id] : _player.role;
-
-  Future<void> _chooseChameleonRole() async {
-    final role = await Navigator.push<Role>(
-      context,
-      MaterialPageRoute(
-        builder: (_) =>
-            ChameleonChoiceScreen(name: _player.name, choices: chameleonChoices(widget.settings)),
-      ),
-    );
-    if (role != null) setState(() => _chameleonPicks[_player.id] = role);
-  }
 
   Future<void> _next() async {
     if (!_isLast) {
@@ -82,14 +63,7 @@ class _RevealScreenState extends ConsumerState<RevealScreen> {
       return;
     }
     setState(() => _starting = true);
-    final setup = GameSetup(
-      settings: widget.settings,
-      discussionSeconds: widget.discussionSeconds,
-      players: [
-        for (final p in _players)
-          Player(id: p.id, name: p.name, role: p.role, chameleonRole: _chameleonPicks[p.id]),
-      ],
-    );
+    final setup = GameSetup(settings: widget.settings, players: _players);
     await ref.read(activeGameProvider.notifier).start(setup);
     if (!mounted) return;
     Navigator.pushAndRemoveUntil(
@@ -99,16 +73,14 @@ class _RevealScreenState extends ConsumerState<RevealScreen> {
     );
   }
 
-  /// The Mafia's teammates ("Omar · Potana"), shown on Mafia cards.
+  /// The Mafia's teammates ("Omar · Putana"), shown on Mafia cards.
   List<String> _family(Role played) {
     if (played.team != Team.mafia) return const [];
     final l = context.l10n;
     return [
       for (final p in _players)
         if (p.id != _player.id)
-          if ((p.role == Role.chameleon ? _chameleonPicks[p.id] : p.role) case final r?
-              when r.team == Team.mafia)
-            l.familyMember(p.name, l.role(r)),
+          if (p.role.team == Team.mafia) l.familyMember(p.name, l.role(p.role)),
     ];
   }
 
@@ -117,10 +89,8 @@ class _RevealScreenState extends ConsumerState<RevealScreen> {
     final l = context.l10n;
     final c = context.mafia;
     final p = _player;
-    final played = _playedRole;
-    final shown = played ?? p.role; // a Chameleon before picking shows the Chameleon
+    final shown = p.role;
     final teamColor = shown.team == Team.mafia ? c.mafia : c.civilian;
-    final needsPick = _revealed && p.role == Role.chameleon && played == null;
 
     return PhaseScaffold(
       glow: Glow(
@@ -162,9 +132,7 @@ class _RevealScreenState extends ConsumerState<RevealScreen> {
               onTap: () => setState(() => _revealed = !_revealed),
               team: shown.team,
               teamLabel: shown.team == Team.mafia ? l.teamLabelMafia : l.teamLabelCivilians,
-              roleName: p.role == Role.chameleon && played != null
-                  ? l.chameleonAs(l.role(played))
-                  : l.role(shown),
+              roleName: l.role(shown),
               ability: l.ability(shown),
               glyph: roleGlyph(shown),
               backTitle: l.revealTapToReveal,
@@ -188,13 +156,6 @@ class _RevealScreenState extends ConsumerState<RevealScreen> {
                     l.revealHint,
                     style: context.type.bodyMedium!.copyWith(color: c.textMuted),
                   ),
-                )
-              : needsPick
-              ? PrimaryActionButton(
-                  key: const Key('chameleonChoose'),
-                  label: l.chameleonChooseRole,
-                  trailing: MafiaGlyphs.arrow,
-                  onPressed: _chooseChameleonRole,
                 )
               : PrimaryActionButton(
                   key: const Key('revealNext'),

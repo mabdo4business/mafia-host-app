@@ -18,7 +18,7 @@ GameSetup table() => GameSetup(
 
 /// Plays a night with no actions (Mafia + Doctor steps).
 Future<void> quietNight(WidgetTester tester) async {
-  await tapText(tester, l10nOf(tester).nightBegin);
+  await beginNight(tester);
   await nightPick(tester, null);
   await nightPick(tester, null);
   await tapKey(tester, 'resolveNight');
@@ -56,7 +56,7 @@ void main() {
       ),
       screenAwake: awake,
     );
-    await tapText(tester, l10nOf(tester).nightBegin);
+    await beginNight(tester);
     await nightPick(tester, 'c1');
     await tapKey(tester, 'resolveNight');
     expect(find.text(l10nOf(tester).winMafia), findsWidgets);

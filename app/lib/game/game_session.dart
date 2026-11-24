@@ -6,16 +6,18 @@ import 'game_input.dart';
 /// the morning announcement and the vote result are their own screens.
 enum GameStage { night, morning, day, dayResult, gameOver }
 
-/// Everything fixed at setup.
+/// Everything fixed at setup: the players in seat order and the rules
+/// (including the day and night timers).
 final class GameSetup {
-  const GameSetup({required this.players, required this.settings, this.discussionSeconds = 0});
+  const GameSetup({required this.players, required this.settings});
 
   final List<Player> players;
   final GameSettings settings;
-
-  /// Day discussion timer; 0 = no timer.
-  final int discussionSeconds;
 }
+
+/// The vote left the day undecided: a re-vote, or a tie-breaker to pick.
+bool isUndecidedVote(List<GameEvent> events) =>
+    events.any((e) => e is RevoteRequired || e is HostDecisionRequired || e is DrawLotsRequired);
 
 /// One host input and what the engine made of it.
 final class LogEntry {
@@ -66,21 +68,24 @@ final class GameSession {
 
   String nameOf(String playerId) => state.player(playerId).name;
 
+  /// Identifies the screen for the current stage. A Foul or a removal does
+  /// not change it, so the day keeps its place (speaker, timers).
+  int get viewKey => log.where((e) => e.input is! FoulInput && e.input is! RemoveInput).length;
+
   /// Applies one input. Engine validation errors propagate as
   /// [InvalidActionException]; inputs that don't fit the stage are
   /// programming errors ([StateError]).
   GameSession apply(GameInput input) {
     final Resolution r;
-    GameStage next;
+    GameStage next = stage;
     switch (input) {
       case NightInput(:final actions):
         _expectStage({GameStage.night}, input);
         r = resolveNight(state, actions);
         next = GameStage.morning;
-      case BombInput(:final bombId, :final victimIds):
+      case ChoiceInput(:final playerId, :final victimIds):
         _expectStage({GameStage.morning, GameStage.dayResult}, input);
-        r = detonateBomb(state, bombId, victimIds);
-        next = stage;
+        r = resolveChoice(state, playerId, victimIds);
       case DayVoteInput(:final tieBreakerId):
         _expectStage({GameStage.day}, input);
         r = switch (input) {
@@ -91,12 +96,17 @@ final class GameSession {
             tieBreakerId: tieBreakerId,
           ),
         };
-        final undecided = r.events.any((e) => e is RevoteRequired || e is HostDecisionRequired);
-        next = undecided ? GameStage.day : GameStage.dayResult;
+        next = isUndecidedVote(r.events) ? GameStage.day : GameStage.dayResult;
+      case FoulInput(:final playerId):
+        _expectStage({GameStage.day}, input);
+        r = Resolution(takeFoul(state, playerId), const []);
+      case RemoveInput(:final playerId):
+        _expectStage({GameStage.morning, GameStage.day, GameStage.dayResult}, input);
+        r = removePlayer(state, playerId);
       case AdvanceInput():
         _expectStage({GameStage.morning, GameStage.dayResult}, input);
-        if (state.pendingBombs.isNotEmpty) {
-          throw StateError('Cannot advance while a Bomb is pending');
+        if (state.pendingChoices.isNotEmpty) {
+          throw StateError('Cannot advance while a death choice is pending');
         }
         r = Resolution(state, const []);
         next = stage == GameStage.morning ? GameStage.day : GameStage.night;
@@ -116,28 +126,29 @@ final class GameSession {
   }
 
   /// The entries the current announcement is built from: the last night (or
-  /// the last decided vote) plus any Bomb detonations after it.
+  /// the last decided vote) plus the choices and removals after it.
   List<LogEntry> get latestRound {
     for (var i = log.length - 1; i >= 0; i--) {
-      final input = log[i].input;
-      final decidedVote =
-          input is DayVoteInput &&
-          !log[i].events.any((e) => e is RevoteRequired || e is HostDecisionRequired);
-      if (input is NightInput || decidedVote) {
+      final e = log[i];
+      final decidedVote = e.input is DayVoteInput && !isUndecidedVote(e.events);
+      if (e.input is NightInput || decidedVote) {
         return [
           for (final e in log.skip(i))
-            if (e.input is! AdvanceInput) e,
+            if (e.input is! AdvanceInput && e.input is! FoulInput) e,
         ];
       }
     }
     return const [];
   }
 
-  /// The last vote input, if the day is waiting on a tie decision or revote.
+  /// The last vote, if the day is waiting on a re-vote or a tie-breaker.
   LogEntry? get pendingTie {
-    if (stage != GameStage.day || log.isEmpty) return null;
-    final last = log.last;
-    return last.input is DayVoteInput ? last : null;
+    if (stage != GameStage.day) return null;
+    for (final e in log.reversed) {
+      if (e.input is FoulInput || e.input is RemoveInput) continue;
+      return e.input is DayVoteInput && isUndecidedVote(e.events) ? e : null;
+    }
+    return null;
   }
 
   void _expectStage(Set<GameStage> allowed, GameInput input) {

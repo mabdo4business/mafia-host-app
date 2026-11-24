@@ -116,7 +116,10 @@ class _NightRow extends StatelessWidget {
               children: [
                 Text(
                   DateFormat.MMM(locale).format(night.date).toUpperCase(),
-                  style: context.type.labelSmall!.copyWith(fontSize: TextSizes.tag, color: c.mafiaSoft),
+                  style: context.type.labelSmall!.copyWith(
+                    fontSize: TextSizes.tag,
+                    color: c.mafiaSoft,
+                  ),
                 ),
                 Text(
                   DateFormat.d(locale).format(night.date),

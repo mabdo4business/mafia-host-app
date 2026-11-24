@@ -1,5 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mafia_engine/mafia_engine.dart';
+import 'package:drift/drift.dart' show Value;
+import 'package:mafia_host/data/database.dart';
 import 'package:mafia_host/data/game_repository.dart';
 import 'package:mafia_host/game/game_input.dart';
 import 'package:mafia_host/game/game_session.dart';
@@ -26,6 +28,7 @@ void main() {
         NightInput([]),
         AdvanceInput(),
         TallyVoteInput({'a': 3}),
+        ChoiceInput('a', []),
       ],
     );
     // Mafia win: the Godfather (B this time) kills one of two civilians.
@@ -58,5 +61,65 @@ void main() {
     expect(nights, hasLength(1), reason: 'both games were played today');
     expect(nights.single.games, hasLength(2));
     expect(nights.single.players, ['A', 'B', 'C', 'D']);
+  });
+
+  test('games played under the old rules still count, but are not replayed', () async {
+    final db = memoryDb();
+    final repo = GameRepository(db);
+    Future<int> legacy(GameStatus status, {String? winner}) async {
+      final id = await db
+          .into(db.games)
+          .insert(
+            GamesCompanion.insert(
+              createdAt: DateTime(2026, 11, 1),
+              settingsJson: '{"bombVictimCount":2,"tieVoteRule":"hostDecides"}',
+              status: status,
+              winner: Value(winner),
+            ),
+          );
+      for (final (seat, (name, role, picked)) in const [
+        ('Old A', 'potana', null),
+        ('Old B', 'chameleon', 'godfather'),
+        ('Old C', 'civilian', null),
+      ].indexed) {
+        await db
+            .into(db.gamePlayers)
+            .insert(
+              GamePlayersCompanion.insert(
+                gameId: id,
+                seat: seat,
+                playerId: 'p$seat',
+                name: name,
+                role: role,
+                chameleonRole: Value(picked),
+              ),
+            );
+      }
+      // An old-format input today's engine can't replay.
+      await db
+          .into(db.gameInputs)
+          .insert(
+            GameInputsCompanion.insert(
+              gameId: id,
+              seq: 0,
+              payloadJson:
+                  '{"type":"night","actions":[{"type":"potanaBlock","actor":"p0","target":"p2"}]}',
+            ),
+          );
+      return id;
+    }
+
+    await legacy(GameStatus.finished, winner: 'mafia');
+    final records = {for (final r in await repo.playerRecords()) r.name: r};
+    expect(records['Old A']!.wins, 1);
+    expect(records['Old A']!.roles, {Role.putana: 1});
+    expect(records['Old B']!.wins, 1, reason: 'a Chameleon who picked a Mafia role');
+    expect(records['Old C']!.wins, 0);
+    expect((await repo.recentGames()).single.nights, 1);
+
+    // An unfinished old game can't be continued: it is set aside.
+    await legacy(GameStatus.active);
+    expect(await repo.loadActiveGame(), isNull);
+    expect((await repo.tableStats()).games, 1);
   });
 }

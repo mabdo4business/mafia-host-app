@@ -11,20 +11,11 @@ import 'assign_cards_screen.dart';
 import 'players_sheet.dart';
 import 'reveal_screen.dart';
 
-const _timerOptions = [0, 60, 120, 180, 300];
-
-/// Mockup order: Mafia team first, then the Civilian roles.
-const _gridRoles = [
-  Role.godfather,
-  Role.potana,
-  Role.lawyer,
-  Role.mafia,
-  Role.doctor,
-  Role.detective,
-  Role.bomb,
-  Role.joker,
-  Role.chameleon,
-];
+/// Timer choices in seconds (GAME_RULES §2 defaults: 120, 30, 15, 20).
+const _freeChatOptions = [60, 120, 180, 300];
+const _speechOptions = [20, 30, 45, 60];
+const _foulOptions = [10, 15, 20, 30];
+const _mafiaTalkOptions = [10, 20, 30, 45];
 
 class SetupScreen extends ConsumerStatefulWidget {
   const SetupScreen({super.key});
@@ -48,7 +39,6 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
     final controller = ref.read(setupDraftProvider.notifier);
     final settings = draft.settings;
     final problem = draft.problem;
-    final hasBomb = draft.countOf(Role.bomb) > 0 || draft.countOf(Role.chameleon) > 0;
     final mafia = [
       for (final r in Role.values)
         if (r.team == Team.mafia) draft.countOf(r),
@@ -69,7 +59,7 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
           : null,
     );
     final chips = [
-      for (final r in _gridRoles) chip(r),
+      for (final r in configurableRoles) chip(r),
       RoleChip(
         key: const Key('roleChip_civilian'),
         glyph: roleGlyph(Role.civilian),
@@ -102,6 +92,12 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
             balanced: problem == null,
             onEdit: () => showPlayersSheet(context),
           ),
+          const SizedBox(height: Space.sm),
+          Text(
+            l.setupSeatOrderHint,
+            key: const Key('seatOrderHint'),
+            style: context.type.bodySmall!.copyWith(fontSize: TextSizes.small),
+          ),
           const SizedBox(height: Space.xl),
           SectionTitle(
             l.setupRolesSection,
@@ -119,23 +115,10 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
             ),
             const SizedBox(height: 10),
           ],
-          Text(l.setupRolesHint, style: context.type.bodySmall!.copyWith(fontSize: TextSizes.small)),
-          if (hasBomb) ...[
-            const SizedBox(height: Space.lg),
-            _OptionCard(
-              title: l.setupBombTakesDown,
-              subtitle: l.setupBombTakesDownHint,
-              trailing: SegmentedPill<int>(
-                key: const Key('bombCount'),
-                dense: true,
-                segments: [
-                  for (final n in [2, 3]) (n, context.number(n)),
-                ],
-                selected: settings.bombVictimCount,
-                onChanged: (n) => controller.updateSettings(settings.copyWith(bombVictimCount: n)),
-              ),
-            ),
-          ],
+          Text(
+            l.setupRolesHint,
+            style: context.type.bodySmall!.copyWith(fontSize: TextSizes.small),
+          ),
           const SizedBox(height: Space.xl),
           SectionTitle(l.setupOptionsSection),
           const SizedBox(height: Space.sm),
@@ -158,16 +141,7 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          _OptionCard(
-            title: l.setupDiscussionTimerMinutes,
-            below: SegmentedPill<int>(
-              segments: [
-                for (final s in _timerOptions) (s, s == 0 ? l.timerOff : context.number(s ~/ 60)),
-              ],
-              selected: draft.discussionSeconds,
-              onChanged: controller.setDiscussionSeconds,
-            ),
-          ),
+          _TimersCard(settings: settings, onChanged: controller.updateSettings),
           const SizedBox(height: 10),
           _OptionCard(
             title: l.setupHouseRules,
@@ -205,14 +179,8 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
                               names: draft.names,
                               mix: draft.mix,
                               settings: settings,
-                              discussionSeconds: draft.discussionSeconds,
                             )
-                          : RevealScreen(
-                              names: draft.names,
-                              mix: draft.mix,
-                              settings: settings,
-                              discussionSeconds: draft.discussionSeconds,
-                            ),
+                          : RevealScreen(names: draft.names, mix: draft.mix, settings: settings),
                     ),
                   ),
           ),
@@ -350,7 +318,10 @@ class _OptionCard extends StatelessWidget {
                     style: context.type.bodyMedium!.copyWith(fontWeight: FontWeight.w600),
                   ),
                   if (subtitle != null)
-                    Text(subtitle!, style: context.type.bodySmall!.copyWith(fontSize: TextSizes.small)),
+                    Text(
+                      subtitle!,
+                      style: context.type.bodySmall!.copyWith(fontSize: TextSizes.small),
+                    ),
                 ],
               ),
             ),
@@ -363,63 +334,196 @@ class _OptionCard extends StatelessWidget {
   );
 }
 
+/// Free Chat, Speech, Foul and the Mafia's talk at night.
+class _TimersCard extends StatelessWidget {
+  const _TimersCard({required this.settings, required this.onChanged});
+
+  final GameSettings settings;
+  final ValueChanged<GameSettings> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    String clock(int s) => s % 60 == 0 ? l.minutesShort(s ~/ 60) : l.secondsShort(s);
+    Widget timer(
+      String key,
+      String title,
+      List<int> options,
+      int selected,
+      GameSettings Function(int) set,
+    ) => Padding(
+      padding: const EdgeInsetsDirectional.only(top: Space.md),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: context.type.bodySmall),
+          const SizedBox(height: Space.xs),
+          SegmentedPill<int>(
+            key: Key(key),
+            dense: true,
+            segments: [for (final s in options) (s, clock(s))],
+            selected: options.contains(selected) ? selected : options.first,
+            onChanged: (s) => onChanged(set(s)),
+          ),
+        ],
+      ),
+    );
+    return _OptionCard(
+      title: l.setupTimers,
+      subtitle: l.setupTimersHint,
+      below: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          timer(
+            'freeChatTimer',
+            l.dayFreeChat,
+            _freeChatOptions,
+            settings.freeChatSeconds,
+            (s) => settings.copyWith(freeChatSeconds: s),
+          ),
+          timer(
+            'speechTimer',
+            l.daySpeech,
+            _speechOptions,
+            settings.speechSeconds,
+            (s) => settings.copyWith(speechSeconds: s),
+          ),
+          timer(
+            'foulTimer',
+            l.dayFoul,
+            _foulOptions,
+            settings.foulSeconds,
+            (s) => settings.copyWith(foulSeconds: s),
+          ),
+          timer(
+            'mafiaTimer',
+            l.nightMafiaTalk,
+            _mafiaTalkOptions,
+            settings.mafiaDiscussionSeconds,
+            (s) => settings.copyWith(mafiaDiscussionSeconds: s),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Every open question of GAME_RULES §6 (Q14 is "Reveal role on death" on
+/// the setup screen itself).
 class _HouseRulesSheet extends ConsumerWidget {
   const _HouseRulesSheet();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = context.l10n;
-    final settings = ref.watch(setupDraftProvider).settings;
+    final s = ref.watch(setupDraftProvider).settings;
     final controller = ref.read(setupDraftProvider.notifier);
-    void update(GameSettings s) => controller.updateSettings(s);
+    void update(GameSettings next) => controller.updateSettings(next);
 
-    Widget rule(String title, bool value, ValueChanged<bool> onChanged) => SwitchListTile(
-      contentPadding: EdgeInsetsDirectional.zero,
-      title: Text(title, style: context.type.bodyMedium),
-      value: value,
-      onChanged: onChanged,
-    );
+    Widget rule(String key, String title, bool value, ValueChanged<bool> onChanged) =>
+        SwitchListTile(
+          key: Key(key),
+          contentPadding: EdgeInsetsDirectional.zero,
+          title: Text(title, style: context.type.bodyMedium),
+          value: value,
+          onChanged: onChanged,
+        );
 
     return SafeArea(
-      child: Padding(
-        padding: const EdgeInsetsDirectional.fromSTEB(Space.page, Space.xl, Space.page, Space.lg),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height * 0.85),
+        child: ListView(
+          shrinkWrap: true,
+          padding: const EdgeInsetsDirectional.fromSTEB(Space.page, Space.xl, Space.page, Space.lg),
           children: [
             Text(l.setupHouseRules, style: context.type.headlineSmall),
+            const SizedBox(height: Space.xs),
+            Text(l.setupHouseRulesSheetHint, style: context.type.bodySmall),
             const SizedBox(height: Space.md),
             rule(
-              l.ruleDoctorSaveBlocksJoker,
-              settings.doctorSaveBlocksJokerKill,
-              (v) => update(settings.copyWith(doctorSaveBlocksJokerKill: v)),
+              'rule_godfatherAppearsCivilian',
+              l.ruleGodfatherAppearsCivilian,
+              s.godfatherAppearsCivilian,
+              (v) => update(s.copyWith(godfatherAppearsCivilian: v)),
             ),
             rule(
-              l.ruleDoctorCanSaveBombVictims,
-              settings.doctorCanSaveBombVictims,
-              (v) => update(settings.copyWith(doctorCanSaveBombVictims: v)),
+              'rule_putanaCanBlockMafia',
+              l.rulePutanaCanBlockMafia,
+              s.putanaCanBlockMafia,
+              (v) => update(s.copyWith(putanaCanBlockMafia: v)),
             ),
             rule(
-              l.ruleBlockedBombExplodes,
-              settings.blockedBombStillExplodes,
-              (v) => update(settings.copyWith(blockedBombStillExplodes: v)),
+              'rule_chameleonMafiaJoinsMafiaTeam',
+              l.ruleChameleonMafiaJoins,
+              s.chameleonMafiaJoinsMafiaTeam,
+              (v) => update(s.copyWith(chameleonMafiaJoinsMafiaTeam: v)),
             ),
             rule(
-              l.ruleChameleonMafia,
-              settings.chameleonCanPickMafiaRoles,
-              (v) => update(settings.copyWith(chameleonCanPickMafiaRoles: v)),
+              'rule_detectiveChainOnVote',
+              l.ruleDetectiveChainOnVote,
+              s.detectiveChainOnVote,
+              (v) => update(s.copyWith(detectiveChainOnVote: v)),
+            ),
+            rule(
+              'rule_blockedChecksCount',
+              l.ruleBlockedChecksCount,
+              s.blockedChecksCount,
+              (v) => update(s.copyWith(blockedChecksCount: v)),
+            ),
+            rule(
+              'rule_doctorBlocksChainDeaths',
+              l.ruleDoctorBlocksChainDeaths,
+              s.doctorBlocksChainDeaths,
+              (v) => update(s.copyWith(doctorBlocksChainDeaths: v)),
+            ),
+            rule(
+              'rule_switchmanRedirectsEach',
+              l.ruleSwitchmanRedirectsEach,
+              s.switchmanRedirectsEach,
+              (v) => update(s.copyWith(switchmanRedirectsEach: v)),
+            ),
+            rule(
+              'rule_doctorSavesRedirectedBullet',
+              l.ruleDoctorSavesRedirected,
+              s.doctorSavesRedirectedBullet,
+              (v) => update(s.copyWith(doctorSavesRedirectedBullet: v)),
+            ),
+            rule(
+              'rule_bombNoEffectBeforePlant',
+              l.ruleBombNoEffectBeforePlant,
+              s.bombNoEffectBeforePlant,
+              (v) => update(s.copyWith(bombNoEffectBeforePlant: v)),
+            ),
+            rule(
+              'rule_silenceLastsNextDay',
+              l.ruleSilenceLastsNextDay,
+              s.silenceLastsNextDay,
+              (v) => update(s.copyWith(silenceLastsNextDay: v)),
+            ),
+            rule(
+              'rule_witchCiviliansOnly',
+              l.ruleWitchCiviliansOnly,
+              s.witchCiviliansOnly,
+              (v) => update(s.copyWith(witchCiviliansOnly: v)),
+            ),
+            rule(
+              'rule_mafiaWinsAtParity',
+              l.ruleMafiaWinsAtParity,
+              s.mafiaWinsAtParity,
+              (v) => update(s.copyWith(mafiaWinsAtParity: v)),
             ),
             const SizedBox(height: Space.md),
-            Text(l.ruleTieVote, style: context.type.bodyMedium),
+            Text(l.ruleSecondTie, style: context.type.bodyMedium),
             const SizedBox(height: Space.sm),
-            SegmentedPill<TieVoteRule>(
+            SegmentedPill<SecondTieRule>(
+              key: const Key('rule_secondTieRule'),
               segments: [
-                (TieVoteRule.hostDecides, l.tieHostDecides),
-                (TieVoteRule.revote, l.tieRevote),
-                (TieVoteRule.noElimination, l.tieNoElimination),
+                (SecondTieRule.noElimination, l.tieNoElimination),
+                (SecondTieRule.hostDecides, l.tieHostDecides),
+                (SecondTieRule.randomAmongTied, l.tieRandom),
               ],
-              selected: settings.tieVoteRule,
-              onChanged: (r) => update(settings.copyWith(tieVoteRule: r)),
+              selected: s.secondTieRule,
+              onChanged: (r) => update(s.copyWith(secondTieRule: r)),
             ),
           ],
         ),

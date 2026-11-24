@@ -83,7 +83,9 @@ abstract final class MafiaGlyphs {
     'M11 5 6 9H2v6h4l5 4z',
     'M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14',
   ]);
-  static const stop = MafiaGlyph(['M8 7h8a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z']);
+  static const stop = MafiaGlyph([
+    'M8 7h8a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z',
+  ]);
   static const log = MafiaGlyph(['M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01']);
   static const timer = MafiaGlyph([
     'M12 8v5l3 2',
@@ -150,7 +152,7 @@ abstract final class MafiaGlyphs {
 
   // Roles.
   static const godfather = MafiaGlyph(['M3 16h18M6 16l1.5-8h9L18 16M8 12h8']);
-  static const potana = MafiaGlyph(['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM5.6 5.6l12.8 12.8']);
+  static const putana = MafiaGlyph(['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM5.6 5.6l12.8 12.8']);
   static const lawyer = MafiaGlyph([
     'M12 3v18M5 7h14M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0zM8 21h8',
   ]);
@@ -164,6 +166,42 @@ abstract final class MafiaGlyphs {
   static const chameleon = MafiaGlyph([
     'M4 9a8 8 0 0 1 14-3l2 2M20 15a8 8 0 0 1-14 3l-2-2M20 4v4h-4M4 20v-4h4',
   ]);
+
+  /// Two linked rings: the Witch's linked souls.
+  static const witch = MafiaGlyph([
+    'M9 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z',
+    'M15 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z',
+  ]);
+
+  /// A track switching: the Switchman sends the bullet on.
+  static const switchman = MafiaGlyph([
+    'M4 20 12 12V4',
+    'm8 8 4-4 4 4',
+    'M12 12l8 8',
+    'M16 20h4v-4',
+  ]);
+
+  /// A crossed-out speech bubble: the Silencer.
+  static const silencer = MafiaGlyph([
+    'M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z',
+    'M4 4l16 16',
+  ]);
+
+  /// Turning arrows: the Shapeshifter's rotating role.
+  static const shapeshifter = MafiaGlyph([
+    'M20 11a8 8 0 0 0-14.3-4.9L4 8',
+    'M4 4v4h4',
+    'M4 13a8 8 0 0 0 14.3 4.9L20 16',
+    'M20 20v-4h-4',
+  ]);
+
+  /// Two sticks and a fuse: TNT.
+  static const tnt = MafiaGlyph([
+    'M5 10h5v10H5zM14 10h5v10h-5z',
+    'M7.5 10V7c0-2 2-3 4-3',
+    'M14 3l1 1M17 3v1',
+  ]);
+
   static const civilian = MafiaGlyph(['M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM4 21a8 8 0 0 1 16 0']);
 }
 

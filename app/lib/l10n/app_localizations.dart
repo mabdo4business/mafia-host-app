@@ -243,12 +243,6 @@ abstract class AppLocalizations {
   /// **'Godfather'**
   String get roleGodfather;
 
-  /// No description provided for @rolePotana.
-  ///
-  /// In en, this message translates to:
-  /// **'Potana'**
-  String get rolePotana;
-
   /// No description provided for @roleLawyer.
   ///
   /// In en, this message translates to:
@@ -405,23 +399,11 @@ abstract class AppLocalizations {
   /// **'Options'**
   String get setupOptionsSection;
 
-  /// No description provided for @setupBombVictims.
-  ///
-  /// In en, this message translates to:
-  /// **'Bomb victims'**
-  String get setupBombVictims;
-
   /// No description provided for @setupRevealRole.
   ///
   /// In en, this message translates to:
   /// **'Reveal role on death'**
   String get setupRevealRole;
-
-  /// No description provided for @setupDiscussionTimer.
-  ///
-  /// In en, this message translates to:
-  /// **'Discussion timer'**
-  String get setupDiscussionTimer;
 
   /// No description provided for @timerOff.
   ///
@@ -440,42 +422,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'House rules'**
   String get setupHouseRules;
-
-  /// No description provided for @ruleDoctorSaveBlocksJoker.
-  ///
-  /// In en, this message translates to:
-  /// **'Doctor\'s save also stops the Joker'**
-  String get ruleDoctorSaveBlocksJoker;
-
-  /// No description provided for @ruleDoctorCanSaveBombVictims.
-  ///
-  /// In en, this message translates to:
-  /// **'Doctor can save Bomb victims'**
-  String get ruleDoctorCanSaveBombVictims;
-
-  /// No description provided for @ruleBlockedBombExplodes.
-  ///
-  /// In en, this message translates to:
-  /// **'Blocked Bomb still explodes'**
-  String get ruleBlockedBombExplodes;
-
-  /// No description provided for @ruleChameleonMafia.
-  ///
-  /// In en, this message translates to:
-  /// **'Chameleon can pick Mafia roles'**
-  String get ruleChameleonMafia;
-
-  /// No description provided for @ruleTieVote.
-  ///
-  /// In en, this message translates to:
-  /// **'Tied vote'**
-  String get ruleTieVote;
-
-  /// No description provided for @tieRevote.
-  ///
-  /// In en, this message translates to:
-  /// **'Revote'**
-  String get tieRevote;
 
   /// No description provided for @tieNoElimination.
   ///
@@ -536,18 +482,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Give each player the card shown next to their name. Keep this screen hidden from the table.'**
   String get dealInstructions;
-
-  /// No description provided for @dealChameleonPlaysAs.
-  ///
-  /// In en, this message translates to:
-  /// **'Chameleon plays as'**
-  String get dealChameleonPlaysAs;
-
-  /// No description provided for @dealChameleonMissing.
-  ///
-  /// In en, this message translates to:
-  /// **'Each Chameleon must choose a role.'**
-  String get dealChameleonMissing;
 
   /// No description provided for @dealReshuffle.
   ///
@@ -627,12 +561,6 @@ abstract class AppLocalizations {
   /// **'Card holder: {name}'**
   String nightActor(String name);
 
-  /// No description provided for @nightWakePotana.
-  ///
-  /// In en, this message translates to:
-  /// **'Wake the Potana. Who do they block?'**
-  String get nightWakePotana;
-
   /// No description provided for @nightWakeLawyer.
   ///
   /// In en, this message translates to:
@@ -668,18 +596,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No action'**
   String get nightNoAction;
-
-  /// No description provided for @nightBlockedWarning.
-  ///
-  /// In en, this message translates to:
-  /// **'Blocked by the Potana tonight — this action will have no effect. Let them choose anyway.'**
-  String get nightBlockedWarning;
-
-  /// No description provided for @nightDoctorLastNight.
-  ///
-  /// In en, this message translates to:
-  /// **'Saved last night'**
-  String get nightDoctorLastNight;
 
   /// No description provided for @nightDetectiveShow.
   ///
@@ -728,12 +644,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{name} ({role})'**
   String actorWithRole(String name, String role);
-
-  /// No description provided for @actionPotanaBlock.
-  ///
-  /// In en, this message translates to:
-  /// **'{actor} blocked {target}'**
-  String actionPotanaBlock(String actor, String target);
 
   /// No description provided for @actionLawyerProtect.
   ///
@@ -849,35 +759,11 @@ abstract class AppLocalizations {
   /// **'Detective\'s check on {target}: {result}'**
   String hostDetective(String target, String result);
 
-  /// No description provided for @hostBombDefused.
-  ///
-  /// In en, this message translates to:
-  /// **'{name} (Bomb) was blocked and did not explode.'**
-  String hostBombDefused(String name);
-
-  /// No description provided for @bombPick.
-  ///
-  /// In en, this message translates to:
-  /// **'{name} was the Bomb. Choose {count, plural, =1{1 player} other{{count} players}} to die with them.'**
-  String bombPick(String name, int count);
-
-  /// No description provided for @bombDetonate.
-  ///
-  /// In en, this message translates to:
-  /// **'Detonate ({selected}/{required})'**
-  String bombDetonate(String selected, String required);
-
   /// No description provided for @morningStartDay.
   ///
   /// In en, this message translates to:
   /// **'Start the day'**
   String get morningStartDay;
-
-  /// No description provided for @dayDiscussion.
-  ///
-  /// In en, this message translates to:
-  /// **'Discussion'**
-  String get dayDiscussion;
 
   /// No description provided for @timerStart.
   ///
@@ -932,18 +818,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Count votes'**
   String get dayCountVotes;
-
-  /// No description provided for @dayTieHostDecides.
-  ///
-  /// In en, this message translates to:
-  /// **'Tie between {names}. Who is out?'**
-  String dayTieHostDecides(String names);
-
-  /// No description provided for @dayTieRevote.
-  ///
-  /// In en, this message translates to:
-  /// **'Tie between {names}. Vote again.'**
-  String dayTieRevote(String names);
 
   /// No description provided for @dayStartNight.
   ///
@@ -1083,53 +957,11 @@ abstract class AppLocalizations {
   /// **'You have no power at night. Find the Mafia and vote them out by day.'**
   String get abilityCivilian;
 
-  /// No description provided for @abilityDoctor.
-  ///
-  /// In en, this message translates to:
-  /// **'Save one player each night, yourself included — but never the same player two nights in a row.'**
-  String get abilityDoctor;
-
-  /// No description provided for @abilityDetective.
-  ///
-  /// In en, this message translates to:
-  /// **'Check one player each night. The host tells you: Mafia or Civilian.'**
-  String get abilityDetective;
-
-  /// No description provided for @abilityBomb.
-  ///
-  /// In en, this message translates to:
-  /// **'When you die, by night or by vote, you take players down with you.'**
-  String get abilityBomb;
-
   /// No description provided for @abilityJoker.
   ///
   /// In en, this message translates to:
   /// **'You kill one player every night. You play for the Civilians, but nobody is safe.'**
   String get abilityJoker;
-
-  /// No description provided for @abilityChameleon.
-  ///
-  /// In en, this message translates to:
-  /// **'Pick a role now and play it for the whole game.'**
-  String get abilityChameleon;
-
-  /// No description provided for @abilityMafia.
-  ///
-  /// In en, this message translates to:
-  /// **'Each night, wake with your family and choose who dies.'**
-  String get abilityMafia;
-
-  /// No description provided for @abilityGodfather.
-  ///
-  /// In en, this message translates to:
-  /// **'You make the final call on who the Mafia kills. The Detective sees you as a Civilian.'**
-  String get abilityGodfather;
-
-  /// No description provided for @abilityPotana.
-  ///
-  /// In en, this message translates to:
-  /// **'Each night, block one civilian\'s power. Their action has no effect.'**
-  String get abilityPotana;
 
   /// No description provided for @abilityLawyer.
   ///
@@ -1148,12 +980,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Eliminated'**
   String get statusEliminated;
-
-  /// No description provided for @nightWakeTitlePotana.
-  ///
-  /// In en, this message translates to:
-  /// **'Wake the Potana'**
-  String get nightWakeTitlePotana;
 
   /// No description provided for @nightWakeTitleLawyer.
   ///
@@ -1184,12 +1010,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Wake the Detective'**
   String get nightWakeTitleDetective;
-
-  /// No description provided for @nightLinePotana.
-  ///
-  /// In en, this message translates to:
-  /// **'Potana, open your eyes. Whose power do you block tonight?'**
-  String get nightLinePotana;
 
   /// No description provided for @nightLineLawyer.
   ///
@@ -1305,12 +1125,6 @@ abstract class AppLocalizations {
   /// **'Hide & pass to next player'**
   String get revealPassNext;
 
-  /// No description provided for @bombDetonateShort.
-  ///
-  /// In en, this message translates to:
-  /// **'Detonate'**
-  String get bombDetonateShort;
-
   /// No description provided for @notifications.
   ///
   /// In en, this message translates to:
@@ -1401,24 +1215,6 @@ abstract class AppLocalizations {
   /// **'{headline} They were the Bomb.'**
   String announceWasBomb(String headline);
 
-  /// No description provided for @announceBombChoosing.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{They take 1 player down with them: choose now.} other{They take {count} players down with them: choose now.}}'**
-  String announceBombChoosing(int count);
-
-  /// No description provided for @bombChoose.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =0{Ready} =1{Choose 1 player} other{Choose {count} players}}'**
-  String bombChoose(int count);
-
-  /// No description provided for @bombCounter.
-  ///
-  /// In en, this message translates to:
-  /// **'{selected} / {required}'**
-  String bombCounter(String selected, String required);
-
   /// No description provided for @bombWasTheBomb.
   ///
   /// In en, this message translates to:
@@ -1430,18 +1226,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Become {role}'**
   String chameleonBecome(String role);
-
-  /// No description provided for @chameleonChooseRole.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose your role'**
-  String get chameleonChooseRole;
-
-  /// No description provided for @chameleonIntro.
-  ///
-  /// In en, this message translates to:
-  /// **'{name}, you are the Chameleon. Pick the role you will play all game.'**
-  String chameleonIntro(String name);
 
   /// No description provided for @chameleonPickHint.
   ///
@@ -1466,12 +1250,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} eliminated'**
   String countEliminated(int count);
-
-  /// No description provided for @dayDiscussionHint.
-  ///
-  /// In en, this message translates to:
-  /// **'The town talks it over. Start voting when they are ready.'**
-  String get dayDiscussionHint;
 
   /// No description provided for @dayEliminate.
   ///
@@ -1502,12 +1280,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tap a player to add a vote'**
   String get dayTapToVote;
-
-  /// No description provided for @dayTimerHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Discussion timer'**
-  String get dayTimerHint;
 
   /// No description provided for @dayTitle.
   ///
@@ -1779,24 +1551,6 @@ abstract class AppLocalizations {
   /// **'Auto-balance'**
   String get setupAutoBalance;
 
-  /// No description provided for @setupBombTakesDown.
-  ///
-  /// In en, this message translates to:
-  /// **'Bomb takes down'**
-  String get setupBombTakesDown;
-
-  /// No description provided for @setupBombTakesDownHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Players chosen when the Bomb dies'**
-  String get setupBombTakesDownHint;
-
-  /// No description provided for @setupHouseRulesHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Doctor, Bomb, Chameleon and tie rules'**
-  String get setupHouseRulesHint;
-
   /// No description provided for @setupPlayersAtTable.
   ///
   /// In en, this message translates to:
@@ -2049,12 +1803,6 @@ abstract class AppLocalizations {
   /// **'A light tap on picks, card flips and when time runs out'**
   String get settingsHapticsSubtitle;
 
-  /// No description provided for @setupDiscussionTimerMinutes.
-  ///
-  /// In en, this message translates to:
-  /// **'Discussion timer (minutes)'**
-  String get setupDiscussionTimerMinutes;
-
   /// No description provided for @settingsDeviceShort.
   ///
   /// In en, this message translates to:
@@ -2127,12 +1875,6 @@ abstract class AppLocalizations {
   /// **'Next: {role}'**
   String cardsNextRole(String role);
 
-  /// No description provided for @cardsChameleonNext.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose the Chameleon\'s role'**
-  String get cardsChameleonNext;
-
   /// No description provided for @cardsReviewStep.
   ///
   /// In en, this message translates to:
@@ -2156,6 +1898,804 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Check the cards'**
   String get cardsReviewCheck;
+
+  /// No description provided for @rolePutana.
+  ///
+  /// In en, this message translates to:
+  /// **'Putana'**
+  String get rolePutana;
+
+  /// No description provided for @roleWitch.
+  ///
+  /// In en, this message translates to:
+  /// **'Witch'**
+  String get roleWitch;
+
+  /// No description provided for @roleSwitchman.
+  ///
+  /// In en, this message translates to:
+  /// **'Switchman'**
+  String get roleSwitchman;
+
+  /// No description provided for @roleSilencer.
+  ///
+  /// In en, this message translates to:
+  /// **'Silencer'**
+  String get roleSilencer;
+
+  /// No description provided for @roleShapeshifter.
+  ///
+  /// In en, this message translates to:
+  /// **'Shapeshifter'**
+  String get roleShapeshifter;
+
+  /// No description provided for @roleTnt.
+  ///
+  /// In en, this message translates to:
+  /// **'TNT'**
+  String get roleTnt;
+
+  /// No description provided for @abilityPutana.
+  ///
+  /// In en, this message translates to:
+  /// **'Night 1: wake with the Mafia to know your team. After that, block one player\'s ability each night. Left alone on the Mafia Team, you kill like a Mafia.'**
+  String get abilityPutana;
+
+  /// No description provided for @abilityWitch.
+  ///
+  /// In en, this message translates to:
+  /// **'Once, on night 2, link two Civilians\' souls. If one of them is killed at night, the other dies too. Votes don\'t trigger it, and it lasts after you die.'**
+  String get abilityWitch;
+
+  /// No description provided for @abilitySwitchman.
+  ///
+  /// In en, this message translates to:
+  /// **'If someone tries to kill you at night, you wake and send the bullet to a player of your choice. You die at night only if the Putana blocks you that night.'**
+  String get abilitySwitchman;
+
+  /// No description provided for @abilitySilencer.
+  ///
+  /// In en, this message translates to:
+  /// **'Each night, silence one player for the next day: no Free Chat, no Speech, no vote.'**
+  String get abilitySilencer;
+
+  /// No description provided for @abilityShapeshifter.
+  ///
+  /// In en, this message translates to:
+  /// **'Your ability changes every night in order: Detective, Doctor, Joker, then again. You always stay on the Civilians Team.'**
+  String get abilityShapeshifter;
+
+  /// No description provided for @abilityTnt.
+  ///
+  /// In en, this message translates to:
+  /// **'If you are eliminated, in any way, the players sitting right and left of you are eliminated too.'**
+  String get abilityTnt;
+
+  /// No description provided for @abilityDoctor.
+  ///
+  /// In en, this message translates to:
+  /// **'Save one player each night, yourself included. The same player two nights in a row is fine, but not three.'**
+  String get abilityDoctor;
+
+  /// No description provided for @abilityDetective.
+  ///
+  /// In en, this message translates to:
+  /// **'Check one player each night: the host tells you if they are Mafia. Three checks with two Mafia found, and those two die with you if you are killed.'**
+  String get abilityDetective;
+
+  /// No description provided for @abilityBomb.
+  ///
+  /// In en, this message translates to:
+  /// **'After the first day, plant bombs on two players. When you die, by night or by vote, they die too. Voted out on day 1: take both neighbors, or no one.'**
+  String get abilityBomb;
+
+  /// No description provided for @abilityChameleon.
+  ///
+  /// In en, this message translates to:
+  /// **'On night 3, choose Mafia, Detective, Doctor, Joker or Switchman, and keep that role for the rest of the game.'**
+  String get abilityChameleon;
+
+  /// No description provided for @abilityGodfather.
+  ///
+  /// In en, this message translates to:
+  /// **'The final call on who the Mafia kills is yours. Voted out by day, you may take one player with you.'**
+  String get abilityGodfather;
+
+  /// No description provided for @abilityMafia.
+  ///
+  /// In en, this message translates to:
+  /// **'Each night, advise the Godfather on who dies. Without him, every Mafia must show the same number, or nobody dies.'**
+  String get abilityMafia;
+
+  /// No description provided for @nightWakeTitleRecognition.
+  ///
+  /// In en, this message translates to:
+  /// **'Mafia Team, wake up'**
+  String get nightWakeTitleRecognition;
+
+  /// No description provided for @nightLineRecognition.
+  ///
+  /// In en, this message translates to:
+  /// **'Mafia Team, open your eyes and recognize each other. Putana, you too.'**
+  String get nightLineRecognition;
+
+  /// No description provided for @nightRecognitionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Night 1 only. Nobody acts yet.'**
+  String get nightRecognitionHint;
+
+  /// No description provided for @nightRecognized.
+  ///
+  /// In en, this message translates to:
+  /// **'They know each other'**
+  String get nightRecognized;
+
+  /// No description provided for @reviewRecognition.
+  ///
+  /// In en, this message translates to:
+  /// **'The Mafia Team recognized each other'**
+  String get reviewRecognition;
+
+  /// No description provided for @nightWakeTitlePutana.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake the Putana'**
+  String get nightWakeTitlePutana;
+
+  /// No description provided for @nightLinePutana.
+  ///
+  /// In en, this message translates to:
+  /// **'Putana, open your eyes. Whose ability do you block tonight?'**
+  String get nightLinePutana;
+
+  /// No description provided for @nightWakeTitleWitch.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake the Witch'**
+  String get nightWakeTitleWitch;
+
+  /// No description provided for @nightLineWitch.
+  ///
+  /// In en, this message translates to:
+  /// **'Witch, open your eyes. Which two souls do you link?'**
+  String get nightLineWitch;
+
+  /// No description provided for @nightWakeTitleSilencer.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake the Silencer'**
+  String get nightWakeTitleSilencer;
+
+  /// No description provided for @nightLineSilencer.
+  ///
+  /// In en, this message translates to:
+  /// **'Silencer, open your eyes. Who stays silent tomorrow?'**
+  String get nightLineSilencer;
+
+  /// No description provided for @nightWakeTitleShapeshifter.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake the Shapeshifter'**
+  String get nightWakeTitleShapeshifter;
+
+  /// No description provided for @nightLineShapeshifter.
+  ///
+  /// In en, this message translates to:
+  /// **'Shapeshifter, open your eyes. Tonight you are the {role}.'**
+  String nightLineShapeshifter(String role);
+
+  /// No description provided for @nightWakeTitleBomb.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake the Bomb'**
+  String get nightWakeTitleBomb;
+
+  /// No description provided for @nightLineBomb.
+  ///
+  /// In en, this message translates to:
+  /// **'Bomb, open your eyes. Who carries your two bombs?'**
+  String get nightLineBomb;
+
+  /// No description provided for @nightWakeTitleChameleon.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake the Chameleon'**
+  String get nightWakeTitleChameleon;
+
+  /// No description provided for @nightLineChameleonChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Chameleon, open your eyes. Mafia, Detective, Doctor, Joker or Switchman: which do you keep for the rest of the game?'**
+  String get nightLineChameleonChoose;
+
+  /// No description provided for @nightLineChameleonAs.
+  ///
+  /// In en, this message translates to:
+  /// **'Chameleon, open your eyes. You play the {role}.'**
+  String nightLineChameleonAs(String role);
+
+  /// No description provided for @nightWakeTitleSwitchman.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake the Switchman'**
+  String get nightWakeTitleSwitchman;
+
+  /// No description provided for @nightLineSwitchman.
+  ///
+  /// In en, this message translates to:
+  /// **'Switchman, open your eyes. Someone shot at you. Who takes the bullet?'**
+  String get nightLineSwitchman;
+
+  /// No description provided for @nightLineSwitchmanBullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Switchman, open your eyes. Bullet {current} of {total}: who takes it?'**
+  String nightLineSwitchmanBullet(int current, int total);
+
+  /// No description provided for @nightBlockedWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked by the Putana tonight: this action will have no effect. Let them choose anyway.'**
+  String get nightBlockedWarning;
+
+  /// No description provided for @nightBlockedDecider.
+  ///
+  /// In en, this message translates to:
+  /// **'The Putana blocked {name}: the other Mafia\'s number counts tonight.'**
+  String nightBlockedDecider(String name);
+
+  /// No description provided for @nightDoctorTwoNights.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved two nights running'**
+  String get nightDoctorTwoNights;
+
+  /// No description provided for @nightMafiaTalk.
+  ///
+  /// In en, this message translates to:
+  /// **'Mafia talk'**
+  String get nightMafiaTalk;
+
+  /// No description provided for @nightMafiaTalkHint.
+  ///
+  /// In en, this message translates to:
+  /// **'They agree on a target; the Godfather decides.'**
+  String get nightMafiaTalkHint;
+
+  /// No description provided for @nightMafiaMustAgree.
+  ///
+  /// In en, this message translates to:
+  /// **'No Godfather: every Mafia must show the same number. Different numbers cancel the murder.'**
+  String get nightMafiaMustAgree;
+
+  /// No description provided for @nightMafiaNoMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Numbers didn\'t match'**
+  String get nightMafiaNoMatch;
+
+  /// No description provided for @nightPickToSilence.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a player to silence'**
+  String get nightPickToSilence;
+
+  /// No description provided for @nightPickTwoToLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick two players to link'**
+  String get nightPickTwoToLink;
+
+  /// No description provided for @nightPickTwoToPlant.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick two players for the bombs'**
+  String get nightPickTwoToPlant;
+
+  /// No description provided for @nightPickToRedirect.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick who takes the bullet'**
+  String get nightPickToRedirect;
+
+  /// No description provided for @actionLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Link {first} and {second}'**
+  String actionLink(String first, String second);
+
+  /// No description provided for @actionPlant.
+  ///
+  /// In en, this message translates to:
+  /// **'Plant on {first} and {second}'**
+  String actionPlant(String first, String second);
+
+  /// No description provided for @actionSilenceShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Silence {name}'**
+  String actionSilenceShort(String name);
+
+  /// No description provided for @actionRedirectTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Send it to {name}'**
+  String actionRedirectTo(String name);
+
+  /// No description provided for @actionPutanaBlock.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} blocked {target}'**
+  String actionPutanaBlock(String actor, String target);
+
+  /// No description provided for @actionSilence.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} silenced {target}'**
+  String actionSilence(String actor, String target);
+
+  /// No description provided for @actionRedirect.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} sent the bullet to {target}'**
+  String actionRedirect(String actor, String target);
+
+  /// No description provided for @actionWitchLink.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} linked {first} and {second}'**
+  String actionWitchLink(String actor, String first, String second);
+
+  /// No description provided for @actionBombPlant.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} planted bombs on {first} and {second}'**
+  String actionBombPlant(String actor, String first, String second);
+
+  /// No description provided for @actionChameleonChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} chose to be the {role}'**
+  String actionChameleonChoose(String actor, String role);
+
+  /// No description provided for @hostLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'The Witch linked {first} and {second}.'**
+  String hostLinked(String first, String second);
+
+  /// No description provided for @hostBombPlanted.
+  ///
+  /// In en, this message translates to:
+  /// **'{bomb} (Bomb) planted on {first} and {second}.'**
+  String hostBombPlanted(String bomb, String first, String second);
+
+  /// No description provided for @hostChameleonChose.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} (Chameleon) is now the {role}.'**
+  String hostChameleonChose(String name, String role);
+
+  /// No description provided for @hostMafiaCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'The Mafia showed different numbers: no murder.'**
+  String get hostMafiaCancelled;
+
+  /// No description provided for @hostRedirected.
+  ///
+  /// In en, this message translates to:
+  /// **'{switchman} (Switchman) sent a bullet to {target}.'**
+  String hostRedirected(String switchman, String target);
+
+  /// No description provided for @hostDodged.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} (Switchman) was shot at and survived.'**
+  String hostDodged(String name);
+
+  /// No description provided for @hostChainArmed.
+  ///
+  /// In en, this message translates to:
+  /// **'{detective} (Detective) found {names}: they die with the Detective.'**
+  String hostChainArmed(String detective, String names);
+
+  /// No description provided for @hostPutanaPromoted.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} (Putana) is the last of the Mafia Team and now kills.'**
+  String hostPutanaPromoted(String name);
+
+  /// No description provided for @announceRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} was removed from the table.'**
+  String announceRemoved(String name);
+
+  /// No description provided for @announceTntVictim.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} was caught in the TNT blast.'**
+  String announceTntVictim(String name);
+
+  /// No description provided for @announceGodfatherVictim.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} was taken by the Godfather.'**
+  String announceGodfatherVictim(String name);
+
+  /// No description provided for @announceWasTnt.
+  ///
+  /// In en, this message translates to:
+  /// **'{headline} They were the TNT.'**
+  String announceWasTnt(String headline);
+
+  /// No description provided for @announceSilenced.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is silenced today.'**
+  String announceSilenced(String name);
+
+  /// No description provided for @announceSilencedRule.
+  ///
+  /// In en, this message translates to:
+  /// **'No Free Chat, no Speech, no vote'**
+  String get announceSilencedRule;
+
+  /// No description provided for @announceGodfatherChoosing.
+  ///
+  /// In en, this message translates to:
+  /// **'He may take one player with him: choose now.'**
+  String get announceGodfatherChoosing;
+
+  /// No description provided for @announceBombNeighborsChoosing.
+  ///
+  /// In en, this message translates to:
+  /// **'Both neighbors go with them, or no one: choose now.'**
+  String get announceBombNeighborsChoosing;
+
+  /// No description provided for @choiceWasGodfather.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} was the Godfather'**
+  String choiceWasGodfather(String name);
+
+  /// No description provided for @choiceGodfatherHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Voted out, he may take one player with him, or no one.'**
+  String get choiceGodfatherHint;
+
+  /// No description provided for @choiceBombNeighborsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Voted out before planting: take both players sitting beside them, or no one.'**
+  String get choiceBombNeighborsHint;
+
+  /// No description provided for @choiceTake.
+  ///
+  /// In en, this message translates to:
+  /// **'Take {names}'**
+  String choiceTake(String names);
+
+  /// No description provided for @choiceTakeNoOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Take no one'**
+  String get choiceTakeNoOne;
+
+  /// No description provided for @dayFreeChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Free Chat'**
+  String get dayFreeChat;
+
+  /// No description provided for @dayFreeChatHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone may talk, suspect and defend.'**
+  String get dayFreeChatHint;
+
+  /// No description provided for @daySpeeches.
+  ///
+  /// In en, this message translates to:
+  /// **'Speeches'**
+  String get daySpeeches;
+
+  /// No description provided for @daySpeech.
+  ///
+  /// In en, this message translates to:
+  /// **'Speech'**
+  String get daySpeech;
+
+  /// No description provided for @dayFoul.
+  ///
+  /// In en, this message translates to:
+  /// **'Foul'**
+  String get dayFoul;
+
+  /// No description provided for @dayStartSpeeches.
+  ///
+  /// In en, this message translates to:
+  /// **'Start the speeches'**
+  String get dayStartSpeeches;
+
+  /// No description provided for @daySpeechCounter.
+  ///
+  /// In en, this message translates to:
+  /// **'Speech {current} of {total}'**
+  String daySpeechCounter(int current, int total);
+
+  /// No description provided for @daySpeechHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Their time. Nobody answers until it ends.'**
+  String get daySpeechHint;
+
+  /// No description provided for @dayOnFoul.
+  ///
+  /// In en, this message translates to:
+  /// **'On a Foul: an extra speech'**
+  String get dayOnFoul;
+
+  /// No description provided for @dayTakeFoul.
+  ///
+  /// In en, this message translates to:
+  /// **'Foul +{seconds}s'**
+  String dayTakeFoul(int seconds);
+
+  /// No description provided for @daySpeechOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Speaking order (seats)'**
+  String get daySpeechOrder;
+
+  /// No description provided for @dayNextSpeaker.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: {name}'**
+  String dayNextSpeaker(String name);
+
+  /// No description provided for @dayPreviousSpeaker.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous speaker'**
+  String get dayPreviousSpeaker;
+
+  /// No description provided for @dayNoSpeakers.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody may speak today.'**
+  String get dayNoSpeakers;
+
+  /// No description provided for @daySilencedToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Silenced today: {names}'**
+  String daySilencedToday(String names);
+
+  /// No description provided for @daySilencedNoVote.
+  ///
+  /// In en, this message translates to:
+  /// **'Silenced, can\'t vote: {names}'**
+  String daySilencedNoVote(String names);
+
+  /// No description provided for @dayTieRevote.
+  ///
+  /// In en, this message translates to:
+  /// **'Tie between {names}. Re-vote between them.'**
+  String dayTieRevote(String names);
+
+  /// No description provided for @dayTieHostDecides.
+  ///
+  /// In en, this message translates to:
+  /// **'Tied again between {names}. Who is out?'**
+  String dayTieHostDecides(String names);
+
+  /// No description provided for @dayTieDrawLots.
+  ///
+  /// In en, this message translates to:
+  /// **'Tied again between {names}. Draw lots.'**
+  String dayTieDrawLots(String names);
+
+  /// No description provided for @dayDrawLots.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw lots'**
+  String get dayDrawLots;
+
+  /// No description provided for @statusSilenced.
+  ///
+  /// In en, this message translates to:
+  /// **'Silenced'**
+  String get statusSilenced;
+
+  /// No description provided for @statusFouls.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No fouls} =1{1 foul} other{{count} fouls}}'**
+  String statusFouls(int count);
+
+  /// No description provided for @logChoice.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} took {victims}'**
+  String logChoice(String name, String victims);
+
+  /// No description provided for @logChoiceNone.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} took no one'**
+  String logChoiceNone(String name);
+
+  /// No description provided for @logFoul.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} took a Foul'**
+  String logFoul(String name);
+
+  /// No description provided for @menuRemovePlayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove a player'**
+  String get menuRemovePlayer;
+
+  /// No description provided for @removePlayerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'For repeatedly breaking the table rules. They leave the game; a TNT still explodes.'**
+  String get removePlayerHint;
+
+  /// No description provided for @removePlayerConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name}?'**
+  String removePlayerConfirmTitle(String name);
+
+  /// No description provided for @removePlayerConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'They leave the game for good. You can undo it from the menu.'**
+  String get removePlayerConfirmBody;
+
+  /// No description provided for @removePlayerConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get removePlayerConfirm;
+
+  /// No description provided for @setupSeatOrderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Seat order matters: the list goes around the table, and the last player sits next to the first.'**
+  String get setupSeatOrderHint;
+
+  /// No description provided for @setupSeatOrderSheetHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add players in seat order, going around the table. Drag to fix the order.'**
+  String get setupSeatOrderSheetHint;
+
+  /// No description provided for @setupTimers.
+  ///
+  /// In en, this message translates to:
+  /// **'Timers'**
+  String get setupTimers;
+
+  /// No description provided for @setupTimersHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a timer during the game to start it'**
+  String get setupTimersHint;
+
+  /// No description provided for @minutesShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}:00'**
+  String minutesShort(int count);
+
+  /// No description provided for @secondsShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}s'**
+  String secondsShort(int count);
+
+  /// No description provided for @setupHouseRulesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Open questions in the rules'**
+  String get setupHouseRulesHint;
+
+  /// No description provided for @setupHouseRulesSheetHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The guide leaves these open. Defaults follow docs/GAME_RULES.md.'**
+  String get setupHouseRulesSheetHint;
+
+  /// No description provided for @ruleGodfatherAppearsCivilian.
+  ///
+  /// In en, this message translates to:
+  /// **'Detective sees the Godfather as Civilian'**
+  String get ruleGodfatherAppearsCivilian;
+
+  /// No description provided for @rulePutanaCanBlockMafia.
+  ///
+  /// In en, this message translates to:
+  /// **'Putana can block Mafia Team players'**
+  String get rulePutanaCanBlockMafia;
+
+  /// No description provided for @ruleChameleonMafiaJoins.
+  ///
+  /// In en, this message translates to:
+  /// **'A Mafia Chameleon joins the Mafia Team'**
+  String get ruleChameleonMafiaJoins;
+
+  /// No description provided for @ruleDetectiveChainOnVote.
+  ///
+  /// In en, this message translates to:
+  /// **'Detective chain also when voted out'**
+  String get ruleDetectiveChainOnVote;
+
+  /// No description provided for @ruleBlockedChecksCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked checks count toward the three'**
+  String get ruleBlockedChecksCount;
+
+  /// No description provided for @ruleDoctorBlocksChainDeaths.
+  ///
+  /// In en, this message translates to:
+  /// **'Doctor saves from chain deaths'**
+  String get ruleDoctorBlocksChainDeaths;
+
+  /// No description provided for @ruleSwitchmanRedirectsEach.
+  ///
+  /// In en, this message translates to:
+  /// **'Switchman redirects every bullet'**
+  String get ruleSwitchmanRedirectsEach;
+
+  /// No description provided for @ruleDoctorSavesRedirected.
+  ///
+  /// In en, this message translates to:
+  /// **'Doctor saves from a redirected bullet'**
+  String get ruleDoctorSavesRedirected;
+
+  /// No description provided for @ruleBombNoEffectBeforePlant.
+  ///
+  /// In en, this message translates to:
+  /// **'Bomb killed on night 1 has no effect'**
+  String get ruleBombNoEffectBeforePlant;
+
+  /// No description provided for @ruleSilenceLastsNextDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Silence lasts the next day only'**
+  String get ruleSilenceLastsNextDay;
+
+  /// No description provided for @ruleWitchCiviliansOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Witch links Civilians only'**
+  String get ruleWitchCiviliansOnly;
+
+  /// No description provided for @ruleMafiaWinsAtParity.
+  ///
+  /// In en, this message translates to:
+  /// **'Mafia win when equal to the Civilians'**
+  String get ruleMafiaWinsAtParity;
+
+  /// No description provided for @ruleSecondTie.
+  ///
+  /// In en, this message translates to:
+  /// **'If the re-vote ties again'**
+  String get ruleSecondTie;
+
+  /// No description provided for @tieRandom.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw lots'**
+  String get tieRandom;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

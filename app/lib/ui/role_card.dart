@@ -9,16 +9,21 @@ import 'mafia_icon.dart';
 
 /// The emblem for each role.
 MafiaGlyph roleGlyph(Role r) => switch (r) {
-  Role.civilian => MafiaGlyphs.civilian,
-  Role.doctor => MafiaGlyphs.doctor,
-  Role.detective => MafiaGlyphs.detective,
-  Role.bomb => MafiaGlyphs.bomb,
-  Role.joker => MafiaGlyphs.joker,
-  Role.chameleon => MafiaGlyphs.chameleon,
-  Role.mafia => MafiaGlyphs.mafia,
   Role.godfather => MafiaGlyphs.godfather,
-  Role.potana => MafiaGlyphs.potana,
+  Role.mafia => MafiaGlyphs.mafia,
+  Role.putana => MafiaGlyphs.putana,
   Role.lawyer => MafiaGlyphs.lawyer,
+  Role.witch => MafiaGlyphs.witch,
+  Role.detective => MafiaGlyphs.detective,
+  Role.doctor => MafiaGlyphs.doctor,
+  Role.joker => MafiaGlyphs.joker,
+  Role.switchman => MafiaGlyphs.switchman,
+  Role.silencer => MafiaGlyphs.silencer,
+  Role.bomb => MafiaGlyphs.bomb,
+  Role.shapeshifter => MafiaGlyphs.shapeshifter,
+  Role.chameleon => MafiaGlyphs.chameleon,
+  Role.tnt => MafiaGlyphs.tnt,
+  Role.civilian => MafiaGlyphs.civilian,
 };
 
 /// Team accent and its light text tone.
@@ -61,7 +66,7 @@ class RoleCard extends StatefulWidget {
   final String semanticLabel;
   final String? familyLabel;
 
-  /// "Omar · Potana" chips (Mafia only).
+  /// "Omar · Putana" chips (Mafia only).
   final List<String> family;
 
   static const size = Size(270, 390);

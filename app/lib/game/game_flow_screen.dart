@@ -24,9 +24,9 @@ class GameFlowScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final session = ref.watch(activeGameProvider).value;
     if (session == null) return const Scaffold();
-    // Keyed by log length so per-stage UI state resets after every input
-    // (including undo).
-    final key = ValueKey(session.log.length);
+    // Keyed so per-stage UI state resets after every input (including
+    // undo), except a Foul or a removal, which keep the day's place.
+    final key = ValueKey(session.viewKey);
     return GameStageFrame(
       session: session,
       // The host reads from the phone all game (night prompts,
@@ -58,8 +58,8 @@ class GameStageFrame extends StatelessWidget {
     final locale = Localizations.localeOf(context);
     final sky = switch (session.stage) {
       GameStage.night => SkyPhase.night,
-      // The sun rises once a dead Bomb has picked its victims.
-      GameStage.morning when session.state.pendingBombs.isNotEmpty => SkyPhase.day,
+      // The sun rises once a pending death choice is made.
+      GameStage.morning when session.state.pendingChoices.isNotEmpty => SkyPhase.day,
       GameStage.morning => SkyPhase.dawn,
       GameStage.day || GameStage.dayResult => SkyPhase.day,
       GameStage.gameOver => session.state.winner == Team.mafia ? SkyPhase.night : SkyPhase.day,

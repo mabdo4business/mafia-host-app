@@ -8,7 +8,6 @@ import '../../game/game_session.dart';
 import '../../game/providers.dart';
 import '../../game/role_mix.dart';
 import '../../ui/ui.dart';
-import 'chameleon_choice_screen.dart';
 
 /// Cards mode: the host has handed out physical cards. On night 1 each card
 /// wakes in turn and the host taps who holds it; everyone left over holds a
@@ -19,22 +18,18 @@ class AssignCardsScreen extends ConsumerStatefulWidget {
     required this.names,
     required this.mix,
     required this.settings,
-    required this.discussionSeconds,
     this.initialStep = 0,
     this.initialCards = const {},
-    this.initialChameleonPicks = const {},
   });
 
   final List<String> names;
   final Map<Role, int> mix;
   final GameSettings settings;
-  final int discussionSeconds;
 
   /// Previews: start on a step (the role count = the check screen) with
   /// cards already recorded (seat index → role).
   final int initialStep;
   final Map<int, Role> initialCards;
-  final Map<int, Role> initialChameleonPicks;
 
   @override
   ConsumerState<AssignCardsScreen> createState() => _AssignCardsScreenState();
@@ -44,7 +39,6 @@ class _AssignCardsScreenState extends ConsumerState<AssignCardsScreen> {
   late final List<Role> _roles = cardWakeOrder(widget.mix);
   late int _step = widget.initialStep.clamp(0, _roles.length);
   late final Map<int, Role> _cards = {...widget.initialCards};
-  late final Map<int, Role> _picks = {...widget.initialChameleonPicks};
   bool _starting = false;
 
   bool get _checking => _step >= _roles.length;
@@ -59,7 +53,6 @@ class _AssignCardsScreenState extends ConsumerState<AssignCardsScreen> {
   void _toggle(int seat, Role role) => setState(() {
     if (_cards[seat] == role) {
       _cards.remove(seat);
-      _picks.remove(seat);
       return;
     }
     final holders = _holders(role);
@@ -68,37 +61,17 @@ class _AssignCardsScreenState extends ConsumerState<AssignCardsScreen> {
       // the host untaps one first.
       if (_count(role) != 1) return;
       _cards.remove(holders.single);
-      _picks.remove(holders.single);
     }
     _cards[seat] = role;
   });
 
-  Future<void> _next(Role role) async {
-    if (role == Role.chameleon) {
-      for (final seat in _holders(role)) {
-        final pick = await Navigator.push<Role>(
-          context,
-          MaterialPageRoute(
-            builder: (_) => ChameleonChoiceScreen(
-              name: widget.names[seat].trim(),
-              choices: chameleonChoices(widget.settings),
-              initial: _picks[seat],
-            ),
-          ),
-        );
-        if (pick == null || !mounted) return;
-        setState(() => _picks[seat] = pick);
-      }
-    }
-    setState(() => _step++);
-  }
+  void _next() => setState(() => _step++);
 
   Future<void> _start() async {
     setState(() => _starting = true);
     final setup = GameSetup(
       settings: widget.settings,
-      discussionSeconds: widget.discussionSeconds,
-      players: playersFromCards(widget.names, _cards, chameleonPicks: _picks),
+      players: playersFromCards(widget.names, _cards),
     );
     await ref.read(activeGameProvider.notifier).start(setup);
     if (!mounted) return;
@@ -109,12 +82,7 @@ class _AssignCardsScreenState extends ConsumerState<AssignCardsScreen> {
     );
   }
 
-  String _cardName(int seat) {
-    final l = context.l10n;
-    final role = _cards[seat]!;
-    final pick = _picks[seat];
-    return role == Role.chameleon && pick != null ? l.chameleonAs(l.role(pick)) : l.role(role);
-  }
+  String _cardName(int seat) => context.l10n.role(_cards[seat]!);
 
   Color _accent(Role role) =>
       role.team == Team.mafia ? context.mafia.mafia : context.mafia.civilian;
@@ -205,17 +173,13 @@ class _AssignCardsScreenState extends ConsumerState<AssignCardsScreen> {
     final l = context.l10n;
     final last = _step == _roles.length - 1;
     final done = _holders(role).length == _count(role);
-    final label = role == Role.chameleon
-        ? l.cardsChameleonNext
-        : last
-        ? l.cardsReviewCheck
-        : l.cardsNextRole(l.role(_roles[_step + 1]));
+    final label = last ? l.cardsReviewCheck : l.cardsNextRole(l.role(_roles[_step + 1]));
     final button = PrimaryActionButton(
       key: const Key('cardsNext'),
       label: label,
       tone: role.team == Team.mafia ? ActionTone.danger : ActionTone.phase,
       trailing: MafiaGlyphs.arrow,
-      onPressed: done ? () => _next(role) : null,
+      onPressed: done ? _next : null,
     );
     if (_step == 0) return button;
     return Row(
@@ -296,12 +260,7 @@ class _AssignCardsScreenState extends ConsumerState<AssignCardsScreen> {
           key: Key('cardsCheck_${role.name}'),
           role: role,
           title: l.role(role),
-          names: [
-            for (final seat in _holders(role))
-              role == Role.chameleon && _picks[seat] != null
-                  ? l.familyMember(widget.names[seat].trim(), l.role(_picks[seat]!))
-                  : widget.names[seat].trim(),
-          ],
+          names: [for (final seat in _holders(role)) widget.names[seat].trim()],
           onTap: () => setState(() => _step = i),
         ),
       if (civilians.isNotEmpty)

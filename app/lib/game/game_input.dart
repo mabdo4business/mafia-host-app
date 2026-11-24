@@ -12,10 +12,11 @@ final class NightInput extends GameInput {
   final List<NightAction> actions;
 }
 
-/// A triggered Bomb's chosen victims.
-final class BombInput extends GameInput {
-  const BombInput(this.bombId, this.victimIds);
-  final String bombId;
+/// A pending death choice settled: the voted-out Godfather's pick, or a
+/// day-1 Bomb's neighbors (empty = no one).
+final class ChoiceInput extends GameInput {
+  const ChoiceInput(this.playerId, this.victimIds);
+  final String playerId;
   final List<String> victimIds;
 }
 
@@ -23,10 +24,10 @@ final class BombInput extends GameInput {
 sealed class DayVoteInput extends GameInput {
   const DayVoteInput({this.tieBreakerId});
 
-  /// The host's pick when the vote tied (tie rule `hostDecides`).
+  /// The host's pick (or the drawn lot) when the re-vote tied.
   final String? tieBreakerId;
 
-  /// The same vote with the host's tie-breaker.
+  /// The same vote with a tie-breaker.
   DayVoteInput withTieBreaker(String id);
 }
 
@@ -46,6 +47,18 @@ final class TallyVoteInput extends DayVoteInput {
 
   @override
   TallyVoteInput withTieBreaker(String id) => TallyVoteInput(tally, tieBreakerId: id);
+}
+
+/// A player took a Foul (an extra 15-second speech).
+final class FoulInput extends GameInput {
+  const FoulInput(this.playerId);
+  final String playerId;
+}
+
+/// The host removed a player from the table.
+final class RemoveInput extends GameInput {
+  const RemoveInput(this.playerId);
+  final String playerId;
 }
 
 /// The host moved on (morning → day, or day result → next night).

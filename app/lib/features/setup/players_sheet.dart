@@ -5,7 +5,8 @@ import '../../common/l10n.dart';
 import '../../game/providers.dart';
 import '../../ui/ui.dart';
 
-/// The table's players in seating order: add, remove, drag to reorder.
+/// The table's players in seat order around the table: add, remove, drag
+/// to reorder. Seat order matters (TNT and the day-1 Bomb take neighbors).
 Future<void> showPlayersSheet(BuildContext context) => showModalBottomSheet<void>(
   context: context,
   isScrollControlled: true,
@@ -63,6 +64,14 @@ class _PlayersSheetState extends ConsumerState<PlayersSheet> {
                   Expanded(child: Text(l.setupPlayersSection, style: context.type.headlineSmall)),
                   Text(l.playerCount(names.length), style: context.type.bodySmall),
                 ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(Space.page, Space.xs, Space.page, 0),
+              child: Text(
+                l.setupSeatOrderSheetHint,
+                key: const Key('seatOrderSheetHint'),
+                style: context.type.bodySmall!.copyWith(color: c.textMuted),
               ),
             ),
             Padding(

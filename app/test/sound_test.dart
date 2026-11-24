@@ -25,7 +25,7 @@ GameSetup table() => GameSetup(
 
 /// Begins the night and resolves it with no actions (Mafia + Doctor steps).
 Future<void> quietNight(WidgetTester tester) async {
-  await tapText(tester, l10nOf(tester).nightBegin);
+  await beginNight(tester);
   await nightPick(tester, null);
   await nightPick(tester, null);
   await tapKey(tester, 'resolveNight');
@@ -67,7 +67,7 @@ void main() {
     await pumpGame(tester, table(), sounds: sounds);
     expect(sounds.played, isEmpty, reason: 'nothing before the host begins');
 
-    await tapText(tester, l10nOf(tester).nightBegin);
+    await beginNight(tester);
     expect(sounds.played, [GameSound.night]);
 
     await nightPick(tester, null);
@@ -80,7 +80,7 @@ void main() {
     await skipVote(tester);
     await tapKey(tester, 'startNight');
     expect(sounds.played, [GameSound.night, GameSound.morning]);
-    await tapText(tester, l10nOf(tester).nightBegin);
+    await beginNight(tester);
     expect(sounds.played, [GameSound.night, GameSound.morning, GameSound.night]);
   });
 
@@ -94,7 +94,7 @@ void main() {
       ),
       sounds: sounds,
     );
-    await tapText(tester, l10nOf(tester).nightBegin);
+    await beginNight(tester);
     await nightPick(tester, 'c1');
     await tapKey(tester, 'resolveNight');
     expect(find.text(l10nOf(tester).winMafia), findsWidgets);

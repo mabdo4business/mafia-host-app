@@ -25,7 +25,7 @@ final class Announcement {
   /// A note for the host under it (not read aloud).
   final String? detail;
 
-  /// Names shown as chips (the Bomb's victims).
+  /// Names shown as chips: the players a death took with it.
   final List<String> chips;
 }
 
@@ -42,14 +42,26 @@ class Describer {
 
   String action(NightAction a) {
     final who = actor(a.actorId);
-    final target = name(a.targetId);
     return switch (a) {
-      PotanaBlock() => l.actionPotanaBlock(who, target),
-      LawyerProtect() => l.actionLawyerProtect(who, target),
-      MafiaKill() => l.actionMafiaKill(who, target),
-      JokerKill() => l.actionJokerKill(who, target),
-      DoctorSave() => l.actionDoctorSave(who, target),
-      DetectiveCheck() => l.actionDetectiveCheck(who, target),
+      PutanaBlock(:final targetId) => l.actionPutanaBlock(who, name(targetId)),
+      LawyerProtect(:final targetId) => l.actionLawyerProtect(who, name(targetId)),
+      MafiaKill(:final targetId) => l.actionMafiaKill(who, name(targetId)),
+      JokerKill(:final targetId) => l.actionJokerKill(who, name(targetId)),
+      DoctorSave(:final targetId) => l.actionDoctorSave(who, name(targetId)),
+      DetectiveCheck(:final targetId) => l.actionDetectiveCheck(who, name(targetId)),
+      SilencerSilence(:final targetId) => l.actionSilence(who, name(targetId)),
+      SwitchmanRedirect(:final targetId) => l.actionRedirect(who, name(targetId)),
+      WitchLink(:final firstId, :final secondId) => l.actionWitchLink(
+        who,
+        name(firstId),
+        name(secondId),
+      ),
+      BombPlant(:final firstId, :final secondId) => l.actionBombPlant(
+        who,
+        name(firstId),
+        name(secondId),
+      ),
+      ChameleonChoose(:final role) => l.actionChameleonChoose(who, l.role(role)),
     };
   }
 
@@ -60,19 +72,33 @@ class Describer {
 
   /// Events everyone hears.
   static bool isPublic(GameEvent e) =>
-      e is PlayerDied || e is BombTriggered || e is NoElimination || e is VoteTied || e is GameOver;
+      e is PlayerDied ||
+      e is BombExploded ||
+      e is PlayerSilenced ||
+      e is NoElimination ||
+      e is VoteTied ||
+      e is GameOver;
+
+  /// What the table hears about a death. Night kills stay vague (who did
+  /// it is secret); the chains everyone sees happen are named.
+  String deathHeadline(PlayerDied d) {
+    final who = name(d.playerId);
+    final c = d.causes;
+    if (c.contains(DeathCause.vote)) return l.announceVotedOut(who);
+    if (c.contains(DeathCause.removed)) return l.announceRemoved(who);
+    if (c.contains(DeathCause.bomb)) return l.announceBombVictim(who);
+    if (c.contains(DeathCause.tnt)) return l.announceTntVictim(who);
+    if (c.contains(DeathCause.godfather)) return l.announceGodfatherVictim(who);
+    return l.announceKilled(who);
+  }
 
   String? event(GameEvent e) => switch (e) {
-    PlayerDied(:final playerId, :final causes, :final revealedRole) => [
-      if (causes.contains(DeathCause.vote))
-        l.announceVotedOut(name(playerId))
-      else if (causes.contains(DeathCause.bomb))
-        l.announceBombVictim(name(playerId))
-      else
-        l.announceKilled(name(playerId)),
+    PlayerDied(:final playerId, :final revealedRole) => [
+      deathHeadline(e),
       if (revealedRole != null) l.announceCard(l.playerRole(state.player(playerId))),
     ].join(' '),
-    BombTriggered(:final bombId) => l.announceBomb(name(bombId)),
+    BombExploded(:final playerId) => l.announceBomb(name(playerId)),
+    PlayerSilenced(:final playerId) => l.announceSilenced(name(playerId)),
     NoElimination() => l.announceNoElimination,
     VoteTied(:final candidateIds) => l.announceTie(l.names(candidateIds.map(name))),
     GameOver(:final winner) => winner == Team.mafia ? l.winMafia : l.winCivilians,
@@ -83,69 +109,88 @@ class Describer {
       name(targetId),
       detectiveResult(result),
     ),
-    BombDefused(:final bombId) => l.hostBombDefused(name(bombId)),
-    RevoteRequired() || HostDecisionRequired() => null,
+    SoulsLinked(:final firstId, :final secondId) => l.hostLinked(name(firstId), name(secondId)),
+    BombPlanted(:final bombId, :final firstId, :final secondId) => l.hostBombPlanted(
+      name(bombId),
+      name(firstId),
+      name(secondId),
+    ),
+    ChameleonChose(:final playerId, :final role) => l.hostChameleonChose(
+      name(playerId),
+      l.role(role),
+    ),
+    MafiaKillCancelled() => l.hostMafiaCancelled,
+    BulletRedirected(:final switchmanId, :final targetId) => l.hostRedirected(
+      name(switchmanId),
+      name(targetId),
+    ),
+    BulletDodged(:final playerId) => l.hostDodged(name(playerId)),
+    DetectiveChainArmed(:final detectiveId, :final mafiaIds) => l.hostChainArmed(
+      name(detectiveId),
+      l.names(mafiaIds.map(name)),
+    ),
+    PutanaPromoted(:final playerId) => l.hostPutanaPromoted(name(playerId)),
+    ChoiceRequired(:final choice) => choiceNote(choice),
+    RevoteRequired() || HostDecisionRequired() || DrawLotsRequired() => null,
   };
 
-  /// The read-aloud announcement for [entries] (one night or one vote, plus
-  /// any Bomb explosions after it). Game over is shown separately.
-  List<String> announcement(List<LogEntry> entries) {
-    final lines = <String>[];
-    if (entries.isNotEmpty &&
-        entries.first.input is NightInput &&
-        !entries.first.events.any((e) => e is PlayerDied)) {
-      lines.add(l.announceNobodyDied);
-    }
-    for (final entry in entries) {
-      for (final e in entry.events) {
-        if (isPublic(e) && e is! GameOver) lines.add(event(e)!);
-      }
-    }
-    return lines;
-  }
+  /// "Choose now" for a death waiting on the host.
+  String choiceNote(PendingChoice c) => switch (c.kind) {
+    ChoiceKind.godfatherTakesOne => l.announceGodfatherChoosing,
+    ChoiceKind.bombTakesNeighbors => l.announceBombNeighborsChoosing,
+  };
 
-  /// The announcement as numbered items: deaths (a dead Bomb carries its
-  /// victims), a Doctor save (without saying who), or that nobody died.
+  /// The announcement as numbered items: each death (one that took others
+  /// carries them as chips), a Doctor save (without saying who), silences,
+  /// tie and vote notes, or that nobody died.
   List<Announcement> announcementItems(List<LogEntry> entries) {
     final events = [for (final e in entries) ...e.events];
-    final bombs = {
+    final died = {
       for (final e in events)
-        if (e is BombTriggered) e.bombId,
+        if (e is PlayerDied) e.playerId: e,
     };
+    // A chain victim is listed under the first death of its chain.
+    String root(String id) {
+      var at = id;
+      while (true) {
+        final by = died[at]?.causedBy;
+        if (by == null || !died.containsKey(by)) return at;
+        at = by;
+      }
+    }
+
     final items = <Announcement>[];
     final night = entries.isNotEmpty && entries.first.input is NightInput;
     for (final e in events) {
       switch (e) {
-        case PlayerDied(:final causes) when causes.contains(DeathCause.bomb):
-          if (bombs.isEmpty) items.add(Announcement(AnnouncementType.death, event(e)!));
-        // Listed as chips under the Bomb's own item.
-        case PlayerDied(:final playerId, :final causes, :final revealedRole):
+        case PlayerDied(:final playerId, :final revealedRole):
+          if (root(playerId) != playerId) continue;
+          final taken = [
+            for (final d in died.values)
+              if (d.playerId != playerId && root(d.playerId) == playerId) name(d.playerId),
+          ];
+          final pending = state.pendingChoices.where((c) => c.playerId == playerId).firstOrNull;
+          final headline = switch (state.player(playerId).effectiveRole) {
+            Role.bomb when taken.isNotEmpty || pending != null => l.announceWasBomb(
+              deathHeadline(e),
+            ),
+            Role.tnt when taken.isNotEmpty => l.announceWasTnt(deathHeadline(e)),
+            _ => deathHeadline(e),
+          };
           final card = revealedRole == null
               ? l.announceRoleSecret
               : l.announceCard(l.playerRole(state.player(playerId)));
-          final headline = causes.contains(DeathCause.vote)
-              ? l.announceVotedOut(name(playerId))
-              : l.announceKilled(name(playerId));
-          if (bombs.contains(playerId)) {
-            final victims = [
-              for (final v in events)
-                if (v is PlayerDied && v.causes.contains(DeathCause.bomb)) name(v.playerId),
-            ];
-            final pending = state.pendingBombs.contains(playerId);
+          if (taken.isEmpty && pending == null) {
+            items.add(Announcement(AnnouncementType.death, headline, detail: card));
+          } else {
             items.add(
               Announcement(
                 AnnouncementType.bomb,
-                l.announceWasBomb(headline),
-                detail: pending
-                    ? l.announceBombChoosing(state.bombVictimsRequired)
-                    : victims.isEmpty
-                    ? null
-                    : l.announceBombTakes(victims.length),
-                chips: victims,
+                headline,
+                detail: pending != null ? choiceNote(pending) : l.announceBombTakes(taken.length),
+                chips: taken,
               ),
             );
-          } else {
-            items.add(Announcement(AnnouncementType.death, headline, detail: card));
           }
         case PlayerSaved():
           items.add(
@@ -153,6 +198,14 @@ class Describer {
               AnnouncementType.save,
               l.announceSomeoneSaved,
               detail: l.announceDontSayWho,
+            ),
+          );
+        case PlayerSilenced(:final playerId):
+          items.add(
+            Announcement(
+              AnnouncementType.info,
+              l.announceSilenced(name(playerId)),
+              detail: l.announceSilencedRule,
             ),
           );
         case VoteTied(:final candidateIds):
@@ -164,16 +217,14 @@ class Describer {
         default:
       }
     }
-    if (night && !events.any((e) => e is PlayerDied)) {
+    if (night && died.isEmpty) {
       items.insert(0, Announcement(AnnouncementType.info, l.announceNobodyDied));
     }
     return items;
   }
 
-  /// Host-only notes worth flagging after a night: the Detective's result,
-  /// blocks and a Bomb that did not explode.
   /// What "Read aloud" speaks for [items]: each headline in order. Host
-  /// notes stay silent, except a Bomb's "takes N with them:" line when its
+  /// notes stay silent, except the "takes N with them:" line when the
   /// victims are known, which is public and reads into their names.
   String spokenText(List<Announcement> items) => [
     for (final item in items)
@@ -182,26 +233,34 @@ class Describer {
           : [item.headline, ?item.detail, '${l.names(item.chips)}.'].join(' '),
   ].join('\n');
 
+  /// Host-only notes worth flagging after a night.
   List<String> secretNotes(List<LogEntry> entries) => [
     for (final entry in entries)
       for (final e in entry.events)
         if (e is DetectiveResultRevealed)
           l.hostOnlyDetective(name(e.targetId), detectiveResult(e.result))
-        else if (e is PlayerBlocked || e is BombDefused)
+        else if (e is PlayerBlocked ||
+            e is SoulsLinked ||
+            e is BombPlanted ||
+            e is ChameleonChose ||
+            e is MafiaKillCancelled ||
+            e is BulletRedirected ||
+            e is BulletDodged ||
+            e is DetectiveChainArmed ||
+            e is PutanaPromoted)
           ?event(e),
   ];
 
-  /// What only the host should see: who did what, blocks, saves, the
-  /// Detective's result.
+  /// What only the host should see: who did what, and the secret events.
   List<String> hostNotes(List<LogEntry> entries) => [
     for (final entry in entries) ...[
       if (entry.input case NightInput(:final actions)) ...actions.map(action),
       for (final e in entry.events)
-        if (!isPublic(e)) ?event(e),
+        if (!isPublic(e) && e is! ChoiceRequired) ?event(e),
     ],
   ];
 
-  /// [logLines] with each line's group, for the filtered timeline.
+  /// The game log lines for [entry], with each line's filter group.
   List<LogItem> logItems(LogEntry entry) => [
     ...switch (entry.input) {
       NightInput(:final actions) when actions.isEmpty => [
@@ -218,9 +277,9 @@ class Describer {
             text: action(a),
           ),
       ],
-      BombInput() || DayVoteInput() || AdvanceInput() => [
+      _ => [
         for (final line in _inputLines(entry))
-          (kind: entry.input is BombInput ? LogKind.kill : LogKind.vote, text: line),
+          (kind: entry.input is ChoiceInput ? LogKind.kill : LogKind.vote, text: line),
       ],
     },
     for (final e in entry.events)
@@ -228,7 +287,7 @@ class Describer {
         (
           kind: switch (e) {
             PlayerDied(:final causes) when causes.contains(DeathCause.vote) => LogKind.vote,
-            PlayerDied() || BombTriggered() => LogKind.kill,
+            PlayerDied() || BombExploded() => LogKind.kill,
             PlayerSaved() => LogKind.save,
             VoteTied() || NoElimination() => LogKind.vote,
             _ => LogKind.other,
@@ -238,8 +297,10 @@ class Describer {
   ];
 
   List<String> _inputLines(LogEntry entry) => switch (entry.input) {
-    BombInput(:final bombId, :final victimIds) => [
-      l.logBomb(name(bombId), l.names(victimIds.map(name))),
+    ChoiceInput(:final playerId, :final victimIds) => [
+      victimIds.isEmpty
+          ? l.logChoiceNone(name(playerId))
+          : l.logChoice(name(playerId), l.names(victimIds.map(name))),
     ],
     VoteInput(:final votes, :final tieBreakerId) => [
       for (final MapEntry(key: voter, value: target) in votes.entries)
@@ -253,6 +314,7 @@ class Describer {
       if (!tally.values.any((n) => n > 0)) l.logNoVote,
       if (tieBreakerId != null) l.logTieBreak(name(tieBreakerId)),
     ],
+    FoulInput(:final playerId) => [l.logFoul(name(playerId))],
     _ => const <String>[],
   };
 

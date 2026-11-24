@@ -84,9 +84,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get roleGodfather => 'Godfather';
 
   @override
-  String get rolePotana => 'Potana';
-
-  @override
   String get roleLawyer => 'Lawyer';
 
   @override
@@ -194,13 +191,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get setupOptionsSection => 'Options';
 
   @override
-  String get setupBombVictims => 'Bomb victims';
-
-  @override
   String get setupRevealRole => 'Reveal role on death';
-
-  @override
-  String get setupDiscussionTimer => 'Discussion timer';
 
   @override
   String get timerOff => 'Off';
@@ -221,24 +212,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get setupHouseRules => 'House rules';
-
-  @override
-  String get ruleDoctorSaveBlocksJoker => 'Doctor\'s save also stops the Joker';
-
-  @override
-  String get ruleDoctorCanSaveBombVictims => 'Doctor can save Bomb victims';
-
-  @override
-  String get ruleBlockedBombExplodes => 'Blocked Bomb still explodes';
-
-  @override
-  String get ruleChameleonMafia => 'Chameleon can pick Mafia roles';
-
-  @override
-  String get ruleTieVote => 'Tied vote';
-
-  @override
-  String get tieRevote => 'Revote';
 
   @override
   String get tieNoElimination => 'Nobody out';
@@ -281,12 +254,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get dealInstructions =>
       'Give each player the card shown next to their name. Keep this screen hidden from the table.';
-
-  @override
-  String get dealChameleonPlaysAs => 'Chameleon plays as';
-
-  @override
-  String get dealChameleonMissing => 'Each Chameleon must choose a role.';
 
   @override
   String get dealReshuffle => 'Reshuffle';
@@ -339,9 +306,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get nightWakePotana => 'Wake the Potana. Who do they block?';
-
-  @override
   String get nightWakeLawyer => 'Wake the Lawyer. Who do they protect?';
 
   @override
@@ -358,13 +322,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nightNoAction => 'No action';
-
-  @override
-  String get nightBlockedWarning =>
-      'Blocked by the Potana tonight — this action will have no effect. Let them choose anyway.';
-
-  @override
-  String get nightDoctorLastNight => 'Saved last night';
 
   @override
   String get nightDetectiveShow => 'Show the Detective:';
@@ -392,11 +349,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String actorWithRole(String name, String role) {
     return '$name ($role)';
-  }
-
-  @override
-  String actionPotanaBlock(String actor, String target) {
-    return '$actor blocked $target';
   }
 
   @override
@@ -487,34 +439,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String hostBombDefused(String name) {
-    return '$name (Bomb) was blocked and did not explode.';
-  }
-
-  @override
-  String bombPick(String name, int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
-    final String countString = countNumberFormat.format(count);
-
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$countString players',
-      one: '1 player',
-    );
-    return '$name was the Bomb. Choose $_temp0 to die with them.';
-  }
-
-  @override
-  String bombDetonate(String selected, String required) {
-    return 'Detonate ($selected/$required)';
-  }
-
-  @override
   String get morningStartDay => 'Start the day';
-
-  @override
-  String get dayDiscussion => 'Discussion';
 
   @override
   String get timerStart => 'Start';
@@ -554,16 +479,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dayCountVotes => 'Count votes';
-
-  @override
-  String dayTieHostDecides(String names) {
-    return 'Tie between $names. Who is out?';
-  }
-
-  @override
-  String dayTieRevote(String names) {
-    return 'Tie between $names. Vote again.';
-  }
 
   @override
   String dayStartNight(int round) {
@@ -655,33 +570,8 @@ class AppLocalizationsEn extends AppLocalizations {
       'You have no power at night. Find the Mafia and vote them out by day.';
 
   @override
-  String get abilityDoctor =>
-      'Save one player each night, yourself included — but never the same player two nights in a row.';
-
-  @override
-  String get abilityDetective =>
-      'Check one player each night. The host tells you: Mafia or Civilian.';
-
-  @override
-  String get abilityBomb => 'When you die, by night or by vote, you take players down with you.';
-
-  @override
   String get abilityJoker =>
       'You kill one player every night. You play for the Civilians, but nobody is safe.';
-
-  @override
-  String get abilityChameleon => 'Pick a role now and play it for the whole game.';
-
-  @override
-  String get abilityMafia => 'Each night, wake with your family and choose who dies.';
-
-  @override
-  String get abilityGodfather =>
-      'You make the final call on who the Mafia kills. The Detective sees you as a Civilian.';
-
-  @override
-  String get abilityPotana =>
-      'Each night, block one civilian\'s power. Their action has no effect.';
 
   @override
   String get abilityLawyer =>
@@ -692,9 +582,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statusEliminated => 'Eliminated';
-
-  @override
-  String get nightWakeTitlePotana => 'Wake the Potana';
 
   @override
   String get nightWakeTitleLawyer => 'Wake the Lawyer';
@@ -710,9 +597,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nightWakeTitleDetective => 'Wake the Detective';
-
-  @override
-  String get nightLinePotana => 'Potana, open your eyes. Whose power do you block tonight?';
 
   @override
   String get nightLineLawyer => 'Lawyer, open your eyes. Who do you protect tonight?';
@@ -782,9 +666,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get revealPassNext => 'Hide & pass to next player';
-
-  @override
-  String get bombDetonateShort => 'Detonate';
 
   @override
   String get notifications => 'Notifications';
@@ -866,40 +747,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String announceBombChoosing(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
-    final String countString = countNumberFormat.format(count);
-
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'They take $countString players down with them: choose now.',
-      one: 'They take 1 player down with them: choose now.',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String bombChoose(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
-    final String countString = countNumberFormat.format(count);
-
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Choose $countString players',
-      one: 'Choose 1 player',
-      zero: 'Ready',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String bombCounter(String selected, String required) {
-    return '$selected / $required';
-  }
-
-  @override
   String bombWasTheBomb(String name) {
     return '$name was the Bomb';
   }
@@ -907,14 +754,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String chameleonBecome(String role) {
     return 'Become $role';
-  }
-
-  @override
-  String get chameleonChooseRole => 'Choose your role';
-
-  @override
-  String chameleonIntro(String name) {
-    return '$name, you are the Chameleon. Pick the role you will play all game.';
   }
 
   @override
@@ -940,9 +779,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get dayDiscussionHint => 'The town talks it over. Start voting when they are ready.';
-
-  @override
   String dayEliminate(String name) {
     return 'Eliminate $name';
   }
@@ -963,9 +799,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dayTapToVote => 'Tap a player to add a vote';
-
-  @override
-  String get dayTimerHint => 'Discussion timer';
 
   @override
   String get dayTitle => 'Who is lying?';
@@ -1161,15 +994,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get setupAutoBalance => 'Auto-balance';
 
   @override
-  String get setupBombTakesDown => 'Bomb takes down';
-
-  @override
-  String get setupBombTakesDownHint => 'Players chosen when the Bomb dies';
-
-  @override
-  String get setupHouseRulesHint => 'Doctor, Bomb, Chameleon and tie rules';
-
-  @override
   String get setupPlayersAtTable => 'Players at the table';
 
   @override
@@ -1358,9 +1182,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsHapticsSubtitle => 'A light tap on picks, card flips and when time runs out';
 
   @override
-  String get setupDiscussionTimerMinutes => 'Discussion timer (minutes)';
-
-  @override
   String get settingsDeviceShort => 'Device';
 
   @override
@@ -1408,9 +1229,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get cardsChameleonNext => 'Choose the Chameleon\'s role';
-
-  @override
   String get cardsReviewStep => 'Check';
 
   @override
@@ -1421,4 +1239,541 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cardsReviewCheck => 'Check the cards';
+
+  @override
+  String get rolePutana => 'Putana';
+
+  @override
+  String get roleWitch => 'Witch';
+
+  @override
+  String get roleSwitchman => 'Switchman';
+
+  @override
+  String get roleSilencer => 'Silencer';
+
+  @override
+  String get roleShapeshifter => 'Shapeshifter';
+
+  @override
+  String get roleTnt => 'TNT';
+
+  @override
+  String get abilityPutana =>
+      'Night 1: wake with the Mafia to know your team. After that, block one player\'s ability each night. Left alone on the Mafia Team, you kill like a Mafia.';
+
+  @override
+  String get abilityWitch =>
+      'Once, on night 2, link two Civilians\' souls. If one of them is killed at night, the other dies too. Votes don\'t trigger it, and it lasts after you die.';
+
+  @override
+  String get abilitySwitchman =>
+      'If someone tries to kill you at night, you wake and send the bullet to a player of your choice. You die at night only if the Putana blocks you that night.';
+
+  @override
+  String get abilitySilencer =>
+      'Each night, silence one player for the next day: no Free Chat, no Speech, no vote.';
+
+  @override
+  String get abilityShapeshifter =>
+      'Your ability changes every night in order: Detective, Doctor, Joker, then again. You always stay on the Civilians Team.';
+
+  @override
+  String get abilityTnt =>
+      'If you are eliminated, in any way, the players sitting right and left of you are eliminated too.';
+
+  @override
+  String get abilityDoctor =>
+      'Save one player each night, yourself included. The same player two nights in a row is fine, but not three.';
+
+  @override
+  String get abilityDetective =>
+      'Check one player each night: the host tells you if they are Mafia. Three checks with two Mafia found, and those two die with you if you are killed.';
+
+  @override
+  String get abilityBomb =>
+      'After the first day, plant bombs on two players. When you die, by night or by vote, they die too. Voted out on day 1: take both neighbors, or no one.';
+
+  @override
+  String get abilityChameleon =>
+      'On night 3, choose Mafia, Detective, Doctor, Joker or Switchman, and keep that role for the rest of the game.';
+
+  @override
+  String get abilityGodfather =>
+      'The final call on who the Mafia kills is yours. Voted out by day, you may take one player with you.';
+
+  @override
+  String get abilityMafia =>
+      'Each night, advise the Godfather on who dies. Without him, every Mafia must show the same number, or nobody dies.';
+
+  @override
+  String get nightWakeTitleRecognition => 'Mafia Team, wake up';
+
+  @override
+  String get nightLineRecognition =>
+      'Mafia Team, open your eyes and recognize each other. Putana, you too.';
+
+  @override
+  String get nightRecognitionHint => 'Night 1 only. Nobody acts yet.';
+
+  @override
+  String get nightRecognized => 'They know each other';
+
+  @override
+  String get reviewRecognition => 'The Mafia Team recognized each other';
+
+  @override
+  String get nightWakeTitlePutana => 'Wake the Putana';
+
+  @override
+  String get nightLinePutana => 'Putana, open your eyes. Whose ability do you block tonight?';
+
+  @override
+  String get nightWakeTitleWitch => 'Wake the Witch';
+
+  @override
+  String get nightLineWitch => 'Witch, open your eyes. Which two souls do you link?';
+
+  @override
+  String get nightWakeTitleSilencer => 'Wake the Silencer';
+
+  @override
+  String get nightLineSilencer => 'Silencer, open your eyes. Who stays silent tomorrow?';
+
+  @override
+  String get nightWakeTitleShapeshifter => 'Wake the Shapeshifter';
+
+  @override
+  String nightLineShapeshifter(String role) {
+    return 'Shapeshifter, open your eyes. Tonight you are the $role.';
+  }
+
+  @override
+  String get nightWakeTitleBomb => 'Wake the Bomb';
+
+  @override
+  String get nightLineBomb => 'Bomb, open your eyes. Who carries your two bombs?';
+
+  @override
+  String get nightWakeTitleChameleon => 'Wake the Chameleon';
+
+  @override
+  String get nightLineChameleonChoose =>
+      'Chameleon, open your eyes. Mafia, Detective, Doctor, Joker or Switchman: which do you keep for the rest of the game?';
+
+  @override
+  String nightLineChameleonAs(String role) {
+    return 'Chameleon, open your eyes. You play the $role.';
+  }
+
+  @override
+  String get nightWakeTitleSwitchman => 'Wake the Switchman';
+
+  @override
+  String get nightLineSwitchman =>
+      'Switchman, open your eyes. Someone shot at you. Who takes the bullet?';
+
+  @override
+  String nightLineSwitchmanBullet(int current, int total) {
+    final intl.NumberFormat currentNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String currentString = currentNumberFormat.format(current);
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return 'Switchman, open your eyes. Bullet $currentString of $totalString: who takes it?';
+  }
+
+  @override
+  String get nightBlockedWarning =>
+      'Blocked by the Putana tonight: this action will have no effect. Let them choose anyway.';
+
+  @override
+  String nightBlockedDecider(String name) {
+    return 'The Putana blocked $name: the other Mafia\'s number counts tonight.';
+  }
+
+  @override
+  String get nightDoctorTwoNights => 'Saved two nights running';
+
+  @override
+  String get nightMafiaTalk => 'Mafia talk';
+
+  @override
+  String get nightMafiaTalkHint => 'They agree on a target; the Godfather decides.';
+
+  @override
+  String get nightMafiaMustAgree =>
+      'No Godfather: every Mafia must show the same number. Different numbers cancel the murder.';
+
+  @override
+  String get nightMafiaNoMatch => 'Numbers didn\'t match';
+
+  @override
+  String get nightPickToSilence => 'Pick a player to silence';
+
+  @override
+  String get nightPickTwoToLink => 'Pick two players to link';
+
+  @override
+  String get nightPickTwoToPlant => 'Pick two players for the bombs';
+
+  @override
+  String get nightPickToRedirect => 'Pick who takes the bullet';
+
+  @override
+  String actionLink(String first, String second) {
+    return 'Link $first and $second';
+  }
+
+  @override
+  String actionPlant(String first, String second) {
+    return 'Plant on $first and $second';
+  }
+
+  @override
+  String actionSilenceShort(String name) {
+    return 'Silence $name';
+  }
+
+  @override
+  String actionRedirectTo(String name) {
+    return 'Send it to $name';
+  }
+
+  @override
+  String actionPutanaBlock(String actor, String target) {
+    return '$actor blocked $target';
+  }
+
+  @override
+  String actionSilence(String actor, String target) {
+    return '$actor silenced $target';
+  }
+
+  @override
+  String actionRedirect(String actor, String target) {
+    return '$actor sent the bullet to $target';
+  }
+
+  @override
+  String actionWitchLink(String actor, String first, String second) {
+    return '$actor linked $first and $second';
+  }
+
+  @override
+  String actionBombPlant(String actor, String first, String second) {
+    return '$actor planted bombs on $first and $second';
+  }
+
+  @override
+  String actionChameleonChoose(String actor, String role) {
+    return '$actor chose to be the $role';
+  }
+
+  @override
+  String hostLinked(String first, String second) {
+    return 'The Witch linked $first and $second.';
+  }
+
+  @override
+  String hostBombPlanted(String bomb, String first, String second) {
+    return '$bomb (Bomb) planted on $first and $second.';
+  }
+
+  @override
+  String hostChameleonChose(String name, String role) {
+    return '$name (Chameleon) is now the $role.';
+  }
+
+  @override
+  String get hostMafiaCancelled => 'The Mafia showed different numbers: no murder.';
+
+  @override
+  String hostRedirected(String switchman, String target) {
+    return '$switchman (Switchman) sent a bullet to $target.';
+  }
+
+  @override
+  String hostDodged(String name) {
+    return '$name (Switchman) was shot at and survived.';
+  }
+
+  @override
+  String hostChainArmed(String detective, String names) {
+    return '$detective (Detective) found $names: they die with the Detective.';
+  }
+
+  @override
+  String hostPutanaPromoted(String name) {
+    return '$name (Putana) is the last of the Mafia Team and now kills.';
+  }
+
+  @override
+  String announceRemoved(String name) {
+    return '$name was removed from the table.';
+  }
+
+  @override
+  String announceTntVictim(String name) {
+    return '$name was caught in the TNT blast.';
+  }
+
+  @override
+  String announceGodfatherVictim(String name) {
+    return '$name was taken by the Godfather.';
+  }
+
+  @override
+  String announceWasTnt(String headline) {
+    return '$headline They were the TNT.';
+  }
+
+  @override
+  String announceSilenced(String name) {
+    return '$name is silenced today.';
+  }
+
+  @override
+  String get announceSilencedRule => 'No Free Chat, no Speech, no vote';
+
+  @override
+  String get announceGodfatherChoosing => 'He may take one player with him: choose now.';
+
+  @override
+  String get announceBombNeighborsChoosing => 'Both neighbors go with them, or no one: choose now.';
+
+  @override
+  String choiceWasGodfather(String name) {
+    return '$name was the Godfather';
+  }
+
+  @override
+  String get choiceGodfatherHint => 'Voted out, he may take one player with him, or no one.';
+
+  @override
+  String get choiceBombNeighborsHint =>
+      'Voted out before planting: take both players sitting beside them, or no one.';
+
+  @override
+  String choiceTake(String names) {
+    return 'Take $names';
+  }
+
+  @override
+  String get choiceTakeNoOne => 'Take no one';
+
+  @override
+  String get dayFreeChat => 'Free Chat';
+
+  @override
+  String get dayFreeChatHint => 'Everyone may talk, suspect and defend.';
+
+  @override
+  String get daySpeeches => 'Speeches';
+
+  @override
+  String get daySpeech => 'Speech';
+
+  @override
+  String get dayFoul => 'Foul';
+
+  @override
+  String get dayStartSpeeches => 'Start the speeches';
+
+  @override
+  String daySpeechCounter(int current, int total) {
+    final intl.NumberFormat currentNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String currentString = currentNumberFormat.format(current);
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return 'Speech $currentString of $totalString';
+  }
+
+  @override
+  String get daySpeechHint => 'Their time. Nobody answers until it ends.';
+
+  @override
+  String get dayOnFoul => 'On a Foul: an extra speech';
+
+  @override
+  String dayTakeFoul(int seconds) {
+    final intl.NumberFormat secondsNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String secondsString = secondsNumberFormat.format(seconds);
+
+    return 'Foul +${secondsString}s';
+  }
+
+  @override
+  String get daySpeechOrder => 'Speaking order (seats)';
+
+  @override
+  String dayNextSpeaker(String name) {
+    return 'Next: $name';
+  }
+
+  @override
+  String get dayPreviousSpeaker => 'Previous speaker';
+
+  @override
+  String get dayNoSpeakers => 'Nobody may speak today.';
+
+  @override
+  String daySilencedToday(String names) {
+    return 'Silenced today: $names';
+  }
+
+  @override
+  String daySilencedNoVote(String names) {
+    return 'Silenced, can\'t vote: $names';
+  }
+
+  @override
+  String dayTieRevote(String names) {
+    return 'Tie between $names. Re-vote between them.';
+  }
+
+  @override
+  String dayTieHostDecides(String names) {
+    return 'Tied again between $names. Who is out?';
+  }
+
+  @override
+  String dayTieDrawLots(String names) {
+    return 'Tied again between $names. Draw lots.';
+  }
+
+  @override
+  String get dayDrawLots => 'Draw lots';
+
+  @override
+  String get statusSilenced => 'Silenced';
+
+  @override
+  String statusFouls(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString fouls',
+      one: '1 foul',
+      zero: 'No fouls',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String logChoice(String name, String victims) {
+    return '$name took $victims';
+  }
+
+  @override
+  String logChoiceNone(String name) {
+    return '$name took no one';
+  }
+
+  @override
+  String logFoul(String name) {
+    return '$name took a Foul';
+  }
+
+  @override
+  String get menuRemovePlayer => 'Remove a player';
+
+  @override
+  String get removePlayerHint =>
+      'For repeatedly breaking the table rules. They leave the game; a TNT still explodes.';
+
+  @override
+  String removePlayerConfirmTitle(String name) {
+    return 'Remove $name?';
+  }
+
+  @override
+  String get removePlayerConfirmBody =>
+      'They leave the game for good. You can undo it from the menu.';
+
+  @override
+  String get removePlayerConfirm => 'Remove';
+
+  @override
+  String get setupSeatOrderHint =>
+      'Seat order matters: the list goes around the table, and the last player sits next to the first.';
+
+  @override
+  String get setupSeatOrderSheetHint =>
+      'Add players in seat order, going around the table. Drag to fix the order.';
+
+  @override
+  String get setupTimers => 'Timers';
+
+  @override
+  String get setupTimersHint => 'Tap a timer during the game to start it';
+
+  @override
+  String minutesShort(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '$countString:00';
+  }
+
+  @override
+  String secondsShort(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '${countString}s';
+  }
+
+  @override
+  String get setupHouseRulesHint => 'Open questions in the rules';
+
+  @override
+  String get setupHouseRulesSheetHint =>
+      'The guide leaves these open. Defaults follow docs/GAME_RULES.md.';
+
+  @override
+  String get ruleGodfatherAppearsCivilian => 'Detective sees the Godfather as Civilian';
+
+  @override
+  String get rulePutanaCanBlockMafia => 'Putana can block Mafia Team players';
+
+  @override
+  String get ruleChameleonMafiaJoins => 'A Mafia Chameleon joins the Mafia Team';
+
+  @override
+  String get ruleDetectiveChainOnVote => 'Detective chain also when voted out';
+
+  @override
+  String get ruleBlockedChecksCount => 'Blocked checks count toward the three';
+
+  @override
+  String get ruleDoctorBlocksChainDeaths => 'Doctor saves from chain deaths';
+
+  @override
+  String get ruleSwitchmanRedirectsEach => 'Switchman redirects every bullet';
+
+  @override
+  String get ruleDoctorSavesRedirected => 'Doctor saves from a redirected bullet';
+
+  @override
+  String get ruleBombNoEffectBeforePlant => 'Bomb killed on night 1 has no effect';
+
+  @override
+  String get ruleSilenceLastsNextDay => 'Silence lasts the next day only';
+
+  @override
+  String get ruleWitchCiviliansOnly => 'Witch links Civilians only';
+
+  @override
+  String get ruleMafiaWinsAtParity => 'Mafia win when equal to the Civilians';
+
+  @override
+  String get ruleSecondTie => 'If the re-vote ties again';
+
+  @override
+  String get tieRandom => 'Draw lots';
 }

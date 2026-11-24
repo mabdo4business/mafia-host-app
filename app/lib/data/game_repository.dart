@@ -22,9 +22,7 @@ class GameRepository {
         .insert(
           GamesCompanion.insert(
             createdAt: DateTime.now(),
-            settingsJson: jsonEncode(
-              settingsToJson(setup.settings, discussionSeconds: setup.discussionSeconds),
-            ),
+            settingsJson: jsonEncode(settingsToJson(setup.settings)),
             status: GameStatus.active,
           ),
         );
@@ -84,7 +82,13 @@ class GameRepository {
               ..orderBy([(g) => OrderingTerm.desc(g.id)])
               ..limit(1))
             .getSingleOrNull();
-    return game == null ? null : _load(game);
+    if (game == null) return null;
+    if (!_isCurrentRules(game)) {
+      // Played under the old rules: today's engine can't continue it.
+      await abandon(game.id);
+      return null;
+    }
+    return _load(game);
   }
 
   /// Win counts over every finished game.
@@ -109,34 +113,75 @@ class GameRepository {
             .get();
     return [
       for (final g in games)
-        if (await _load(g) case final session)
+        if (await _result(g) case final r)
           GameSummary(
             id: g.id,
             playedAt: g.createdAt,
-            winner: session.state.winner,
-            nights: session.state.nightNumber,
-            players: session.state.players.length,
+            winner: r.winner,
+            nights: r.nights,
+            players: r.players.length,
           ),
     ];
   }
 
-  /// Every finished game, newest first, replayed.
-  Future<List<(Game, GameSession)>> _finished() async {
+  /// Every finished game, newest first.
+  Future<List<(Game, _Result)>> _finished() async {
     final games =
         await (_db.select(_db.games)
               ..where((g) => g.status.equalsValue(GameStatus.finished))
               ..orderBy([(g) => OrderingTerm.desc(g.id)]))
             .get();
-    return [for (final g in games) (g, await _load(g))];
+    return [for (final g in games) (g, await _result(g))];
   }
+
+  bool _isCurrentRules(Game game) =>
+      isCurrentRules(jsonDecode(game.settingsJson) as Map<String, Object?>);
+
+  /// How a finished game ended: replayed, or for a game played under the
+  /// old rules, read from what was stored.
+  Future<_Result> _result(Game game) async {
+    if (_isCurrentRules(game)) {
+      final s = (await _load(game)).state;
+      return (players: s.players, winner: s.winner, nights: s.nightNumber);
+    }
+    final rows = await _seats(game.id);
+    final inputs = await _inputs(game.id);
+    return (
+      players: [
+        for (final p in rows)
+          if (p.chameleonRole == null ? null : roleFromName(p.chameleonRole!) case final picked)
+            Player(
+              id: p.playerId,
+              name: p.name,
+              role: roleFromName(p.role),
+              chameleonRole: picked,
+              joinedMafia: picked?.team == Team.mafia,
+            ),
+      ],
+      winner: Team.values.asNameMap()[game.winner],
+      nights: inputs.where((i) => i.payloadJson.contains('"type":"night"')).length,
+    );
+  }
+
+  Future<List<GamePlayer>> _seats(int gameId) =>
+      (_db.select(_db.gamePlayers)
+            ..where((p) => p.gameId.equals(gameId))
+            ..orderBy([(p) => OrderingTerm.asc(p.seat)]))
+          .get();
+
+  Future<List<GameInputRow>> _inputs(int gameId) =>
+      (_db.select(_db.gameInputs)
+            ..where((i) => i.gameId.equals(gameId))
+            ..orderBy([(i) => OrderingTerm.asc(i.seq)]))
+          .get();
 
   /// Each player's results over all finished games (matched by name), most
   /// wins first, then by win rate and games played.
   Future<List<PlayerRecord>> playerRecords() async {
     final byName = <String, PlayerRecord>{};
-    for (final (game, session) in await _finished()) {
-      final winner = session.state.winner;
-      for (final p in session.state.players) {
+    for (final (game, result) in await _finished()) {
+      final winner = result.winner;
+      for (final p in result.players) {
         final r = byName[p.name] ??= PlayerRecord(name: p.name, lastPlayed: game.createdAt);
         r.games++;
         if (p.team == winner) r.wins++;
@@ -156,7 +201,7 @@ class GameRepository {
   /// Finished games grouped by the date they were played, newest first.
   Future<List<GameNight>> gameNights() async {
     final nights = <DateTime, GameNight>{};
-    for (final (game, session) in await _finished()) {
+    for (final (game, result) in await _finished()) {
       final t = game.createdAt;
       final day = DateTime(t.year, t.month, t.day);
       final night = nights[day] ??= GameNight(date: day);
@@ -164,12 +209,12 @@ class GameRepository {
         GameSummary(
           id: game.id,
           playedAt: game.createdAt,
-          winner: session.state.winner,
-          nights: session.state.nightNumber,
-          players: session.state.players.length,
+          winner: result.winner,
+          nights: result.nights,
+          players: result.players.length,
         ),
       );
-      for (final p in session.state.players) {
+      for (final p in result.players) {
         if (!night.players.contains(p.name)) night.players.add(p.name);
       }
     }
@@ -180,28 +225,12 @@ class GameRepository {
   }
 
   Future<GameSession> _load(Game game) async {
-    final players =
-        await (_db.select(_db.gamePlayers)
-              ..where((p) => p.gameId.equals(game.id))
-              ..orderBy([(p) => OrderingTerm.asc(p.seat)]))
-            .get();
-    final inputs =
-        await (_db.select(_db.gameInputs)
-              ..where((i) => i.gameId.equals(game.id))
-              ..orderBy([(i) => OrderingTerm.asc(i.seq)]))
-            .get();
-    final settingsJson = jsonDecode(game.settingsJson) as Map<String, Object?>;
+    final players = await _seats(game.id);
+    final inputs = await _inputs(game.id);
     final setup = GameSetup(
-      settings: settingsFromJson(settingsJson),
-      discussionSeconds: discussionSecondsFromJson(settingsJson),
+      settings: settingsFromJson(jsonDecode(game.settingsJson) as Map<String, Object?>),
       players: [
-        for (final p in players)
-          Player(
-            id: p.playerId,
-            name: p.name,
-            role: Role.values.byName(p.role),
-            chameleonRole: p.chameleonRole == null ? null : Role.values.byName(p.chameleonRole!),
-          ),
+        for (final p in players) Player(id: p.playerId, name: p.name, role: roleFromName(p.role)),
       ],
     );
     return GameSession.replay(game.id, setup, [
@@ -309,3 +338,6 @@ final class GameNight {
   /// Everyone who played that night, sorted.
   final List<String> players = [];
 }
+
+/// A finished game as the stats need it.
+typedef _Result = ({List<Player> players, Team? winner, int nights});

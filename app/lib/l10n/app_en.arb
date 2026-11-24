@@ -25,7 +25,6 @@
   "roleChameleon": "Chameleon",
   "roleMafia": "Mafia",
   "roleGodfather": "Godfather",
-  "rolePotana": "Potana",
   "roleLawyer": "Lawyer",
   "teamCivilians": "Civilians",
   "teamMafia": "Mafia",
@@ -91,9 +90,7 @@
   "setupRolesSection": "Roles",
   "setupSuggestedMix": "Suggested mix",
   "setupOptionsSection": "Options",
-  "setupBombVictims": "Bomb victims",
   "setupRevealRole": "Reveal role on death",
-  "setupDiscussionTimer": "Discussion timer",
   "timerOff": "Off",
   "minutes": "{count, plural, =1{1 min} other{{count} min}}",
   "@minutes": {
@@ -105,12 +102,6 @@
     }
   },
   "setupHouseRules": "House rules",
-  "ruleDoctorSaveBlocksJoker": "Doctor's save also stops the Joker",
-  "ruleDoctorCanSaveBombVictims": "Doctor can save Bomb victims",
-  "ruleBlockedBombExplodes": "Blocked Bomb still explodes",
-  "ruleChameleonMafia": "Chameleon can pick Mafia roles",
-  "ruleTieVote": "Tied vote",
-  "tieRevote": "Revote",
   "tieNoElimination": "Nobody out",
   "tieHostDecides": "Host decides",
   "setupDealRoles": "Deal roles",
@@ -129,8 +120,6 @@
   "setupProblemMafiaTooStrong": "The Mafia must be fewer than the civilian team.",
   "dealTitle": "Hand out the cards",
   "dealInstructions": "Give each player the card shown next to their name. Keep this screen hidden from the table.",
-  "dealChameleonPlaysAs": "Chameleon plays as",
-  "dealChameleonMissing": "Each Chameleon must choose a role.",
   "dealReshuffle": "Reshuffle",
   "dealStartGame": "Start night 1",
   "logTitle": "Game log",
@@ -170,15 +159,12 @@
       }
     }
   },
-  "nightWakePotana": "Wake the Potana. Who do they block?",
   "nightWakeLawyer": "Wake the Lawyer. Who do they protect?",
   "nightWakeMafia": "Wake the Mafia. Who do they kill?",
   "nightWakeJoker": "Wake the Joker. Who do they kill?",
   "nightWakeDoctor": "Wake the Doctor. Who do they save?",
   "nightWakeDetective": "Wake the Detective. Who do they check?",
   "nightNoAction": "No action",
-  "nightBlockedWarning": "Blocked by the Potana tonight — this action will have no effect. Let them choose anyway.",
-  "nightDoctorLastNight": "Saved last night",
   "nightDetectiveShow": "Show the Detective:",
   "nightDetectiveBlocked": "The Detective is blocked tonight — give no answer.",
   "nightReviewTitle": "Everyone is asleep. Review the night.",
@@ -200,17 +186,6 @@
         "type": "String"
       },
       "role": {
-        "type": "String"
-      }
-    }
-  },
-  "actionPotanaBlock": "{actor} blocked {target}",
-  "@actionPotanaBlock": {
-    "placeholders": {
-      "actor": {
-        "type": "String"
-      },
-      "target": {
         "type": "String"
       }
     }
@@ -357,39 +332,7 @@
       }
     }
   },
-  "hostBombDefused": "{name} (Bomb) was blocked and did not explode.",
-  "@hostBombDefused": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "bombPick": "{name} was the Bomb. Choose {count, plural, =1{1 player} other{{count} players}} to die with them.",
-  "@bombPick": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      },
-      "count": {
-        "type": "int",
-        "format": "decimalPattern"
-      }
-    }
-  },
-  "bombDetonate": "Detonate ({selected}/{required})",
-  "@bombDetonate": {
-    "placeholders": {
-      "selected": {
-        "type": "String"
-      },
-      "required": {
-        "type": "String"
-      }
-    }
-  },
   "morningStartDay": "Start the day",
-  "dayDiscussion": "Discussion",
   "timerStart": "Start",
   "timerPause": "Pause",
   "timerReset": "Reset",
@@ -407,22 +350,6 @@
   },
   "daySkipVote": "No vote today",
   "dayCountVotes": "Count votes",
-  "dayTieHostDecides": "Tie between {names}. Who is out?",
-  "@dayTieHostDecides": {
-    "placeholders": {
-      "names": {
-        "type": "String"
-      }
-    }
-  },
-  "dayTieRevote": "Tie between {names}. Vote again.",
-  "@dayTieRevote": {
-    "placeholders": {
-      "names": {
-        "type": "String"
-      }
-    }
-  },
   "dayStartNight": "Start night {round}",
   "@dayStartNight": {
     "placeholders": {
@@ -515,24 +442,15 @@
     }
   },
   "abilityCivilian": "You have no power at night. Find the Mafia and vote them out by day.",
-  "abilityDoctor": "Save one player each night, yourself included — but never the same player two nights in a row.",
-  "abilityDetective": "Check one player each night. The host tells you: Mafia or Civilian.",
-  "abilityBomb": "When you die, by night or by vote, you take players down with you.",
   "abilityJoker": "You kill one player every night. You play for the Civilians, but nobody is safe.",
-  "abilityChameleon": "Pick a role now and play it for the whole game.",
-  "abilityMafia": "Each night, wake with your family and choose who dies.",
-  "abilityGodfather": "You make the final call on who the Mafia kills. The Detective sees you as a Civilian.",
-  "abilityPotana": "Each night, block one civilian's power. Their action has no effect.",
   "abilityLawyer": "Each night, protect a Mafia member: the Detective sees them as a Civilian.",
   "timeLeft": "left",
   "statusEliminated": "Eliminated",
-  "nightWakeTitlePotana": "Wake the Potana",
   "nightWakeTitleLawyer": "Wake the Lawyer",
   "nightWakeTitleMafia": "Wake the Mafia",
   "nightWakeTitleJoker": "Wake the Joker",
   "nightWakeTitleDoctor": "Wake the Doctor",
   "nightWakeTitleDetective": "Wake the Detective",
-  "nightLinePotana": "Potana, open your eyes. Whose power do you block tonight?",
   "nightLineLawyer": "Lawyer, open your eyes. Who do you protect tonight?",
   "nightLineMafia": "Mafia, open your eyes. Who dies tonight?",
   "nightLineJoker": "Joker, open your eyes. Who do you kill tonight?",
@@ -597,7 +515,6 @@
   "nightBlockedShort": "Blocked tonight: this action has no effect.",
   "setupShuffleDeal": "Shuffle & deal roles",
   "revealPassNext": "Hide & pass to next player",
-  "bombDetonateShort": "Detonate",
   "notifications": "Notifications",
   "setupBalancedFor": "Balanced for {count}",
   "@setupBalancedFor": {
@@ -655,35 +572,6 @@
       }
     }
   },
-  "announceBombChoosing": "{count, plural, =1{They take 1 player down with them: choose now.} other{They take {count} players down with them: choose now.}}",
-  "@announceBombChoosing": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "format": "decimalPattern"
-      }
-    }
-  },
-  "bombChoose": "{count, plural, =0{Ready} =1{Choose 1 player} other{Choose {count} players}}",
-  "@bombChoose": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "format": "decimalPattern"
-      }
-    }
-  },
-  "bombCounter": "{selected} / {required}",
-  "@bombCounter": {
-    "placeholders": {
-      "selected": {
-        "type": "String"
-      },
-      "required": {
-        "type": "String"
-      }
-    }
-  },
   "bombWasTheBomb": "{name} was the Bomb",
   "@bombWasTheBomb": {
     "placeholders": {
@@ -696,15 +584,6 @@
   "@chameleonBecome": {
     "placeholders": {
       "role": {
-        "type": "String"
-      }
-    }
-  },
-  "chameleonChooseRole": "Choose your role",
-  "chameleonIntro": "{name}, you are the Chameleon. Pick the role you will play all game.",
-  "@chameleonIntro": {
-    "placeholders": {
-      "name": {
         "type": "String"
       }
     }
@@ -729,7 +608,6 @@
       }
     }
   },
-  "dayDiscussionHint": "The town talks it over. Start voting when they are ready.",
   "dayEliminate": "Eliminate {name}",
   "@dayEliminate": {
     "placeholders": {
@@ -750,7 +628,6 @@
   "dayResultTitle": "The town has spoken.",
   "dayStartVoting": "Start voting",
   "dayTapToVote": "Tap a player to add a vote",
-  "dayTimerHint": "Discussion timer",
   "dayTitle": "Who is lying?",
   "dayUndoVote": "Undo last vote",
   "dayVoting": "Voting",
@@ -870,9 +747,6 @@
   },
   "setupAddPlayersHint": "Add the players around the table",
   "setupAutoBalance": "Auto-balance",
-  "setupBombTakesDown": "Bomb takes down",
-  "setupBombTakesDownHint": "Players chosen when the Bomb dies",
-  "setupHouseRulesHint": "Doctor, Bomb, Chameleon and tie rules",
   "setupPlayersAtTable": "Players at the table",
   "setupRolesHint": "Tap a role to add one, hold to remove one.",
   "statNone": "–",
@@ -979,7 +853,6 @@
   "settingsFeedbackSection": "Sound & touch",
   "settingsHaptics": "Haptics",
   "settingsHapticsSubtitle": "A light tap on picks, card flips and when time runs out",
-  "setupDiscussionTimerMinutes": "Discussion timer (minutes)",
   "settingsDeviceShort": "Device",
   "setupRolesHow": "How players get their roles",
   "setupModePhone": "Pass the phone",
@@ -1018,9 +891,507 @@
       }
     }
   },
-  "cardsChameleonNext": "Choose the Chameleon's role",
   "cardsReviewStep": "Check",
   "cardsReviewTitle": "Check the cards",
   "cardsReviewHint": "Tap a card to fix it. Everyone else holds a Civilian card.",
-  "cardsReviewCheck": "Check the cards"
+  "cardsReviewCheck": "Check the cards",
+  "rolePutana": "Putana",
+  "roleWitch": "Witch",
+  "roleSwitchman": "Switchman",
+  "roleSilencer": "Silencer",
+  "roleShapeshifter": "Shapeshifter",
+  "roleTnt": "TNT",
+  "abilityPutana": "Night 1: wake with the Mafia to know your team. After that, block one player's ability each night. Left alone on the Mafia Team, you kill like a Mafia.",
+  "abilityWitch": "Once, on night 2, link two Civilians' souls. If one of them is killed at night, the other dies too. Votes don't trigger it, and it lasts after you die.",
+  "abilitySwitchman": "If someone tries to kill you at night, you wake and send the bullet to a player of your choice. You die at night only if the Putana blocks you that night.",
+  "abilitySilencer": "Each night, silence one player for the next day: no Free Chat, no Speech, no vote.",
+  "abilityShapeshifter": "Your ability changes every night in order: Detective, Doctor, Joker, then again. You always stay on the Civilians Team.",
+  "abilityTnt": "If you are eliminated, in any way, the players sitting right and left of you are eliminated too.",
+  "abilityDoctor": "Save one player each night, yourself included. The same player two nights in a row is fine, but not three.",
+  "abilityDetective": "Check one player each night: the host tells you if they are Mafia. Three checks with two Mafia found, and those two die with you if you are killed.",
+  "abilityBomb": "After the first day, plant bombs on two players. When you die, by night or by vote, they die too. Voted out on day 1: take both neighbors, or no one.",
+  "abilityChameleon": "On night 3, choose Mafia, Detective, Doctor, Joker or Switchman, and keep that role for the rest of the game.",
+  "abilityGodfather": "The final call on who the Mafia kills is yours. Voted out by day, you may take one player with you.",
+  "abilityMafia": "Each night, advise the Godfather on who dies. Without him, every Mafia must show the same number, or nobody dies.",
+  "nightWakeTitleRecognition": "Mafia Team, wake up",
+  "nightLineRecognition": "Mafia Team, open your eyes and recognize each other. Putana, you too.",
+  "nightRecognitionHint": "Night 1 only. Nobody acts yet.",
+  "nightRecognized": "They know each other",
+  "reviewRecognition": "The Mafia Team recognized each other",
+  "nightWakeTitlePutana": "Wake the Putana",
+  "nightLinePutana": "Putana, open your eyes. Whose ability do you block tonight?",
+  "nightWakeTitleWitch": "Wake the Witch",
+  "nightLineWitch": "Witch, open your eyes. Which two souls do you link?",
+  "nightWakeTitleSilencer": "Wake the Silencer",
+  "nightLineSilencer": "Silencer, open your eyes. Who stays silent tomorrow?",
+  "nightWakeTitleShapeshifter": "Wake the Shapeshifter",
+  "nightLineShapeshifter": "Shapeshifter, open your eyes. Tonight you are the {role}.",
+  "@nightLineShapeshifter": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "nightWakeTitleBomb": "Wake the Bomb",
+  "nightLineBomb": "Bomb, open your eyes. Who carries your two bombs?",
+  "nightWakeTitleChameleon": "Wake the Chameleon",
+  "nightLineChameleonChoose": "Chameleon, open your eyes. Mafia, Detective, Doctor, Joker or Switchman: which do you keep for the rest of the game?",
+  "nightLineChameleonAs": "Chameleon, open your eyes. You play the {role}.",
+  "@nightLineChameleonAs": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "nightWakeTitleSwitchman": "Wake the Switchman",
+  "nightLineSwitchman": "Switchman, open your eyes. Someone shot at you. Who takes the bullet?",
+  "nightLineSwitchmanBullet": "Switchman, open your eyes. Bullet {current} of {total}: who takes it?",
+  "@nightLineSwitchmanBullet": {
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "format": "decimalPattern"
+      },
+      "total": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "nightBlockedWarning": "Blocked by the Putana tonight: this action will have no effect. Let them choose anyway.",
+  "nightBlockedDecider": "The Putana blocked {name}: the other Mafia's number counts tonight.",
+  "@nightBlockedDecider": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "nightDoctorTwoNights": "Saved two nights running",
+  "nightMafiaTalk": "Mafia talk",
+  "nightMafiaTalkHint": "They agree on a target; the Godfather decides.",
+  "nightMafiaMustAgree": "No Godfather: every Mafia must show the same number. Different numbers cancel the murder.",
+  "nightMafiaNoMatch": "Numbers didn't match",
+  "nightPickToSilence": "Pick a player to silence",
+  "nightPickTwoToLink": "Pick two players to link",
+  "nightPickTwoToPlant": "Pick two players for the bombs",
+  "nightPickToRedirect": "Pick who takes the bullet",
+  "actionLink": "Link {first} and {second}",
+  "@actionLink": {
+    "placeholders": {
+      "first": {
+        "type": "String"
+      },
+      "second": {
+        "type": "String"
+      }
+    }
+  },
+  "actionPlant": "Plant on {first} and {second}",
+  "@actionPlant": {
+    "placeholders": {
+      "first": {
+        "type": "String"
+      },
+      "second": {
+        "type": "String"
+      }
+    }
+  },
+  "actionSilenceShort": "Silence {name}",
+  "@actionSilenceShort": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "actionRedirectTo": "Send it to {name}",
+  "@actionRedirectTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "actionPutanaBlock": "{actor} blocked {target}",
+  "@actionPutanaBlock": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "actionSilence": "{actor} silenced {target}",
+  "@actionSilence": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "actionRedirect": "{actor} sent the bullet to {target}",
+  "@actionRedirect": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "actionWitchLink": "{actor} linked {first} and {second}",
+  "@actionWitchLink": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "first": {
+        "type": "String"
+      },
+      "second": {
+        "type": "String"
+      }
+    }
+  },
+  "actionBombPlant": "{actor} planted bombs on {first} and {second}",
+  "@actionBombPlant": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "first": {
+        "type": "String"
+      },
+      "second": {
+        "type": "String"
+      }
+    }
+  },
+  "actionChameleonChoose": "{actor} chose to be the {role}",
+  "@actionChameleonChoose": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "hostLinked": "The Witch linked {first} and {second}.",
+  "@hostLinked": {
+    "placeholders": {
+      "first": {
+        "type": "String"
+      },
+      "second": {
+        "type": "String"
+      }
+    }
+  },
+  "hostBombPlanted": "{bomb} (Bomb) planted on {first} and {second}.",
+  "@hostBombPlanted": {
+    "placeholders": {
+      "bomb": {
+        "type": "String"
+      },
+      "first": {
+        "type": "String"
+      },
+      "second": {
+        "type": "String"
+      }
+    }
+  },
+  "hostChameleonChose": "{name} (Chameleon) is now the {role}.",
+  "@hostChameleonChose": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "hostMafiaCancelled": "The Mafia showed different numbers: no murder.",
+  "hostRedirected": "{switchman} (Switchman) sent a bullet to {target}.",
+  "@hostRedirected": {
+    "placeholders": {
+      "switchman": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "hostDodged": "{name} (Switchman) was shot at and survived.",
+  "@hostDodged": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "hostChainArmed": "{detective} (Detective) found {names}: they die with the Detective.",
+  "@hostChainArmed": {
+    "placeholders": {
+      "detective": {
+        "type": "String"
+      },
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "hostPutanaPromoted": "{name} (Putana) is the last of the Mafia Team and now kills.",
+  "@hostPutanaPromoted": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "announceRemoved": "{name} was removed from the table.",
+  "@announceRemoved": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "announceTntVictim": "{name} was caught in the TNT blast.",
+  "@announceTntVictim": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "announceGodfatherVictim": "{name} was taken by the Godfather.",
+  "@announceGodfatherVictim": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "announceWasTnt": "{headline} They were the TNT.",
+  "@announceWasTnt": {
+    "placeholders": {
+      "headline": {
+        "type": "String"
+      }
+    }
+  },
+  "announceSilenced": "{name} is silenced today.",
+  "@announceSilenced": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "announceSilencedRule": "No Free Chat, no Speech, no vote",
+  "announceGodfatherChoosing": "He may take one player with him: choose now.",
+  "announceBombNeighborsChoosing": "Both neighbors go with them, or no one: choose now.",
+  "choiceWasGodfather": "{name} was the Godfather",
+  "@choiceWasGodfather": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "choiceGodfatherHint": "Voted out, he may take one player with him, or no one.",
+  "choiceBombNeighborsHint": "Voted out before planting: take both players sitting beside them, or no one.",
+  "choiceTake": "Take {names}",
+  "@choiceTake": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "choiceTakeNoOne": "Take no one",
+  "dayFreeChat": "Free Chat",
+  "dayFreeChatHint": "Everyone may talk, suspect and defend.",
+  "daySpeeches": "Speeches",
+  "daySpeech": "Speech",
+  "dayFoul": "Foul",
+  "dayStartSpeeches": "Start the speeches",
+  "daySpeechCounter": "Speech {current} of {total}",
+  "@daySpeechCounter": {
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "format": "decimalPattern"
+      },
+      "total": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "daySpeechHint": "Their time. Nobody answers until it ends.",
+  "dayOnFoul": "On a Foul: an extra speech",
+  "dayTakeFoul": "Foul +{seconds}s",
+  "@dayTakeFoul": {
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "daySpeechOrder": "Speaking order (seats)",
+  "dayNextSpeaker": "Next: {name}",
+  "@dayNextSpeaker": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dayPreviousSpeaker": "Previous speaker",
+  "dayNoSpeakers": "Nobody may speak today.",
+  "daySilencedToday": "Silenced today: {names}",
+  "@daySilencedToday": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "daySilencedNoVote": "Silenced, can't vote: {names}",
+  "@daySilencedNoVote": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "dayTieRevote": "Tie between {names}. Re-vote between them.",
+  "@dayTieRevote": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "dayTieHostDecides": "Tied again between {names}. Who is out?",
+  "@dayTieHostDecides": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "dayTieDrawLots": "Tied again between {names}. Draw lots.",
+  "@dayTieDrawLots": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "dayDrawLots": "Draw lots",
+  "statusSilenced": "Silenced",
+  "statusFouls": "{count, plural, =0{No fouls} =1{1 foul} other{{count} fouls}}",
+  "@statusFouls": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "logChoice": "{name} took {victims}",
+  "@logChoice": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "victims": {
+        "type": "String"
+      }
+    }
+  },
+  "logChoiceNone": "{name} took no one",
+  "@logChoiceNone": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "logFoul": "{name} took a Foul",
+  "@logFoul": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "menuRemovePlayer": "Remove a player",
+  "removePlayerHint": "For repeatedly breaking the table rules. They leave the game; a TNT still explodes.",
+  "removePlayerConfirmTitle": "Remove {name}?",
+  "@removePlayerConfirmTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "removePlayerConfirmBody": "They leave the game for good. You can undo it from the menu.",
+  "removePlayerConfirm": "Remove",
+  "setupSeatOrderHint": "Seat order matters: the list goes around the table, and the last player sits next to the first.",
+  "setupSeatOrderSheetHint": "Add players in seat order, going around the table. Drag to fix the order.",
+  "setupTimers": "Timers",
+  "setupTimersHint": "Tap a timer during the game to start it",
+  "minutesShort": "{count}:00",
+  "@minutesShort": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "secondsShort": "{count}s",
+  "@secondsShort": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "setupHouseRulesHint": "Open questions in the rules",
+  "setupHouseRulesSheetHint": "The guide leaves these open. Defaults follow docs/GAME_RULES.md.",
+  "ruleGodfatherAppearsCivilian": "Detective sees the Godfather as Civilian",
+  "rulePutanaCanBlockMafia": "Putana can block Mafia Team players",
+  "ruleChameleonMafiaJoins": "A Mafia Chameleon joins the Mafia Team",
+  "ruleDetectiveChainOnVote": "Detective chain also when voted out",
+  "ruleBlockedChecksCount": "Blocked checks count toward the three",
+  "ruleDoctorBlocksChainDeaths": "Doctor saves from chain deaths",
+  "ruleSwitchmanRedirectsEach": "Switchman redirects every bullet",
+  "ruleDoctorSavesRedirected": "Doctor saves from a redirected bullet",
+  "ruleBombNoEffectBeforePlant": "Bomb killed on night 1 has no effect",
+  "ruleSilenceLastsNextDay": "Silence lasts the next day only",
+  "ruleWitchCiviliansOnly": "Witch links Civilians only",
+  "ruleMafiaWinsAtParity": "Mafia win when equal to the Civilians",
+  "ruleSecondTie": "If the re-vote ties again",
+  "tieRandom": "Draw lots"
 }

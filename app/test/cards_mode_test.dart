@@ -32,18 +32,14 @@ void main() {
       final players = playersFromCards(
         [' A ', 'B', 'C', 'D'],
         {1: Role.godfather, 3: Role.chameleon},
-        chameleonPicks: {3: Role.doctor, 0: Role.detective},
       );
       expect([for (final p in players) p.id], ['p0', 'p1', 'p2', 'p3']);
       expect(players[0].name, 'A');
-      expect([for (final p in players) p.role], [
-        Role.civilian,
-        Role.godfather,
-        Role.civilian,
-        Role.chameleon,
-      ]);
-      expect(players[3].effectiveRole, Role.doctor);
-      expect(players[0].chameleonRole, isNull); // a pick only sticks to a Chameleon card
+      expect(
+        [for (final p in players) p.role],
+        [Role.civilian, Role.godfather, Role.civilian, Role.chameleon],
+      );
+      expect(players[3].chameleonRole, isNull, reason: 'the Chameleon chooses on night 3');
     });
   });
 
@@ -85,7 +81,6 @@ void main() {
             names: ['A', 'B', 'C', 'D', 'E', 'F'],
             mix: {Role.mafia: 2, Role.doctor: 1, Role.chameleon: 1},
             settings: GameSettings(),
-            discussionSeconds: 0,
           ),
         ),
       ),
@@ -113,11 +108,9 @@ void main() {
     await tapKey(tester, 'cardSeat_3');
     await tapKey(tester, 'cardsNext');
 
-    // Chameleon picks the role they play.
+    // Chameleon: who holds the card (they choose a role on night 3).
     await tapKey(tester, 'cardSeat_5');
     await tapKey(tester, 'cardsNext');
-    await tapKey(tester, 'chameleonPick_detective');
-    await tapKey(tester, 'chameleonConfirm');
 
     expect(find.text(l.cardsReviewTitle), findsOneWidget);
     expect(find.text(l.names(['A', 'E'])), findsOneWidget); // the Civilians
@@ -136,7 +129,7 @@ void main() {
       'C': Role.mafia,
       'D': Role.doctor,
       'E': Role.civilian,
-      'F': Role.detective,
+      'F': Role.chameleon,
     });
     expect(find.text(l.nightIntro), findsOneWidget);
   });

@@ -22,14 +22,14 @@ import '../events/events_screen.dart';
 import '../game_log/game_log_screen.dart';
 import '../game_over/game_over_view.dart';
 import '../home/join_room_screen.dart';
-import '../morning/bomb_picker.dart';
+import '../day/day_result_view.dart';
 import '../night/detective_result_screen.dart';
 import '../players/leaderboard_screen.dart';
 import '../players/player_profile_screen.dart';
 import '../settings/settings_screen.dart';
-import '../setup/chameleon_choice_screen.dart';
 import '../shell/main_shell.dart';
 import '../morning/morning_view.dart';
+import '../night/night_steps.dart';
 import '../night/night_wizard.dart';
 import '../setup/assign_cards_screen.dart';
 import '../setup/reveal_screen.dart';
@@ -50,7 +50,7 @@ List<Player> _table(BuildContext context) {
   final n = sampleNames(context);
   const roles = [
     Role.civilian, // Layla
-    Role.potana, // Omar
+    Role.putana, // Omar
     Role.civilian, // Sara
     Role.lawyer, // Khalid
     Role.civilian, // Yousef
@@ -70,41 +70,78 @@ List<Player> _table(BuildContext context) {
 bool _isAr(BuildContext context) => Localizations.localeOf(context).languageCode == 'ar';
 
 /// Night 1: the Joker kills Khalid (the Lawyer). Night 2: the Doctor saves
-/// Noor from the Mafia.
-/// Now night 3 (Khalid out, Noor "saved last night").
+/// Noor from the Mafia; the Bomb plants on Huda and Ali. Now night 3.
 GameSession _night3(BuildContext context) => GameSession.replay(
   1,
-  GameSetup(
-    players: _table(context),
-    settings: const GameSettings(bombVictimCount: 2),
-    discussionSeconds: 180,
-  ),
+  GameSetup(players: _table(context), settings: const GameSettings()),
   const [
     NightInput([JokerKill('p8', 'p3'), DoctorSave('p9', 'p0')]),
     AdvanceInput(),
     TallyVoteInput({}),
     AdvanceInput(),
-    NightInput([MafiaKill('p10', 'p5'), DoctorSave('p9', 'p5')]),
+    NightInput([MafiaKill('p10', 'p5'), DoctorSave('p9', 'p5'), BombPlant('p6', 'p7', 'p8')]),
     AdvanceInput(),
     TallyVoteInput({}),
     AdvanceInput(),
   ],
 );
 
-/// Night 3: the Mafia kills Yousef, the Joker kills Faisal (the Bomb, who
-/// takes Ali and Huda), the Detective checks Sara.
-GameSession _morning3(BuildContext context) => _night3(context)
-    .apply(
-      const NightInput([
-        MafiaKill('p10', 'p4'),
-        JokerKill('p8', 'p6'),
-        DoctorSave('p9', 'p0'),
-        DetectiveCheck('p7', 'p2'),
-      ]),
-    )
-    .apply(const BombInput('p6', ['p8', 'p7']));
+/// Night 3: the Mafia kills Yousef, the Joker kills Faisal (the Bomb, whose
+/// charges take Huda and Ali), the Detective checks Sara.
+GameSession _morning3(BuildContext context) => _night3(context).apply(
+  const NightInput([
+    MafiaKill('p10', 'p4'),
+    JokerKill('p8', 'p6'),
+    DoctorSave('p9', 'p0'),
+    DetectiveCheck('p7', 'p2'),
+  ]),
+);
 
 GameSession _day3(BuildContext context) => _morning3(context).apply(const AdvanceInput());
+
+/// The guide's newer roles at one table: Mafia Team Omar (Witch), Khalid
+/// (Mafia), Hamad (Godfather).
+List<Player> _guideTable(BuildContext context) {
+  final n = sampleNames(context);
+  const roles = [
+    Role.civilian, // Layla
+    Role.witch, // Omar
+    Role.silencer, // Sara
+    Role.mafia, // Khalid
+    Role.tnt, // Yousef
+    Role.shapeshifter, // Noor
+    Role.switchman, // Faisal
+    Role.detective, // Huda
+    Role.chameleon, // Ali
+    Role.doctor, // Mariam
+    Role.godfather, // Hamad
+  ];
+  return [
+    for (var i = 0; i < roles.length; i++)
+      Player(id: 'p$i', name: i == 10 ? (_isAr(context) ? 'حمد' : 'Hamad') : n[i], role: roles[i]),
+  ];
+}
+
+GameSession _guide(BuildContext context, [List<GameInput> inputs = const []]) => GameSession.replay(
+  2,
+  GameSetup(players: _guideTable(context), settings: const GameSettings()),
+  inputs,
+);
+
+/// Day 1 after the Silencer silenced Layla.
+GameSession _guideDay1(BuildContext context) => _guide(context, const [
+  NightInput([SilencerSilence('p2', 'p0')]),
+  AdvanceInput(),
+]);
+
+GameSession _guideNight(BuildContext context, int night) => _guide(context, [
+  for (var i = 1; i < night; i++) ...const [
+    NightInput([]),
+    AdvanceInput(),
+    TallyVoteInput({}),
+    AdvanceInput(),
+  ],
+]);
 
 class _FixedGame extends ActiveGameController {
   _FixedGame(this.session);
@@ -143,10 +180,6 @@ Widget _scope(GameSession? session, Widget child, {List<Override> more = const [
 
 Widget _stage(GameSession s, Widget view) => _scope(s, GameStageFrame(session: s, child: view));
 
-/// Night 3 before the Bomb detonates (picker showing).
-GameSession _bombPending(BuildContext context) =>
-    _night3(context).apply(const NightInput([MafiaKill('p10', 'p4'), JokerKill('p8', 'p6')]));
-
 /// Day 3: the town votes out Omar; the Godfather then takes out two more.
 GameSession _mafiaWins(BuildContext context) => _day3(context)
     .apply(const TallyVoteInput({'p0': 4}))
@@ -158,7 +191,8 @@ GameSession _civiliansWin(BuildContext context) => _day3(context)
     .apply(const AdvanceInput())
     .apply(const NightInput([MafiaKill('p10', 'p0')]))
     .apply(const AdvanceInput())
-    .apply(const TallyVoteInput({'p10': 3}));
+    .apply(const TallyVoteInput({'p10': 3}))
+    .apply(const ChoiceInput('p10', []));
 
 /// History for the Events, Leaderboard and Profile screens.
 List<PlayerRecord> _records(BuildContext context) {
@@ -255,14 +289,13 @@ final List<ScreenScenario> screenCatalog = [
               mix: {
                 ...suggestedRoleMix(11),
                 Role.godfather: 1,
-                Role.potana: 1,
+                Role.putana: 1,
                 Role.lawyer: 1,
                 Role.bomb: 1,
                 Role.joker: 1,
                 Role.chameleon: 1,
               },
               customMix: true,
-              settings: const GameSettings(bombVictimCount: 3),
             ),
           ),
         ),
@@ -286,7 +319,6 @@ final List<ScreenScenario> screenCatalog = [
         names: [for (final p in dealt) p.name],
         mix: const {},
         settings: const GameSettings(),
-        discussionSeconds: 0,
         dealt: dealt,
         initialIndex: 3,
         initiallyRevealed: true,
@@ -301,7 +333,6 @@ final List<ScreenScenario> screenCatalog = [
         names: [for (final p in table) p.name],
         mix: const {},
         settings: const GameSettings(),
-        discussionSeconds: 0,
         dealt: table,
         initialIndex: 3,
       ),
@@ -312,7 +343,7 @@ final List<ScreenScenario> screenCatalog = [
   ScreenScenario('cards_check', (context) => _cards(context, mafiaOnly: false)),
   ScreenScenario('night', (context) {
     final s = _night3(context);
-    // Steps: Mafia, Potana, Joker, Doctor (3), Detective.
+    // Steps: Putana, Mafia, Joker, Doctor (3), Detective.
     return _stage(s, NightWizard(session: s, initialIndex: 3));
   }),
   ScreenScenario('morning', (context) {
@@ -325,18 +356,80 @@ final List<ScreenScenario> screenCatalog = [
   }),
   ScreenScenario('night_mafia', (context) {
     final s = _night3(context);
+    return _stage(s, NightWizard(session: s, initialIndex: 1));
+  }),
+  ScreenScenario('night_recognition', (context) {
+    final s = _guide(context);
     return _stage(s, NightWizard(session: s, initialIndex: 0));
   }),
-  ScreenScenario('chameleon', (context) {
-    final names = sampleNames(context);
-    return _scope(
-      null,
-      ChameleonChoiceScreen(
-        name: names[4],
-        choices: chameleonChoices(const GameSettings()),
-        initial: Role.doctor,
+  ScreenScenario('night_witch', (context) {
+    final s = _guideNight(context, 2);
+    // Steps: Mafia, Witch (1), Silencer, Doctor, Shapeshifter, Detective.
+    return _stage(
+      s,
+      NightWizard(
+        session: s,
+        initialIndex: 1,
+        initialPartial: const {
+          'witch:p1': ['p4'],
+        },
       ),
     );
+  }),
+  ScreenScenario('night_chameleon', (context) {
+    final s = _guideNight(context, 3);
+    // Steps: Mafia, Silencer, Doctor, Shapeshifter, Detective, Chameleon (5).
+    return _stage(
+      s,
+      NightWizard(
+        session: s,
+        initialIndex: 5,
+        initialChoices: const {'chameleon:p8': NightPick.role(Role.switchman)},
+      ),
+    );
+  }),
+  ScreenScenario('night_switchman', (context) {
+    final s = _guide(context);
+    // The Mafia shot Faisal (the Switchman), who is woken last (6).
+    return _stage(
+      s,
+      NightWizard(
+        session: s,
+        initialIndex: 6,
+        initialChoices: const {
+          'mafia': NightPick.players(['p6']),
+        },
+      ),
+    );
+  }),
+  ScreenScenario('day_free_chat', (context) {
+    final s = _guideDay1(context);
+    return _stage(s, DayView(session: s));
+  }),
+  ScreenScenario('day_speech', (context) {
+    final s = _guideDay1(context).apply(const FoulInput('p3'));
+    // Layla is silenced, so Khalid speaks third.
+    return _stage(s, DayView(session: s, initialPart: DayPart.speeches, initialSpeaker: 2));
+  }),
+  ScreenScenario('day_revote', (context) {
+    final s = _guideDay1(context).apply(const TallyVoteInput({'p1': 3, 'p3': 3}));
+    return _stage(s, DayView(session: s));
+  }),
+  ScreenScenario('choice_godfather', (context) {
+    final s = _guideDay1(context).apply(const TallyVoteInput({'p10': 5}));
+    return _stage(s, DayResultView(session: s));
+  }),
+  ScreenScenario('choice_bomb', (context) {
+    final s = GameSession.replay(
+      1,
+      GameSetup(players: _table(context), settings: const GameSettings()),
+      const [
+        NightInput([]),
+        AdvanceInput(),
+        TallyVoteInput({'p6': 5}),
+      ],
+    );
+    return _stage(s, DayResultView(session: s));
   }),
   ScreenScenario('detective', (context) {
     return _scope(
@@ -346,10 +439,6 @@ final List<ScreenScenario> screenCatalog = [
   }),
   ScreenScenario('detective_blocked', (context) {
     return _scope(null, DetectiveResultScreen(targetName: sampleNames(context)[1], result: null));
-  }),
-  ScreenScenario('bomb_picker', (context) {
-    final s = _bombPending(context);
-    return _stage(s, BombPicker(session: s, bombId: 'p6'));
   }),
   ScreenScenario('game_over_mafia', (context) {
     final s = _mafiaWins(context);
@@ -394,7 +483,6 @@ Widget _cards(BuildContext context, {required bool mafiaOnly}) {
       names: [for (final p in table) p.name],
       mix: mix,
       settings: const GameSettings(),
-      discussionSeconds: 0,
       initialCards: cards,
       initialStep: mafiaOnly ? order.indexOf(Role.doctor) : order.length,
     ),

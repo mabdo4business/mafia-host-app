@@ -9,26 +9,47 @@ import 'package:mafia_host/game/game_input.dart';
 import 'package:mafia_host/game/game_session.dart';
 import 'package:mafia_host/game/role_mix.dart';
 
-Player p(String id, Role role, {Role? as}) =>
-    Player(id: id, name: id.toUpperCase(), role: role, chameleonRole: as);
+Player p(String id, Role role) => Player(id: id, name: id.toUpperCase(), role: role);
 
+/// Seat order matters: TNT sits between c1 and c2.
 GameSetup setup({GameSettings settings = const GameSettings(), List<Player>? players}) => GameSetup(
   settings: settings,
   players:
       players ??
       [
         p('gf', Role.godfather),
-        p('pot', Role.potana),
+        p('put', Role.putana),
         p('law', Role.lawyer),
+        p('witch', Role.witch),
         p('doc', Role.doctor),
         p('det', Role.detective),
         p('bomb', Role.bomb),
         p('joker', Role.joker),
+        p('sw', Role.switchman),
+        p('sil', Role.silencer),
+        p('shape', Role.shapeshifter),
+        p('cham', Role.chameleon),
         p('c1', Role.civilian),
+        p('tnt', Role.tnt),
         p('c2', Role.civilian),
         p('c3', Role.civilian),
       ],
 );
+
+GameSession day1([List<NightAction> actions = const []]) =>
+    GameSession.start(1, setup()).apply(NightInput(actions)).apply(const AdvanceInput());
+
+/// Plays quiet nights and days until night [n] begins.
+GameSession toNight(GameSession s, int n) {
+  while (s.state.nightNumber < n) {
+    s = s
+        .apply(const NightInput([]))
+        .apply(const AdvanceInput())
+        .apply(const TallyVoteInput({}))
+        .apply(const AdvanceInput());
+  }
+  return s;
+}
 
 void main() {
   group('GameSession stages', () {
@@ -39,7 +60,6 @@ void main() {
 
       s = s.apply(const NightInput([MafiaKill('gf', 'c1')]));
       expect(s.stage, GameStage.morning);
-      expect(s.round, 1);
 
       s = s.apply(const AdvanceInput());
       expect(s.stage, GameStage.day);
@@ -53,27 +73,65 @@ void main() {
       expect(s.round, 2);
     });
 
-    test('a tie waiting on the host keeps the day open', () {
-      var s = GameSession.start(1, setup()).apply(const NightInput([])).apply(const AdvanceInput());
-      s = s.apply(const VoteInput({'c1': 'gf', 'c2': 'c3'}));
+    test('a tie calls a re-vote; a second tie eliminates nobody (default)', () {
+      var s = day1().apply(const TallyVoteInput({'c1': 2, 'c2': 2}));
       expect(s.stage, GameStage.day);
-      expect(s.pendingTie, isNotNull);
+      expect(s.pendingTie?.events.last, const RevoteRequired(['c1', 'c2']));
+      expect(s.state.revoteCandidates, ['c1', 'c2']);
 
-      s = s.apply(const VoteInput({'c1': 'gf', 'c2': 'c3'}, tieBreakerId: 'gf'));
+      s = s.apply(const TallyVoteInput({'c1': 1, 'c2': 1}));
       expect(s.stage, GameStage.dayResult);
-      expect(s.latestRound.single.events.whereType<PlayerDied>().single.playerId, 'gf');
+      expect(s.latestRound.single.events.last, const NoElimination());
     });
 
-    test('cannot advance while a Bomb is pending; detonation then unlocks it', () {
-      var s = GameSession.start(1, setup()).apply(const NightInput([MafiaKill('gf', 'bomb')]));
-      expect(s.state.pendingBombs, ['bomb']);
+    test('a second tie with hostDecides waits for the pick', () {
+      var s = GameSession.start(
+        1,
+        setup(settings: const GameSettings(secondTieRule: SecondTieRule.hostDecides)),
+      ).apply(const NightInput([])).apply(const AdvanceInput());
+      s = s.apply(const TallyVoteInput({'c1': 2, 'c2': 2}));
+      s = s.apply(const TallyVoteInput({'c1': 1, 'c2': 1}));
+      expect(s.stage, GameStage.day);
+      expect(s.pendingTie?.events.last, const HostDecisionRequired(['c1', 'c2']));
+      s = s.apply((s.pendingTie!.input as DayVoteInput).withTieBreaker('c2'));
+      expect(s.stage, GameStage.dayResult);
+      expect(s.state.player('c2').isAlive, isFalse);
+    });
+
+    test("cannot advance until the voted-out Godfather's choice is made", () {
+      var s = day1().apply(const TallyVoteInput({'gf': 5}));
+      expect(s.stage, GameStage.dayResult);
+      expect(s.state.pendingChoices.single.kind, ChoiceKind.godfatherTakesOne);
       expect(() => s.apply(const AdvanceInput()), throwsStateError);
 
-      s = s.apply(const BombInput('bomb', ['c1', 'c2']));
-      expect(s.stage, GameStage.morning);
-      expect(s.latestRound, hasLength(2));
-      s = s.apply(const AdvanceInput());
+      s = s.apply(const ChoiceInput('gf', ['c3']));
+      expect(s.state.player('c3').isAlive, isFalse);
+      expect(s.latestRound, hasLength(2), reason: 'the vote and the choice');
+      expect(s.apply(const AdvanceInput()).stage, GameStage.night);
+    });
+
+    test('a Foul or a removal keeps the day screen (viewKey)', () {
+      var s = day1();
+      final key = s.viewKey;
+      s = s.apply(const FoulInput('c1'));
+      expect(s.state.foulsOf('c1'), 1);
+      expect(s.viewKey, key);
+      s = s.apply(const RemoveInput('tnt'));
+      expect(s.viewKey, key);
       expect(s.stage, GameStage.day);
+      expect(
+        [
+          for (final p in s.state.players)
+            if (!p.isAlive) p.id,
+        ],
+        ['c1', 'tnt', 'c2'],
+      );
+      expect(s.apply(const TallyVoteInput({})).viewKey, key + 1);
+    });
+
+    test('a pending re-vote survives a Foul', () {
+      final s = day1().apply(const TallyVoteInput({'c1': 2, 'c2': 2})).apply(const FoulInput('c3'));
+      expect(s.pendingTie, isNotNull);
     });
 
     test('a win moves to game over', () {
@@ -87,6 +145,7 @@ void main() {
 
     test('inputs that do not fit the stage are rejected', () {
       expect(() => GameSession.start(1, setup()).apply(const VoteInput({})), throwsStateError);
+      expect(() => GameSession.start(1, setup()).apply(const FoulInput('c1')), throwsStateError);
     });
 
     test('undo replays everything but the last input', () {
@@ -96,40 +155,20 @@ void main() {
       ).apply(const NightInput([MafiaKill('gf', 'c1')])).apply(const AdvanceInput());
       final u = s.undo();
       expect(u.stage, GameStage.morning);
-      expect(u.log, hasLength(1));
       expect(u.undo().state.player('c1').isAlive, isTrue);
       expect(GameSession.start(1, setup()).canUndo, isFalse);
     });
 
     test('replay rebuilds the same session', () {
-      final s = GameSession.start(1, setup())
-          .apply(const NightInput([MafiaKill('gf', 'c1'), DoctorSave('doc', 'c2')]))
-          .apply(const AdvanceInput())
-          .apply(const VoteInput({'c2': 'pot', 'c3': 'pot'}));
+      final s = day1([
+        const MafiaKill('gf', 'c1'),
+        const DoctorSave('doc', 'c2'),
+      ]).apply(const FoulInput('c3')).apply(const VoteInput({'c2': 'put', 'c3': 'put'}));
       final r = GameSession.replay(1, s.setup, s.inputs);
       expect(r.stage, s.stage);
       expect(r.state.players, s.state.players);
+      expect(r.state.fouls, s.state.fouls);
       expect(r.log.last.events, s.log.last.events);
-    });
-  });
-
-  group('tallied vote', () {
-    test('eliminates the leader and shows the day result', () {
-      var s = GameSession.start(1, setup()).apply(const NightInput([])).apply(const AdvanceInput());
-      s = s.apply(const TallyVoteInput({'c3': 2, 'c2': 1}));
-      expect(s.stage, GameStage.dayResult);
-      expect(s.state.player('c3').isAlive, isFalse);
-      expect(s.latestRound.single.input, isA<TallyVoteInput>());
-    });
-
-    test('a tie waits for the host, then the tie-breaker decides', () {
-      var s = GameSession.start(1, setup()).apply(const NightInput([])).apply(const AdvanceInput());
-      s = s.apply(const TallyVoteInput({'c3': 1, 'c2': 1}));
-      expect(s.stage, GameStage.day);
-      expect(s.pendingTie?.input, isA<TallyVoteInput>());
-      s = s.apply(const TallyVoteInput({'c3': 1, 'c2': 1}, tieBreakerId: 'c2'));
-      expect(s.stage, GameStage.dayResult);
-      expect(s.state.player('c2').isAlive, isFalse);
     });
   });
 
@@ -137,16 +176,24 @@ void main() {
     test('inputs round-trip through JSON', () {
       const inputs = <GameInput>[
         NightInput([
-          PotanaBlock('pot', 'doc'),
+          PutanaBlock('put', 'doc'),
           LawyerProtect('law', 'gf'),
           MafiaKill('gf', 'c1'),
+          WitchLink('witch', 'c1', 'c2'),
           JokerKill('joker', 'c2'),
+          SilencerSilence('sil', 'c3'),
           DoctorSave('doc', 'c1'),
           DetectiveCheck('det', 'law'),
+          BombPlant('bomb', 'c1', 'c3'),
+          ChameleonChoose('cham', Role.switchman),
+          SwitchmanRedirect('sw', 'gf'),
         ]),
-        BombInput('bomb', ['a', 'b']),
+        ChoiceInput('gf', ['a']),
+        ChoiceInput('bomb', []),
         VoteInput({'a': 'b', 'c': null}, tieBreakerId: 'b'),
         TallyVoteInput({'b': 3, 'c': 1}, tieBreakerId: 'b'),
+        FoulInput('a'),
+        RemoveInput('b'),
         AdvanceInput(),
       ];
       final decoded = [
@@ -160,23 +207,37 @@ void main() {
       expect((decoded.first as NightInput).actions, (inputs.first as NightInput).actions);
     });
 
-    test('settings round-trip through JSON', () {
+    test('settings round-trip through JSON with the rules version', () {
       const s = GameSettings(
-        bombVictimCount: 3,
-        doctorSaveBlocksJokerKill: false,
-        doctorCanSaveBombVictims: true,
-        blockedBombStillExplodes: false,
-        chameleonCanPickMafiaRoles: true,
+        godfatherAppearsCivilian: true,
+        putanaCanBlockMafia: false,
+        secondTieRule: SecondTieRule.randomAmongTied,
+        chameleonMafiaJoinsMafiaTeam: false,
+        detectiveChainOnVote: true,
+        blockedChecksCount: true,
+        doctorBlocksChainDeaths: true,
+        switchmanRedirectsEach: false,
+        doctorSavesRedirectedBullet: false,
+        bombNoEffectBeforePlant: false,
+        silenceLastsNextDay: false,
+        witchCiviliansOnly: false,
+        mafiaWinsAtParity: false,
         revealRoleOnDeath: true,
-        tieVoteRule: TieVoteRule.revote,
+        mafiaDiscussionSeconds: 30,
+        freeChatSeconds: 180,
+        speechSeconds: 45,
+        foulSeconds: 20,
       );
-      final j =
-          jsonDecode(jsonEncode(settingsToJson(s, discussionSeconds: 120))) as Map<String, Object?>;
-      expect(
-        settingsToJson(settingsFromJson(j), discussionSeconds: 120),
-        settingsToJson(s, discussionSeconds: 120),
-      );
-      expect(discussionSecondsFromJson(j), 120);
+      final j = jsonDecode(jsonEncode(settingsToJson(s))) as Map<String, Object?>;
+      expect(settingsFromJson(j), s);
+      expect(isCurrentRules(j), isTrue);
+    });
+
+    test('games stored before GAME_RULES.md are recognized as legacy', () {
+      expect(isCurrentRules({'bombVictimCount': 2, 'discussionSeconds': 0}), isFalse);
+      expect(settingsFromJson({'bombVictimCount': 3}), const GameSettings());
+      expect(roleFromName('potana'), Role.putana);
+      expect(roleFromName('witch'), Role.witch);
     });
   });
 
@@ -189,6 +250,11 @@ void main() {
       }
     });
 
+    test('every role but Civilian is configurable, Mafia Team first', () {
+      expect(configurableRoles.toSet(), Role.values.toSet()..remove(Role.civilian));
+      expect(configurableRoles.takeWhile((r) => r.team == Team.mafia), hasLength(5));
+    });
+
     test('validation catches each problem', () {
       final names = ['A', 'B', 'C', 'D'];
       final mix = suggestedRoleMix(4);
@@ -196,98 +262,165 @@ void main() {
       expect(validateSetup(['A', 'b ', 'B', 'D'], mix), SetupProblem.duplicateName);
       expect(validateSetup(names, {...mix, Role.joker: 4}), SetupProblem.tooManyRoles);
       expect(validateSetup(names, {Role.doctor: 1}), SetupProblem.noMafia);
-      expect(validateSetup(names, {Role.godfather: 1, Role.mafia: 1}), SetupProblem.mafiaTooStrong);
+      expect(validateSetup(names, {Role.godfather: 1, Role.witch: 1}), SetupProblem.mafiaTooStrong);
       expect(validateSetup(names, mix), isNull);
     });
 
-    test('deal gives every seat one card and fills with Civilians', () {
+    test('deal gives every seat one card, in seat order, and fills with Civilians', () {
       final names = List.generate(10, (i) => 'P$i');
       final mix = suggestedRoleMix(10);
       final players = dealRoles(names, mix, Random(1));
       expect(players.map((p) => p.name), names);
-      expect(players.map((p) => p.id).toSet(), hasLength(10));
+      expect(players.map((p) => p.id), [for (var i = 0; i < 10; i++) 'p$i']);
       for (final MapEntry(key: role, value: count) in mix.entries) {
         expect(players.where((p) => p.role == role), hasLength(count), reason: role.name);
       }
-      final special = mix.values.fold(0, (a, b) => a + b);
-      expect(players.where((p) => p.role == Role.civilian), hasLength(10 - special));
-    });
-
-    test('chameleon choices follow the setting', () {
-      expect(chameleonChoices(const GameSettings()).any((r) => r.team == Team.mafia), isFalse);
-      expect(
-        chameleonChoices(const GameSettings(chameleonCanPickMafiaRoles: true)),
-        contains(Role.godfather),
-      );
-      expect(
-        chameleonChoices(const GameSettings(chameleonCanPickMafiaRoles: true)),
-        isNot(contains(Role.chameleon)),
-      );
+      expect(players.every((p) => p.chameleonRole == null), isTrue);
     });
   });
 
-  group('night steps', () {
-    test('wake the Mafia first, then Potana and Lawyer; skip missing or dead roles', () {
-      final s = GameSession.start(1, setup()).state;
-      expect(buildNightSteps(s).map((st) => st.kind), [
-        NightStepKind.mafia,
-        NightStepKind.potana,
+  group('night steps (wake order, GAME_RULES §5)', () {
+    List<NightStepKind> kinds(GameSession s) => [
+      for (final st in buildNightSteps(s.state)) st.kind,
+    ];
+
+    test('night 1: the Mafia Team recognize each other; Putana does not block yet', () {
+      final s = GameSession.start(1, setup());
+      expect(kinds(s), [
+        NightStepKind.recognition,
         NightStepKind.lawyer,
+        NightStepKind.mafia,
         NightStepKind.joker,
+        NightStepKind.silencer,
         NightStepKind.doctor,
+        NightStepKind.shapeshifter,
         NightStepKind.detective,
+      ]);
+      final recognition = buildNightSteps(s.state).first;
+      expect(recognition.memberIds, ['gf', 'put', 'law', 'witch']);
+      expect(recognition.actionsFor(const NightPick.players([])), isEmpty);
+    });
+
+    test('night 2: Putana blocks, the Witch links, the Bomb plants', () {
+      expect(kinds(toNight(GameSession.start(1, setup()), 2)), [
+        NightStepKind.putana,
+        NightStepKind.lawyer,
+        NightStepKind.mafia,
+        NightStepKind.witch,
+        NightStepKind.joker,
+        NightStepKind.silencer,
+        NightStepKind.doctor,
+        NightStepKind.shapeshifter,
+        NightStepKind.detective,
+        NightStepKind.bomb,
+      ]);
+    });
+
+    test('night 3: the Chameleon chooses; from night 4 wakes as the chosen role', () {
+      final n3 = toNight(GameSession.start(1, setup()), 3);
+      final cham = buildNightSteps(n3.state).last;
+      expect(cham.kind, NightStepKind.chameleon);
+      expect(cham.roleChoices, chameleonChoices);
+      expect(cham.actionsFor(const NightPick.role(Role.doctor)), [
+        const ChameleonChoose('cham', Role.doctor),
       ]);
 
-      final afterNight = GameSession.start(1, setup())
-          .apply(const NightInput([JokerKill('joker', 'pot'), MafiaKill('gf', 'joker')]))
-          .apply(const AdvanceInput())
-          .apply(const VoteInput({}))
-          .apply(const AdvanceInput());
-      expect(afterNight.stage, GameStage.night);
-      expect(buildNightSteps(afterNight.state).map((st) => st.kind), [
-        NightStepKind.mafia,
-        NightStepKind.lawyer,
-        NightStepKind.doctor,
-        NightStepKind.detective,
-      ]);
+      final n4 = toNight(
+        n3
+            .apply(const NightInput([ChameleonChoose('cham', Role.doctor)]))
+            .apply(const AdvanceInput())
+            .apply(const TallyVoteInput({}))
+            .apply(const AdvanceInput()),
+        4,
+      );
+      final as = buildNightSteps(n4.state).last;
+      expect((as.kind, as.ability), (NightStepKind.chameleon, Role.doctor));
+      expect(as.actionsFor(const NightPick.players(['c1'])), [const DoctorSave('cham', 'c1')]);
+    });
+
+    test("the Shapeshifter's step uses tonight's ability", () {
+      Role ability(GameSession s) => buildNightSteps(
+        s.state,
+      ).firstWhere((st) => st.kind == NightStepKind.shapeshifter).ability;
+      final s = GameSession.start(1, setup());
+      expect(ability(s), Role.detective);
+      expect(ability(toNight(s, 2)), Role.doctor);
+      expect(ability(toNight(s, 3)), Role.joker);
     });
 
     test('target lists respect each role', () {
-      final steps = {
-        for (final st in buildNightSteps(GameSession.start(1, setup()).state)) st.kind: st,
-      };
-      expect(steps[NightStepKind.potana]!.targetIds, isNot(contains('gf')));
-      expect(steps[NightStepKind.lawyer]!.targetIds, ['gf', 'pot', 'law']);
+      final s = toNight(GameSession.start(1, setup()), 2);
+      final steps = {for (final st in buildNightSteps(s.state)) st.kind: st};
+      expect(steps[NightStepKind.putana]!.targetIds, isNot(contains('put')));
+      expect(steps[NightStepKind.lawyer]!.targetIds, ['gf', 'put', 'law', 'witch']);
       expect(steps[NightStepKind.mafia]!.actorId, 'gf');
-      expect(steps[NightStepKind.mafia]!.targetIds, isNot(contains('law')));
-      expect(steps[NightStepKind.joker]!.targetIds, isNot(contains('joker')));
+      expect(steps[NightStepKind.mafia]!.memberIds, ['gf', 'law', 'witch']);
+      expect(steps[NightStepKind.mafia]!.targetIds, isNot(contains('put')));
+      expect(steps[NightStepKind.witch]!.picks, 2);
+      expect(steps[NightStepKind.witch]!.targetIds, isNot(contains('gf')), reason: 'Q12');
+      expect(steps[NightStepKind.bomb]!.targetIds, isNot(contains('bomb')));
       expect(steps[NightStepKind.detective]!.targetIds, isNot(contains('det')));
     });
 
-    test("the Doctor's last pick is disabled the next night", () {
-      final s = GameSession.start(1, setup())
-          .apply(const NightInput([DoctorSave('doc', 'c2')]))
-          .apply(const AdvanceInput())
-          .apply(const VoteInput({}))
-          .apply(const AdvanceInput());
+    test("the Doctor's third night on the same player is disabled", () {
+      var s = GameSession.start(1, setup());
+      for (var i = 0; i < 2; i++) {
+        s = s
+            .apply(const NightInput([DoctorSave('doc', 'c2')]))
+            .apply(const AdvanceInput())
+            .apply(const TallyVoteInput({}))
+            .apply(const AdvanceInput());
+      }
       final doctor = buildNightSteps(s.state).firstWhere((st) => st.kind == NightStepKind.doctor);
       expect(doctor.disabledTargetIds, {'c2'});
     });
 
-    test('Mafia step falls to the next Mafia member when the Godfather is dead', () {
+    test('without the Godfather the next Mafia killer decides', () {
       final s = GameSession.start(1, setup())
           .apply(const NightInput([JokerKill('joker', 'gf')]))
           .apply(const AdvanceInput())
-          .apply(const VoteInput({}))
+          .apply(const TallyVoteInput({}))
           .apply(const AdvanceInput());
+      final mafia = buildNightSteps(s.state).firstWhere((st) => st.kind == NightStepKind.mafia);
+      expect(mafia.actorId, 'law');
+    });
+
+    test("a blocked decider's kill falls to the others' agreed number", () {
+      final s = toNight(GameSession.start(1, setup()), 2);
+      final mafia = buildNightSteps(s.state).firstWhere((st) => st.kind == NightStepKind.mafia);
+      const pick = NightPick.players(['c1']);
+      expect(mafia.actionsFor(pick), [const MafiaKill('gf', 'c1')]);
+      expect(mafia.actionsFor(pick, blocked: {'gf'}), [
+        const MafiaKill('gf', 'c1'),
+        const MafiaKill('law', 'c1'),
+        const MafiaKill('witch', 'c1'),
+      ]);
+      final r = resolveNight(s.state, [
+        const PutanaBlock('put', 'gf'),
+        ...mafia.actionsFor(pick, blocked: {'gf'}),
+      ]);
+      expect(r.state.player('c1').isAlive, isFalse);
+    });
+
+    test('the Switchman is woken once per bullet, only when shot at', () {
+      final state = GameSession.start(1, setup()).state;
+      expect(switchmanSteps(state, const [MafiaKill('gf', 'c1')]), isEmpty);
+      final steps = switchmanSteps(state, const [MafiaKill('gf', 'sw'), JokerKill('joker', 'sw')]);
+      expect([for (final s in steps) s.bullet], [DeathCause.mafia, DeathCause.joker]);
+      expect(steps.first.targetIds, isNot(contains('sw')));
+
+      final once = GameState.initial(
+        players: setup().players,
+        settings: const GameSettings(switchmanRedirectsEach: false),
+      );
       expect(
-        buildNightSteps(s.state).firstWhere((st) => st.kind == NightStepKind.mafia).actorId,
-        'pot',
+        switchmanSteps(once, const [MafiaKill('gf', 'sw'), JokerKill('joker', 'sw')]),
+        hasLength(1),
       );
     });
 
-    test('Detective preview reflects the Lawyer and the Potana', () {
-      final state = GameSession.start(1, setup()).state;
+    test('Detective preview reflects the Lawyer and Putana', () {
+      final state = toNight(GameSession.start(1, setup()), 2).state;
       expect(
         previewDetectiveResult(state, const [], const DetectiveCheck('det', 'law')),
         DetectiveResult.mafia,
@@ -300,7 +433,7 @@ void main() {
       );
       expect(
         previewDetectiveResult(state, const [
-          PotanaBlock('pot', 'det'),
+          PutanaBlock('put', 'det'),
         ], const DetectiveCheck('det', 'law')),
         isNull,
       );

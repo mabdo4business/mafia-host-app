@@ -84,9 +84,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get roleGodfather => 'عرّاب';
 
   @override
-  String get rolePotana => 'بوتانا';
-
-  @override
   String get roleLawyer => 'محامي';
 
   @override
@@ -197,13 +194,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get setupOptionsSection => 'الخيارات';
 
   @override
-  String get setupBombVictims => 'ضحايا القنبلة';
-
-  @override
   String get setupRevealRole => 'كشف الدور عند الموت';
-
-  @override
-  String get setupDiscussionTimer => 'مؤقت النقاش';
 
   @override
   String get timerOff => 'بدون';
@@ -227,24 +218,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get setupHouseRules => 'قواعد إضافية';
-
-  @override
-  String get ruleDoctorSaveBlocksJoker => 'إنقاذ الطبيب يحمي من الجوكر أيضًا';
-
-  @override
-  String get ruleDoctorCanSaveBombVictims => 'يمكن للطبيب إنقاذ ضحايا القنبلة';
-
-  @override
-  String get ruleBlockedBombExplodes => 'القنبلة الممنوعة تنفجر رغم ذلك';
-
-  @override
-  String get ruleChameleonMafia => 'يمكن للحرباء اختيار أدوار المافيا';
-
-  @override
-  String get ruleTieVote => 'عند تعادل الأصوات';
-
-  @override
-  String get tieRevote => 'إعادة التصويت';
 
   @override
   String get tieNoElimination => 'لا إقصاء';
@@ -290,12 +263,6 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get dealInstructions =>
       'أعطِ كل لاعب البطاقة الظاهرة بجانب اسمه. لا تُظهر هذه الشاشة لأحد.';
-
-  @override
-  String get dealChameleonPlaysAs => 'دور الحرباء';
-
-  @override
-  String get dealChameleonMissing => 'يجب أن تختار كل حرباء دورًا.';
 
   @override
   String get dealReshuffle => 'إعادة الخلط';
@@ -348,9 +315,6 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get nightWakePotana => 'أيقظ البوتانا. من يمنع؟';
-
-  @override
   String get nightWakeLawyer => 'أيقظ المحامي. من يحمي؟';
 
   @override
@@ -367,13 +331,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get nightNoAction => 'بلا فعل';
-
-  @override
-  String get nightBlockedWarning =>
-      'ممنوع من البوتانا الليلة — لن يكون لهذا الفعل أي أثر. دعه يختار على أي حال.';
-
-  @override
-  String get nightDoctorLastNight => 'تم إنقاذه الليلة الماضية';
 
   @override
   String get nightDetectiveShow => 'أشِر للمحقق:';
@@ -401,11 +358,6 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String actorWithRole(String name, String role) {
     return '$name ($role)';
-  }
-
-  @override
-  String actionPotanaBlock(String actor, String target) {
-    return '$actor منع $target';
   }
 
   @override
@@ -496,37 +448,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String hostBombDefused(String name) {
-    return 'القنبلة ($name) كانت ممنوعة ولم تنفجر.';
-  }
-
-  @override
-  String bombPick(String name, int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
-    final String countString = countNumberFormat.format(count);
-
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$countString لاعب',
-      many: '$countString لاعبًا',
-      few: '$countString لاعبين',
-      two: 'لاعبَين',
-      one: 'لاعبًا واحدًا',
-    );
-    return 'القنبلة هي $name. اختر $_temp0 للموت معها.';
-  }
-
-  @override
-  String bombDetonate(String selected, String required) {
-    return 'تفجير ($selected/$required)';
-  }
-
-  @override
   String get morningStartDay => 'ابدأ النهار';
-
-  @override
-  String get dayDiscussion => 'النقاش';
 
   @override
   String get timerStart => 'ابدأ';
@@ -569,16 +491,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get dayCountVotes => 'احسب الأصوات';
-
-  @override
-  String dayTieHostDecides(String names) {
-    return 'تعادل بين $names. من يخرج؟';
-  }
-
-  @override
-  String dayTieRevote(String names) {
-    return 'تعادل بين $names. أعيدوا التصويت.';
-  }
 
   @override
   String dayStartNight(int round) {
@@ -669,29 +581,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get abilityCivilian => 'لا قدرة لك في الليل. اكشف المافيا وصوّت لإخراجهم في النهار.';
 
   @override
-  String get abilityDoctor =>
-      'أنقذ لاعبًا كل ليلة، ولو نفسك، لكن ليس اللاعب نفسه ليلتين متتاليتين.';
-
-  @override
-  String get abilityDetective => 'افحص لاعبًا كل ليلة، وسيخبرك المضيف: مافيا أم مدني.';
-
-  @override
-  String get abilityBomb => 'عندما تموت، ليلًا أو بالتصويت، تأخذ معك لاعبين آخرين.';
-
-  @override
   String get abilityJoker => 'تقتل لاعبًا كل ليلة. أنت مع المدنيين، لكن لا أحد في مأمن.';
-
-  @override
-  String get abilityChameleon => 'اختر دورًا الآن والعبه طوال اللعبة.';
-
-  @override
-  String get abilityMafia => 'كل ليلة، استيقظ مع عائلتك واختاروا من يموت.';
-
-  @override
-  String get abilityGodfather => 'لك الكلمة الأخيرة في من تقتله المافيا. يراك المحقق مدنيًا.';
-
-  @override
-  String get abilityPotana => 'كل ليلة، عطّل قدرة أحد المدنيين فلا يكون لفعله أثر.';
 
   @override
   String get abilityLawyer => 'كل ليلة، احمِ أحد أفراد المافيا: يراه المحقق مدنيًا.';
@@ -701,9 +591,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get statusEliminated => 'خرج';
-
-  @override
-  String get nightWakeTitlePotana => 'أيقظ البوتانا';
 
   @override
   String get nightWakeTitleLawyer => 'أيقظ المحامي';
@@ -719,9 +606,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get nightWakeTitleDetective => 'أيقظ المحقق';
-
-  @override
-  String get nightLinePotana => 'يا بوتانا، افتح عينيك. قدرة من ستعطّل الليلة؟';
 
   @override
   String get nightLineLawyer => 'أيها المحامي، افتح عينيك. من ستحمي الليلة؟';
@@ -791,9 +675,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get revealPassNext => 'أخفِ ومرّر للاعب التالي';
-
-  @override
-  String get bombDetonateShort => 'فجّر';
 
   @override
   String get notifications => 'الإشعارات';
@@ -880,44 +761,6 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String announceBombChoosing(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
-    final String countString = countNumberFormat.format(count);
-
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'يأخذ معه $countString لاعبًا: اختر الآن.',
-      few: 'يأخذ معه $countString لاعبين: اختر الآن.',
-      two: 'يأخذ معه لاعبَين: اختر الآن.',
-      one: 'يأخذ معه لاعبًا واحدًا: اختر الآن.',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String bombChoose(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
-    final String countString = countNumberFormat.format(count);
-
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'اختر $countString لاعبًا',
-      few: 'اختر $countString لاعبين',
-      two: 'اختر لاعبَين',
-      one: 'اختر لاعبًا واحدًا',
-      zero: 'جاهز',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String bombCounter(String selected, String required) {
-    return '$selected / $required';
-  }
-
-  @override
   String bombWasTheBomb(String name) {
     return '$name كان القنبلة';
   }
@@ -925,14 +768,6 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String chameleonBecome(String role) {
     return 'كن $role';
-  }
-
-  @override
-  String get chameleonChooseRole => 'اختر دورك';
-
-  @override
-  String chameleonIntro(String name) {
-    return '$name، أنت الحرباء. اختر الدور الذي ستلعبه طوال اللعبة.';
   }
 
   @override
@@ -958,9 +793,6 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get dayDiscussionHint => 'يتناقش أهل البلدة. ابدأ التصويت عندما يكونون جاهزين.';
-
-  @override
   String dayEliminate(String name) {
     return 'إخراج $name';
   }
@@ -981,9 +813,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get dayTapToVote => 'اضغط على لاعب لإضافة صوت';
-
-  @override
-  String get dayTimerHint => 'مؤقت النقاش';
 
   @override
   String get dayTitle => 'من يكذب؟';
@@ -1195,15 +1024,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get setupAutoBalance => 'توازن تلقائي';
 
   @override
-  String get setupBombTakesDown => 'القنبلة تأخذ معها';
-
-  @override
-  String get setupBombTakesDownHint => 'لاعبون يُختارون عند موت القنبلة';
-
-  @override
-  String get setupHouseRulesHint => 'قواعد الطبيب والقنبلة والحرباء والتعادل';
-
-  @override
   String get setupPlayersAtTable => 'اللاعبون حول الطاولة';
 
   @override
@@ -1407,9 +1227,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get settingsHapticsSubtitle => 'اهتزاز خفيف عند الاختيار وقلب البطاقة وانتهاء الوقت';
 
   @override
-  String get setupDiscussionTimerMinutes => 'مؤقت النقاش (بالدقائق)';
-
-  @override
   String get settingsDeviceShort => 'الجهاز';
 
   @override
@@ -1457,9 +1274,6 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get cardsChameleonNext => 'اختر دور الحرباء';
-
-  @override
   String get cardsReviewStep => 'مراجعة';
 
   @override
@@ -1470,4 +1284,541 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cardsReviewCheck => 'راجع البطاقات';
+
+  @override
+  String get rolePutana => 'بوتانا';
+
+  @override
+  String get roleWitch => 'ساحرة';
+
+  @override
+  String get roleSwitchman => 'محوِّل';
+
+  @override
+  String get roleSilencer => 'مُسكِت';
+
+  @override
+  String get roleShapeshifter => 'متحوِّل';
+
+  @override
+  String get roleTnt => 'تي إن تي';
+
+  @override
+  String get abilityPutana =>
+      'الليلة الأولى: استيقظي مع المافيا لتعرفي فريقك. بعدها عطّلي قدرة لاعب كل ليلة. إن بقيتِ وحدك من فريق المافيا تقتلين كالمافيا.';
+
+  @override
+  String get abilityWitch =>
+      'مرة واحدة في الليلة الثانية، اربطي روحَي مدنيَّين. إن قُتل أحدهما ليلًا مات الآخر معه. التصويت لا يُفعّل الرابط، ويبقى بعد موتك.';
+
+  @override
+  String get abilitySwitchman =>
+      'إن حاول أحد قتلك ليلًا تستيقظ وترسل الرصاصة إلى لاعب تختاره. لا تموت ليلًا إلا إذا عطّلتك البوتانا تلك الليلة.';
+
+  @override
+  String get abilitySilencer =>
+      'كل ليلة، أسكِت لاعبًا لليوم التالي: لا حديث حر، ولا كلمة، ولا تصويت.';
+
+  @override
+  String get abilityShapeshifter =>
+      'تتغير قدرتك كل ليلة بالترتيب: محقق، ثم طبيب، ثم جوكر، ثم من جديد. تبقى دائمًا في فريق المدنيين.';
+
+  @override
+  String get abilityTnt => 'إن خرجت من اللعبة بأي طريقة، يخرج معك الجالسان على يمينك ويسارك.';
+
+  @override
+  String get abilityDoctor =>
+      'أنقذ لاعبًا كل ليلة، ولو نفسك. يمكنك إنقاذ اللاعب نفسه ليلتين متتاليتين، لا ثلاثًا.';
+
+  @override
+  String get abilityDetective =>
+      'افحص لاعبًا كل ليلة، وسيخبرك المضيف إن كان من المافيا. بعد ثلاث فحوص تكشف فيها اثنين من المافيا، يموت الاثنان معك إن قُتلت.';
+
+  @override
+  String get abilityBomb =>
+      'بعد اليوم الأول، ازرع قنبلتين على لاعبَين. عندما تموت، ليلًا أو بالتصويت، يموتان معك. إن أُقصيت في اليوم الأول: خذ جارَيك معًا أو لا أحد.';
+
+  @override
+  String get abilityChameleon =>
+      'في الليلة الثالثة، اختر: مافيا أو محقق أو طبيب أو جوكر أو محوِّل، واحتفظ بالدور حتى نهاية اللعبة.';
+
+  @override
+  String get abilityGodfather =>
+      'لك الكلمة الأخيرة في من تقتله المافيا. إن أُقصيت بالتصويت يمكنك أخذ لاعب واحد معك.';
+
+  @override
+  String get abilityMafia =>
+      'كل ليلة، أشِر على العرّاب بمن يموت. إن غاب، يجب أن يُظهر كل المافيا الرقم نفسه، وإلا لا يموت أحد.';
+
+  @override
+  String get nightWakeTitleRecognition => 'استيقظ يا فريق المافيا';
+
+  @override
+  String get nightLineRecognition =>
+      'يا فريق المافيا، افتحوا أعينكم وتعرّفوا على بعضكم. وأنتِ أيضًا يا بوتانا.';
+
+  @override
+  String get nightRecognitionHint => 'في الليلة الأولى فقط. لا أحد يتصرف بعد.';
+
+  @override
+  String get nightRecognized => 'تعرّفوا على بعضهم';
+
+  @override
+  String get reviewRecognition => 'تعرّف فريق المافيا على بعضهم';
+
+  @override
+  String get nightWakeTitlePutana => 'أيقظ البوتانا';
+
+  @override
+  String get nightLinePutana => 'يا بوتانا، افتحي عينيك. قدرة من تعطّلين الليلة؟';
+
+  @override
+  String get nightWakeTitleWitch => 'أيقظ الساحرة';
+
+  @override
+  String get nightLineWitch => 'أيتها الساحرة، افتحي عينيك. أي روحين تربطين؟';
+
+  @override
+  String get nightWakeTitleSilencer => 'أيقظ المُسكِت';
+
+  @override
+  String get nightLineSilencer => 'أيها المُسكِت، افتح عينيك. من يصمت غدًا؟';
+
+  @override
+  String get nightWakeTitleShapeshifter => 'أيقظ المتحوِّل';
+
+  @override
+  String nightLineShapeshifter(String role) {
+    return 'أيها المتحوِّل، افتح عينيك. أنت الليلة $role.';
+  }
+
+  @override
+  String get nightWakeTitleBomb => 'أيقظ القنبلة';
+
+  @override
+  String get nightLineBomb => 'أيتها القنبلة، افتحي عينيك. على من تزرعين القنبلتين؟';
+
+  @override
+  String get nightWakeTitleChameleon => 'أيقظ الحرباء';
+
+  @override
+  String get nightLineChameleonChoose =>
+      'أيتها الحرباء، افتحي عينيك. مافيا أم محقق أم طبيب أم جوكر أم محوِّل: أيها تحتفظين به حتى النهاية؟';
+
+  @override
+  String nightLineChameleonAs(String role) {
+    return 'أيتها الحرباء، افتحي عينيك. أنتِ تلعبين دور $role.';
+  }
+
+  @override
+  String get nightWakeTitleSwitchman => 'أيقظ المحوِّل';
+
+  @override
+  String get nightLineSwitchman =>
+      'أيها المحوِّل، افتح عينيك. أطلق أحدهم عليك النار. من يتلقى الرصاصة؟';
+
+  @override
+  String nightLineSwitchmanBullet(int current, int total) {
+    final intl.NumberFormat currentNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String currentString = currentNumberFormat.format(current);
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return 'أيها المحوِّل، افتح عينيك. الرصاصة $currentString من $totalString: من يتلقاها؟';
+  }
+
+  @override
+  String get nightBlockedWarning =>
+      'معطَّل من البوتانا الليلة: لن يكون لهذا الفعل أي أثر. دعه يختار على أي حال.';
+
+  @override
+  String nightBlockedDecider(String name) {
+    return 'عطّلت البوتانا $name: الليلة يُحسب رقم بقية المافيا.';
+  }
+
+  @override
+  String get nightDoctorTwoNights => 'أُنقذ ليلتين متتاليتين';
+
+  @override
+  String get nightMafiaTalk => 'نقاش المافيا';
+
+  @override
+  String get nightMafiaTalkHint => 'يتفقون على ضحية، والقرار للعرّاب.';
+
+  @override
+  String get nightMafiaMustAgree =>
+      'لا عرّاب: يجب أن يُظهر كل المافيا الرقم نفسه. الأرقام المختلفة تلغي القتل.';
+
+  @override
+  String get nightMafiaNoMatch => 'الأرقام لم تتطابق';
+
+  @override
+  String get nightPickToSilence => 'اختر لاعبًا لإسكاته';
+
+  @override
+  String get nightPickTwoToLink => 'اختر لاعبَين لربطهما';
+
+  @override
+  String get nightPickTwoToPlant => 'اختر لاعبَين للقنبلتين';
+
+  @override
+  String get nightPickToRedirect => 'اختر من يتلقى الرصاصة';
+
+  @override
+  String actionLink(String first, String second) {
+    return 'ربط $first و$second';
+  }
+
+  @override
+  String actionPlant(String first, String second) {
+    return 'زرع على $first و$second';
+  }
+
+  @override
+  String actionSilenceShort(String name) {
+    return 'إسكات $name';
+  }
+
+  @override
+  String actionRedirectTo(String name) {
+    return 'أرسلها إلى $name';
+  }
+
+  @override
+  String actionPutanaBlock(String actor, String target) {
+    return '$actor عطّل $target';
+  }
+
+  @override
+  String actionSilence(String actor, String target) {
+    return '$actor أسكت $target';
+  }
+
+  @override
+  String actionRedirect(String actor, String target) {
+    return '$actor أرسل الرصاصة إلى $target';
+  }
+
+  @override
+  String actionWitchLink(String actor, String first, String second) {
+    return '$actor ربط $first و$second';
+  }
+
+  @override
+  String actionBombPlant(String actor, String first, String second) {
+    return '$actor زرع قنبلتين على $first و$second';
+  }
+
+  @override
+  String actionChameleonChoose(String actor, String role) {
+    return '$actor اختار دور $role';
+  }
+
+  @override
+  String hostLinked(String first, String second) {
+    return 'ربطت الساحرة $first و$second.';
+  }
+
+  @override
+  String hostBombPlanted(String bomb, String first, String second) {
+    return '$bomb (القنبلة) زرع على $first و$second.';
+  }
+
+  @override
+  String hostChameleonChose(String name, String role) {
+    return '$name (الحرباء) أصبح $role.';
+  }
+
+  @override
+  String get hostMafiaCancelled => 'أظهرت المافيا أرقامًا مختلفة: لا قتل.';
+
+  @override
+  String hostRedirected(String switchman, String target) {
+    return '$switchman (المحوِّل) أرسل رصاصة إلى $target.';
+  }
+
+  @override
+  String hostDodged(String name) {
+    return 'أُطلق النار على $name (المحوِّل) ونجا.';
+  }
+
+  @override
+  String hostChainArmed(String detective, String names) {
+    return '$detective (المحقق) كشف $names: يموتان معه.';
+  }
+
+  @override
+  String hostPutanaPromoted(String name) {
+    return '$name (البوتانا) آخر فريق المافيا وأصبحت تقتل.';
+  }
+
+  @override
+  String announceRemoved(String name) {
+    return 'تم إخراج $name من الطاولة.';
+  }
+
+  @override
+  String announceTntVictim(String name) {
+    return 'سقط $name في انفجار التي إن تي.';
+  }
+
+  @override
+  String announceGodfatherVictim(String name) {
+    return 'أخذ العرّاب $name معه.';
+  }
+
+  @override
+  String announceWasTnt(String headline) {
+    return '$headline وكان التي إن تي.';
+  }
+
+  @override
+  String announceSilenced(String name) {
+    return '$name مُسكَت اليوم.';
+  }
+
+  @override
+  String get announceSilencedRule => 'لا حديث حر، ولا كلمة، ولا تصويت';
+
+  @override
+  String get announceGodfatherChoosing => 'يمكنه أخذ لاعب واحد معه: اختر الآن.';
+
+  @override
+  String get announceBombNeighborsChoosing => 'يذهب معه جاراه معًا أو لا أحد: اختر الآن.';
+
+  @override
+  String choiceWasGodfather(String name) {
+    return '$name كان العرّاب';
+  }
+
+  @override
+  String get choiceGodfatherHint => 'بعد إقصائه يمكنه أخذ لاعب واحد معه، أو لا أحد.';
+
+  @override
+  String get choiceBombNeighborsHint =>
+      'أُقصي قبل زرع القنبلتين: يأخذ الجالسَين بجانبه معًا، أو لا أحد.';
+
+  @override
+  String choiceTake(String names) {
+    return 'خذ $names';
+  }
+
+  @override
+  String get choiceTakeNoOne => 'لا أحد';
+
+  @override
+  String get dayFreeChat => 'حديث حر';
+
+  @override
+  String get dayFreeChatHint => 'يتحدث الجميع ويتّهمون ويدافعون.';
+
+  @override
+  String get daySpeeches => 'الكلمات';
+
+  @override
+  String get daySpeech => 'الكلمة';
+
+  @override
+  String get dayFoul => 'فاول';
+
+  @override
+  String get dayStartSpeeches => 'ابدأ الكلمات';
+
+  @override
+  String daySpeechCounter(int current, int total) {
+    final intl.NumberFormat currentNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String currentString = currentNumberFormat.format(current);
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return 'الكلمة $currentString من $totalString';
+  }
+
+  @override
+  String get daySpeechHint => 'وقته الخاص. لا يرد أحد حتى ينتهي.';
+
+  @override
+  String get dayOnFoul => 'على فاول: كلمة إضافية';
+
+  @override
+  String dayTakeFoul(int seconds) {
+    final intl.NumberFormat secondsNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String secondsString = secondsNumberFormat.format(seconds);
+
+    return 'فاول +$secondsString ث';
+  }
+
+  @override
+  String get daySpeechOrder => 'ترتيب الكلام (حسب المقاعد)';
+
+  @override
+  String dayNextSpeaker(String name) {
+    return 'التالي: $name';
+  }
+
+  @override
+  String get dayPreviousSpeaker => 'المتحدث السابق';
+
+  @override
+  String get dayNoSpeakers => 'لا أحد يتحدث اليوم.';
+
+  @override
+  String daySilencedToday(String names) {
+    return 'مُسكَتون اليوم: $names';
+  }
+
+  @override
+  String daySilencedNoVote(String names) {
+    return 'مُسكَتون لا يصوّتون: $names';
+  }
+
+  @override
+  String dayTieRevote(String names) {
+    return 'تعادل بين $names. أعيدوا التصويت بينهم.';
+  }
+
+  @override
+  String dayTieHostDecides(String names) {
+    return 'تعادل مجددًا بين $names. من يخرج؟';
+  }
+
+  @override
+  String dayTieDrawLots(String names) {
+    return 'تعادل مجددًا بين $names. اسحبوا القرعة.';
+  }
+
+  @override
+  String get dayDrawLots => 'اسحب القرعة';
+
+  @override
+  String get statusSilenced => 'مُسكَت';
+
+  @override
+  String statusFouls(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString فاول',
+      many: '$countString فاولًا',
+      few: '$countString فاولات',
+      two: 'فاولان',
+      one: 'فاول واحد',
+      zero: 'لا فاولات',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String logChoice(String name, String victims) {
+    return '$name أخذ $victims';
+  }
+
+  @override
+  String logChoiceNone(String name) {
+    return '$name لم يأخذ أحدًا';
+  }
+
+  @override
+  String logFoul(String name) {
+    return '$name أخذ فاول';
+  }
+
+  @override
+  String get menuRemovePlayer => 'إخراج لاعب';
+
+  @override
+  String get removePlayerHint =>
+      'لمن يخالف قواعد الطاولة مرارًا. يخرج من اللعبة، والتي إن تي ينفجر رغم ذلك.';
+
+  @override
+  String removePlayerConfirmTitle(String name) {
+    return 'إخراج $name؟';
+  }
+
+  @override
+  String get removePlayerConfirmBody => 'سيخرج من اللعبة نهائيًا. يمكنك التراجع من القائمة.';
+
+  @override
+  String get removePlayerConfirm => 'إخراج';
+
+  @override
+  String get setupSeatOrderHint =>
+      'ترتيب المقاعد مهم: القائمة تدور حول الطاولة، وآخر لاعب يجلس بجانب الأول.';
+
+  @override
+  String get setupSeatOrderSheetHint =>
+      'أضف اللاعبين بترتيب جلوسهم حول الطاولة. اسحب لتعديل الترتيب.';
+
+  @override
+  String get setupTimers => 'المؤقتات';
+
+  @override
+  String get setupTimersHint => 'اضغط على المؤقت أثناء اللعب لتشغيله';
+
+  @override
+  String minutesShort(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '$countString:٠٠';
+  }
+
+  @override
+  String secondsShort(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '$countString ث';
+  }
+
+  @override
+  String get setupHouseRulesHint => 'المسائل المفتوحة في القواعد';
+
+  @override
+  String get setupHouseRulesSheetHint => 'الدليل يترك هذه مفتوحة. الافتراضي يتبع ملف قواعد اللعبة.';
+
+  @override
+  String get ruleGodfatherAppearsCivilian => 'المحقق يرى العرّاب مدنيًا';
+
+  @override
+  String get rulePutanaCanBlockMafia => 'البوتانا تستطيع تعطيل فريق المافيا';
+
+  @override
+  String get ruleChameleonMafiaJoins => 'الحرباء المافيا تنضم لفريق المافيا';
+
+  @override
+  String get ruleDetectiveChainOnVote => 'سلسلة المحقق عند الإقصاء أيضًا';
+
+  @override
+  String get ruleBlockedChecksCount => 'الفحص المعطَّل يُحسب من الثلاثة';
+
+  @override
+  String get ruleDoctorBlocksChainDeaths => 'الطبيب ينقذ من موت السلسلة';
+
+  @override
+  String get ruleSwitchmanRedirectsEach => 'المحوِّل يحوّل كل رصاصة';
+
+  @override
+  String get ruleDoctorSavesRedirected => 'الطبيب ينقذ من الرصاصة المحوَّلة';
+
+  @override
+  String get ruleBombNoEffectBeforePlant => 'القنبلة المقتولة في الليلة الأولى بلا أثر';
+
+  @override
+  String get ruleSilenceLastsNextDay => 'الإسكات لليوم التالي فقط';
+
+  @override
+  String get ruleWitchCiviliansOnly => 'الساحرة تربط المدنيين فقط';
+
+  @override
+  String get ruleMafiaWinsAtParity => 'تفوز المافيا عند تساويها مع المدنيين';
+
+  @override
+  String get ruleSecondTie => 'إذا تعادلت إعادة التصويت';
+
+  @override
+  String get tieRandom => 'قرعة';
 }

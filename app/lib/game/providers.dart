@@ -94,9 +94,7 @@ class AppPreferences {
     this.locale,
     this.soundEnabled = true,
     this.hapticsEnabled = true,
-    this.defaultBombVictims = 2,
     this.defaultRevealRole = false,
-    this.defaultDiscussionSeconds = 0,
     this.cardsMode = false,
   });
 
@@ -109,10 +107,8 @@ class AppPreferences {
   /// Taps, card flips and the timer buzz.
   final bool hapticsEnabled;
 
-  /// Starting values for a new game's setup.
-  final int defaultBombVictims;
+  /// Starting value for a new game's setup.
   final bool defaultRevealRole;
-  final int defaultDiscussionSeconds;
 
   /// Physical cards: the host records who holds each card on night 1
   /// instead of passing the phone around. Remembered from the last setup.
@@ -122,17 +118,13 @@ class AppPreferences {
     Locale? Function()? locale,
     bool? soundEnabled,
     bool? hapticsEnabled,
-    int? defaultBombVictims,
     bool? defaultRevealRole,
-    int? defaultDiscussionSeconds,
     bool? cardsMode,
   }) => AppPreferences(
     locale: locale == null ? this.locale : locale(),
     soundEnabled: soundEnabled ?? this.soundEnabled,
     hapticsEnabled: hapticsEnabled ?? this.hapticsEnabled,
-    defaultBombVictims: defaultBombVictims ?? this.defaultBombVictims,
     defaultRevealRole: defaultRevealRole ?? this.defaultRevealRole,
-    defaultDiscussionSeconds: defaultDiscussionSeconds ?? this.defaultDiscussionSeconds,
     cardsMode: cardsMode ?? this.cardsMode,
   );
 }
@@ -145,9 +137,7 @@ class PreferencesController extends AsyncNotifier<AppPreferences> {
   static const _localeKey = 'locale';
   static const _soundKey = 'soundEnabled';
   static const _hapticsKey = 'hapticsEnabled';
-  static const _bombKey = 'defaultBombVictims';
   static const _revealKey = 'defaultRevealRole';
-  static const _timerKey = 'defaultDiscussionSeconds';
   static const _cardsKey = 'cardsMode';
 
   GameRepository get _repo => ref.read(gameRepositoryProvider);
@@ -156,16 +146,11 @@ class PreferencesController extends AsyncNotifier<AppPreferences> {
   Future<AppPreferences> build() async {
     final repo = ref.watch(gameRepositoryProvider);
     final locale = await repo.preference(_localeKey);
-    const d = AppPreferences();
     return AppPreferences(
       locale: locale == null ? null : Locale(locale),
       soundEnabled: await repo.preference(_soundKey) != 'false',
       hapticsEnabled: await repo.preference(_hapticsKey) != 'false',
-      defaultBombVictims:
-          int.tryParse(await repo.preference(_bombKey) ?? '') ?? d.defaultBombVictims,
       defaultRevealRole: await repo.preference(_revealKey) == 'true',
-      defaultDiscussionSeconds:
-          int.tryParse(await repo.preference(_timerKey) ?? '') ?? d.defaultDiscussionSeconds,
       cardsMode: await repo.preference(_cardsKey) == 'true',
     );
   }
@@ -184,14 +169,8 @@ class PreferencesController extends AsyncNotifier<AppPreferences> {
   Future<void> setHapticsEnabled(bool on) =>
       _set(_current.copyWith(hapticsEnabled: on), _hapticsKey, '$on');
 
-  Future<void> setDefaultBombVictims(int n) =>
-      _set(_current.copyWith(defaultBombVictims: n), _bombKey, '$n');
-
   Future<void> setDefaultRevealRole(bool on) =>
       _set(_current.copyWith(defaultRevealRole: on), _revealKey, '$on');
-
-  Future<void> setDefaultDiscussionSeconds(int s) =>
-      _set(_current.copyWith(defaultDiscussionSeconds: s), _timerKey, '$s');
 
   Future<void> setCardsMode(bool on) => _set(_current.copyWith(cardsMode: on), _cardsKey, '$on');
 
@@ -208,7 +187,6 @@ class SetupDraft {
     this.mix = const {},
     this.customMix = false,
     this.settings = const GameSettings(),
-    this.discussionSeconds = 0,
     this.cardsMode = false,
   });
 
@@ -218,7 +196,6 @@ class SetupDraft {
   /// True once the host edits the mix; until then it follows the suggestion.
   final bool customMix;
   final GameSettings settings;
-  final int discussionSeconds;
 
   /// Physical cards (see [AppPreferences.cardsMode]).
   final bool cardsMode;
@@ -232,14 +209,12 @@ class SetupDraft {
     Map<Role, int>? mix,
     bool? customMix,
     GameSettings? settings,
-    int? discussionSeconds,
     bool? cardsMode,
   }) => SetupDraft(
     names: names ?? this.names,
     mix: mix ?? this.mix,
     customMix: customMix ?? this.customMix,
     settings: settings ?? this.settings,
-    discussionSeconds: discussionSeconds ?? this.discussionSeconds,
     cardsMode: cardsMode ?? this.cardsMode,
   );
 }
@@ -252,11 +227,7 @@ class SetupController extends Notifier<SetupDraft> {
     final prefs = ref.read(preferencesProvider).value ?? const AppPreferences();
     return SetupDraft(
       mix: suggestedRoleMix(0),
-      settings: GameSettings(
-        bombVictimCount: prefs.defaultBombVictims,
-        revealRoleOnDeath: prefs.defaultRevealRole,
-      ),
-      discussionSeconds: prefs.defaultDiscussionSeconds,
+      settings: GameSettings(revealRoleOnDeath: prefs.defaultRevealRole),
       cardsMode: prefs.cardsMode,
     );
   }
@@ -294,14 +265,12 @@ class SetupController extends Notifier<SetupDraft> {
     );
   }
 
-  int maxCount(Role role) => role == Role.godfather ? 1 : state.names.length;
+  int maxCount(Role role) => maxRoleCount(role, state.names.length);
 
   void useSuggestedMix() =>
       state = state.copyWith(mix: suggestedRoleMix(state.names.length), customMix: false);
 
   void updateSettings(GameSettings settings) => state = state.copyWith(settings: settings);
-
-  void setDiscussionSeconds(int seconds) => state = state.copyWith(discussionSeconds: seconds);
 
   /// Also remembered as the default for the next game.
   void setCardsMode(bool on) {

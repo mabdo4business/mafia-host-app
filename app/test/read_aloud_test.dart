@@ -23,7 +23,7 @@ GameSetup table() => GameSetup(
 
 /// Godfather kills C1, the Doctor passes, the Detective checks GF.
 Future<void> nightWithCheck(WidgetTester tester) async {
-  await tapText(tester, l10nOf(tester).nightBegin);
+  await beginNight(tester);
   await nightPick(tester, 'c1');
   await nightPick(tester, null);
   await nightPick(tester, 'gf');
@@ -37,12 +37,12 @@ void main() {
 
     test('reads headlines only; host notes stay silent', () {
       final text = describe.spokenText([
-        Announcement(AnnouncementType.death, l.announceKilled('Yousef'), detail: l.announceRoleSecret),
         Announcement(
-          AnnouncementType.save,
-          l.announceSomeoneSaved,
-          detail: l.announceDontSayWho,
+          AnnouncementType.death,
+          l.announceKilled('Yousef'),
+          detail: l.announceRoleSecret,
         ),
+        Announcement(AnnouncementType.save, l.announceSomeoneSaved, detail: l.announceDontSayWho),
       ]);
       expect(text, '${l.announceKilled('Yousef')}\n${l.announceSomeoneSaved}');
     });
@@ -102,7 +102,9 @@ void main() {
 
   test('iOS: plays through the silent switch and ducks music', () {
     expect(ttsIosCategory, IosTextToSpeechAudioCategory.playback, reason: 'ignores silent switch');
-    expect(ttsIosOptions, [IosTextToSpeechAudioCategoryOptions.duckOthers], reason: 'music dips, keeps playing');
+    expect(ttsIosOptions, [
+      IosTextToSpeechAudioCategoryOptions.duckOthers,
+    ], reason: 'music dips, keeps playing');
   });
 
   test('TTS language tags carry a region (iOS needs one)', () {

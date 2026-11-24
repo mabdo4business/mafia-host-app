@@ -14,14 +14,13 @@ import 'package:mafia_host/game/providers.dart';
 const phase = String.fromEnvironment('PHASE');
 
 GameSetup table() => GameSetup(
-  settings: const GameSettings(bombVictimCount: 3, revealRoleOnDeath: true),
-  discussionSeconds: 120,
+  settings: const GameSettings(freeChatSeconds: 180, revealRoleOnDeath: true),
   players: const [
     Player(id: 'p0', name: 'Ahmed', role: Role.godfather),
     Player(id: 'p1', name: 'Sara', role: Role.doctor),
     Player(id: 'p2', name: 'Omar', role: Role.civilian),
     Player(id: 'p3', name: 'Laila', role: Role.civilian),
-    Player(id: 'p4', name: 'Youssef', role: Role.chameleon, chameleonRole: Role.detective),
+    Player(id: 'p4', name: 'Youssef', role: Role.detective),
   ],
 );
 
@@ -54,10 +53,9 @@ void main() {
     expect(session!.stage, GameStage.day);
     expect(session.round, 1);
     expect(session.state.player('p2').isAlive, isFalse);
-    expect(session.state.player('p4').effectiveRole, Role.detective, reason: 'Chameleon pick');
-    expect(session.setup.settings.bombVictimCount, 3);
+    expect(session.state.detectiveRecords['p4']?.checks, 1);
+    expect(session.setup.settings.freeChatSeconds, 180);
     expect(session.setup.settings.revealRoleOnDeath, isTrue);
-    expect(session.setup.discussionSeconds, 120);
     expect(session.log, hasLength(2));
     container.dispose();
     await db.close();

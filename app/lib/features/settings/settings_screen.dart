@@ -7,8 +7,6 @@ import '../../game/providers.dart';
 import '../../ui/ui.dart';
 import '../gallery/gallery_screen.dart';
 
-const _timerOptions = [0, 60, 120, 180, 300];
-
 /// Language, sound, haptics and the defaults every new game starts from.
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -20,22 +18,23 @@ class SettingsScreen extends ConsumerWidget {
     final prefs = ref.watch(preferencesProvider).value ?? const AppPreferences();
     final controller = ref.read(preferencesProvider.notifier);
 
-    Widget toggle(String title, String? subtitle, bool value, ValueChanged<bool> onChanged) =>
-        GlassCard(
-          radius: Radii.tile,
-          padding: const EdgeInsetsDirectional.symmetric(horizontal: Space.xs, vertical: 2),
-          child: SwitchListTile(
-            title: Text(
-              title,
-              style: context.type.bodyMedium!.copyWith(fontWeight: FontWeight.w600),
-            ),
-            subtitle: subtitle == null
-                ? null
-                : Text(subtitle, style: context.type.bodySmall!.copyWith(fontSize: TextSizes.small)),
-            value: value,
-            onChanged: onChanged,
-          ),
-        );
+    Widget toggle(
+      String title,
+      String? subtitle,
+      bool value,
+      ValueChanged<bool> onChanged,
+    ) => GlassCard(
+      radius: Radii.tile,
+      padding: const EdgeInsetsDirectional.symmetric(horizontal: Space.xs, vertical: 2),
+      child: SwitchListTile(
+        title: Text(title, style: context.type.bodyMedium!.copyWith(fontWeight: FontWeight.w600)),
+        subtitle: subtitle == null
+            ? null
+            : Text(subtitle, style: context.type.bodySmall!.copyWith(fontSize: TextSizes.small)),
+        value: value,
+        onChanged: onChanged,
+      ),
+    );
 
     Widget block(String title, Widget control, {String? subtitle}) => GlassCard(
       radius: Radii.tile,
@@ -112,49 +111,6 @@ class SettingsScreen extends ConsumerWidget {
           Text(l.settingsDefaultsHint, style: context.type.bodySmall),
           const SizedBox(height: Space.md),
           toggle(l.setupRevealRole, null, prefs.defaultRevealRole, controller.setDefaultRevealRole),
-          const SizedBox(height: 10),
-          GlassCard(
-            radius: Radii.tile,
-            padding: const EdgeInsetsDirectional.symmetric(horizontal: Space.lg, vertical: 14),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        l.setupBombTakesDown,
-                        style: context.type.bodyMedium!.copyWith(fontWeight: FontWeight.w600),
-                      ),
-                      Text(
-                        l.setupBombTakesDownHint,
-                        style: context.type.bodySmall!.copyWith(fontSize: TextSizes.small),
-                      ),
-                    ],
-                  ),
-                ),
-                SegmentedPill<int>(
-                  dense: true,
-                  segments: [
-                    for (final n in [2, 3]) (n, context.number(n)),
-                  ],
-                  selected: prefs.defaultBombVictims,
-                  onChanged: controller.setDefaultBombVictims,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 10),
-          block(
-            l.setupDiscussionTimerMinutes,
-            SegmentedPill<int>(
-              segments: [
-                for (final s in _timerOptions) (s, s == 0 ? l.timerOff : context.number(s ~/ 60)),
-              ],
-              selected: prefs.defaultDiscussionSeconds,
-              onChanged: controller.setDefaultDiscussionSeconds,
-            ),
-          ),
           if (kDebugMode) ...[
             const SizedBox(height: 28),
             ListTile(

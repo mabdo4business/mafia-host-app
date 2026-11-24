@@ -21,30 +21,40 @@ extension L10nContext on BuildContext {
 
 extension RoleText on AppLocalizations {
   String role(Role r) => switch (r) {
-    Role.civilian => roleCivilian,
-    Role.doctor => roleDoctor,
-    Role.detective => roleDetective,
-    Role.bomb => roleBomb,
-    Role.joker => roleJoker,
-    Role.chameleon => roleChameleon,
-    Role.mafia => roleMafia,
     Role.godfather => roleGodfather,
-    Role.potana => rolePotana,
+    Role.mafia => roleMafia,
+    Role.putana => rolePutana,
     Role.lawyer => roleLawyer,
+    Role.witch => roleWitch,
+    Role.detective => roleDetective,
+    Role.doctor => roleDoctor,
+    Role.joker => roleJoker,
+    Role.switchman => roleSwitchman,
+    Role.silencer => roleSilencer,
+    Role.bomb => roleBomb,
+    Role.shapeshifter => roleShapeshifter,
+    Role.chameleon => roleChameleon,
+    Role.tnt => roleTnt,
+    Role.civilian => roleCivilian,
   };
 
   /// What the role does, as told on its card.
   String ability(Role r) => switch (r) {
-    Role.civilian => abilityCivilian,
-    Role.doctor => abilityDoctor,
-    Role.detective => abilityDetective,
-    Role.bomb => abilityBomb,
-    Role.joker => abilityJoker,
-    Role.chameleon => abilityChameleon,
-    Role.mafia => abilityMafia,
     Role.godfather => abilityGodfather,
-    Role.potana => abilityPotana,
+    Role.mafia => abilityMafia,
+    Role.putana => abilityPutana,
     Role.lawyer => abilityLawyer,
+    Role.witch => abilityWitch,
+    Role.detective => abilityDetective,
+    Role.doctor => abilityDoctor,
+    Role.joker => abilityJoker,
+    Role.switchman => abilitySwitchman,
+    Role.silencer => abilitySilencer,
+    Role.bomb => abilityBomb,
+    Role.shapeshifter => abilityShapeshifter,
+    Role.chameleon => abilityChameleon,
+    Role.tnt => abilityTnt,
+    Role.civilian => abilityCivilian,
   };
 
   String team(Team t) => switch (t) {
@@ -52,7 +62,7 @@ extension RoleText on AppLocalizations {
     Team.mafia => teamMafia,
   };
 
-  /// "Doctor", or "Chameleon → Doctor" for a Chameleon.
+  /// "Doctor", or "Chameleon as Doctor" once a Chameleon has chosen.
   String playerRole(Player p) => p.role == Role.chameleon && p.chameleonRole != null
       ? chameleonAs(role(p.chameleonRole!))
       : role(p.role);

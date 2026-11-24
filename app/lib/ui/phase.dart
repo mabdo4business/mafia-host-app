@@ -247,7 +247,10 @@ class CountdownRing extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Text(label, style: context.type.bodySmall!.copyWith(fontSize: TextSizes.note, height: 1.2)),
+                  Text(
+                    label,
+                    style: context.type.bodySmall!.copyWith(fontSize: TextSizes.note, height: 1.2),
+                  ),
                 ],
               ),
             ),

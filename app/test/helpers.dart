@@ -14,8 +14,7 @@ import 'package:mafia_host/game/providers.dart';
 import 'package:mafia_host/l10n/app_localizations.dart';
 import 'package:mafia_host/theme/app_theme.dart';
 
-Player p(String id, Role role, {Role? as}) =>
-    Player(id: id, name: id.toUpperCase(), role: role, chameleonRole: as);
+Player p(String id, Role role) => Player(id: id, name: id.toUpperCase(), role: role);
 
 AppDatabase memoryDb() => AppDatabase(NativeDatabase.memory());
 
@@ -41,15 +40,14 @@ ProviderContainer containerFor(
   ScreenAwake? screenAwake,
   SoundPlayer? sounds,
   Speaker? speaker,
-}) =>
-    ProviderContainer(
-      overrides: [
-        databaseProvider.overrideWithValue(db),
-        screenAwakeProvider.overrideWithValue(screenAwake ?? FakeScreenAwake()),
-        soundPlayerProvider.overrideWithValue(sounds ?? FakeSoundPlayer()),
-        speakerProvider.overrideWithValue(speaker ?? RecordingSpeaker()),
-      ],
-    );
+}) => ProviderContainer(
+  overrides: [
+    databaseProvider.overrideWithValue(db),
+    screenAwakeProvider.overrideWithValue(screenAwake ?? FakeScreenAwake()),
+    soundPlayerProvider.overrideWithValue(sounds ?? FakeSoundPlayer()),
+    speakerProvider.overrideWithValue(speaker ?? RecordingSpeaker()),
+  ],
+);
 
 /// Starts [setup] as the active game and shows the game flow screen.
 Future<ProviderContainer> pumpGame(
@@ -129,6 +127,14 @@ Future<void> tapFinder(WidgetTester tester, Finder finder) async {
   await tester.pumpAndSettle();
 }
 
+/// Begins the night, past night 1's Mafia recognition step if shown.
+Future<void> beginNight(WidgetTester tester) async {
+  await tapText(tester, l10nOf(tester).nightBegin);
+  if (find.text(l10nOf(tester).nightRecognized).evaluate().isNotEmpty) {
+    await tapKey(tester, 'nightNext');
+  }
+}
+
 /// Picks [targetId] (or "no action" when null) and goes to the next step
 /// (past the Detective's full-screen answer, if shown).
 Future<void> nightPick(WidgetTester tester, String? targetId) async {
@@ -139,10 +145,19 @@ Future<void> nightPick(WidgetTester tester, String? targetId) async {
   }
 }
 
-/// Opens the Voting tab if the day starts on Discussion.
+/// Opens the Voting tab (the day starts on Free Chat).
 Future<void> openVoting(WidgetTester tester) async {
-  if (find.byKey(const Key('startVoting')).evaluate().isNotEmpty) {
-    await tapKey(tester, 'startVoting');
+  final voting =
+      find.byKey(const Key('skipVote')).evaluate().isNotEmpty ||
+      find.byKey(const Key('countVotes')).evaluate().isNotEmpty;
+  if (!voting) {
+    await tapFinder(
+      tester,
+      find.descendant(
+        of: find.byKey(const Key('dayTabs')),
+        matching: find.text(l10nOf(tester).dayVoting),
+      ),
+    );
   }
 }
 

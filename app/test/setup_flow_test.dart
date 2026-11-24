@@ -59,7 +59,7 @@ void main() {
     expect(container.read(setupDraftProvider).problem, isNull);
   });
 
-  testWidgets('reveal: each player sees their card; a Chameleon picks a role', (tester) async {
+  testWidgets('reveal: each player sees their card, in seat order', (tester) async {
     usePhoneSize(tester);
     final container = containerFor(memoryDb());
     addTearDown(container.dispose);
@@ -72,7 +72,6 @@ void main() {
             names: const ['A', 'B', 'C', 'D', 'E'],
             mix: const {Role.godfather: 1, Role.chameleon: 1},
             settings: const GameSettings(),
-            discussionSeconds: 0,
             random: Random(7),
           ),
         ),
@@ -86,12 +85,6 @@ void main() {
       // Nothing to pass on until the card is turned.
       expect(find.byKey(const Key('revealNext')), findsNothing);
       await tapKey(tester, 'roleCard');
-      if (find.byKey(const Key('chameleonChoose')).evaluate().isNotEmpty) {
-        await tapKey(tester, 'chameleonChoose');
-        await tapKey(tester, 'chameleonPick_doctor');
-        await tapKey(tester, 'chameleonConfirm');
-        expect(find.text(l.chameleonAs(l.roleDoctor)), findsOneWidget);
-      }
       if (name == 'E') {
         await tester.runAsync(() async {
           await tester.tap(find.byKey(const Key('revealNext')));
@@ -105,8 +98,9 @@ void main() {
 
     final session = container.read(activeGameProvider).value!;
     expect(session.stage, GameStage.night);
+    expect(session.state.players.map((p) => p.name), ['A', 'B', 'C', 'D', 'E']);
     final chameleon = session.state.players.singleWhere((p) => p.role == Role.chameleon);
-    expect(chameleon.effectiveRole, Role.doctor);
+    expect(chameleon.chameleonRole, isNull, reason: 'chooses on night 3');
     expect(find.text(l.nightIntro), findsOneWidget);
   });
 }

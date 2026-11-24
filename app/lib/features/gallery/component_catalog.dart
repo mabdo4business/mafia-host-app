@@ -101,7 +101,11 @@ final List<ComponentSample> componentCatalog = [
         _gap(),
         PrimaryActionButton(label: l.revealPassNext, tone: ActionTone.neutral, onPressed: () {}),
         _gap(),
-        PrimaryActionButton(label: l.bombDetonateShort, tone: ActionTone.bomb, onPressed: () {}),
+        PrimaryActionButton(
+          label: l.choiceTake(sampleNames(context)[1]),
+          tone: ActionTone.bomb,
+          onPressed: () {},
+        ),
         _gap(),
         PrimaryActionButton(label: l.nightPickToSave, onPressed: null),
       ],
@@ -188,7 +192,7 @@ final List<ComponentSample> componentCatalog = [
         PlayerTile(name: n[0], onTap: () {}),
         PlayerTile(name: n[1], selected: true, onTap: () {}),
         PlayerTile(name: n[3], enabled: false, struck: true, note: l.statusEliminated),
-        PlayerTile(name: n[5], enabled: false, note: l.nightDoctorLastNight),
+        PlayerTile(name: n[5], enabled: false, note: l.nightDoctorTwoNights),
         PlayerTile(name: n[2], selected: true, accent: c.mafia, dots: 2, onTap: () {}),
         PlayerTile(name: n[10], onTap: () {}),
       ],
@@ -329,7 +333,20 @@ final List<ComponentSample> componentCatalog = [
 ];
 
 /// The roles that act at night, in wake-up order.
-const nightRoles = [Role.potana, Role.lawyer, Role.mafia, Role.joker, Role.doctor, Role.detective];
+const nightRoles = [
+  Role.putana,
+  Role.lawyer,
+  Role.mafia,
+  Role.witch,
+  Role.joker,
+  Role.silencer,
+  Role.doctor,
+  Role.shapeshifter,
+  Role.detective,
+  Role.bomb,
+  Role.chameleon,
+  Role.switchman,
+];
 
 Widget _card(BuildContext context, Role role, bool revealed, {VoidCallback? onTap}) {
   final l = context.l10n;
@@ -348,7 +365,7 @@ Widget _card(BuildContext context, Role role, bool revealed, {VoidCallback? onTa
     semanticLabel: revealed ? l.hideRole : l.revealRole,
     familyLabel: l.revealYourFamily,
     family: mafia
-        ? [l.familyMember(n[1], l.rolePotana), l.familyMember(n[2], l.roleLawyer)]
+        ? [l.familyMember(n[1], l.rolePutana), l.familyMember(n[2], l.roleLawyer)]
         : const [],
   );
 }
@@ -394,7 +411,7 @@ class _GridDemoState extends State<_GridDemo> {
             selected: _pick == i,
             enabled: i != 3 && i != 5,
             struck: i == 3,
-            note: i == 3 ? l.statusEliminated : (i == 5 ? l.nightDoctorLastNight : null),
+            note: i == 3 ? l.statusEliminated : (i == 5 ? l.nightDoctorTwoNights : null),
             onTap: () => setState(() => _pick = i),
           ),
       ],
